@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Session 1 Simulation and Inference Play with Hillary et al.’s White Shark CKMR example | Close-kin mark-recapture: theory and practice — Spokane, Washington, USA</title>
+  <meta name="description" content="A book example for a Chapman &amp; Hall book." />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Session 1 Simulation and Inference Play with Hillary et al.’s White Shark CKMR example | Close-kin mark-recapture: theory and practice — Spokane, Washington, USA" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="A book example for a Chapman &amp; Hall book." />
+  <meta name="github-repo" content="yihui/bookdown-crc" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Session 1 Simulation and Inference Play with Hillary et al.’s White Shark CKMR example | Close-kin mark-recapture: theory and practice — Spokane, Washington, USA" />
+  
+  <meta name="twitter:description" content="A book example for a Chapman &amp; Hall book." />
+  
+
+<meta name="author" content="Paul B. Conn and Eric C. Anderson" />
+
+
+<meta name="date" content="2022-05-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+
+<script src="libs/jquery/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block/empty-anchor.js"></script>
+<link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">TWS-CKMR-2022</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#setting-computer"><i class="fa fa-check"></i><b>0.1</b> Setting up your computer</a><ul>
+<li class="chapter" data-level="0.1.1" data-path="index.html"><a href="index.html#step-2.-install-a-number-of-r-packages-that-are-relatively-easy-to-install"><i class="fa fa-check"></i><b>0.1.1</b> Step 2. Install a number of R packages that are relatively easy to install</a></li>
+<li class="chapter" data-level="0.1.2" data-path="index.html"><a href="index.html#step-3.-make-sure-you-have-git-and-an-account-on-github"><i class="fa fa-check"></i><b>0.1.2</b> Step 3. Make sure you have git and an account on GitHub</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><i class="fa fa-check"></i><b>1</b> Simulation and Inference Play with Hillary et al.’s White Shark CKMR example</a><ul>
+<li class="chapter" data-level="1.1" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#simulating-from-their-inferential-model"><i class="fa fa-check"></i><b>1.1</b> Simulating from their inferential model</a></li>
+<li class="chapter" data-level="1.2" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#an-r-function-to-compute-the-negative-log-likelihood"><i class="fa fa-check"></i><b>1.2</b> An R function to compute the negative log-likelihood</a></li>
+<li class="chapter" data-level="1.3" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#evaluate-the-likelihood-with-tmb"><i class="fa fa-check"></i><b>1.3</b> Evaluate the likelihood with TMB</a></li>
+<li class="chapter" data-level="1.4" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#visualize-those-log-likelihood-values"><i class="fa fa-check"></i><b>1.4</b> Visualize those log likelihood values</a></li>
+<li class="chapter" data-level="1.5" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#omg-lets-investigate-the-tmbstan-package"><i class="fa fa-check"></i><b>1.5</b> OMG! Let’s investigate the tmbstan package!</a></li>
+<li class="chapter" data-level="1.6" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#references"><i class="fa fa-check"></i><b>1.6</b> References</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Close-kin mark-recapture: theory and practice — Spokane, Washington, USA</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example" class="section level1 hasAnchor">
+<h1><span class="header-section-number">Session 1</span> Simulation and Inference Play with Hillary et al.’s White Shark CKMR example<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Here we explore the models used in <span class="citation">Hillary <em>et al.</em> (<a href="#ref-hillary2018genetic" role="doc-biblioref">2018</a>)</span> to estimate abundance of white
+sharks in Australia. Looking through the paper, I didn’t
+find any direct mention of a public repository of data that was used in the paper,
+nor any repository of code for their analyses. So, we are just going to simulate
+some data here from their model (first just from their inference model, and maybe later
+we will do so with a simple individual-based-model) so that we have something to work with.
+One nice thing about simulating from their inference model is that doing so offers a good
+way to gain a better understanding their inference model.</p>
+<div id="simulating-from-their-inferential-model" class="section level2 hasAnchor">
+<h2><span class="header-section-number">1.1</span> Simulating from their inferential model<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#simulating-from-their-inferential-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>They start with a demographic model of exponential growth:
+<span class="math display">\[
+N_t^A = N_\mathrm{init}e^{\lambda t}
+\]</span>
+where <span class="math inline">\(N_t^A\)</span> is the number of adults at time <span class="math inline">\(t\)</span> and <span class="math inline">\(N_\mathrm{init}\)</span> is the initial number
+of adults (at time <span class="math inline">\(t = 0\)</span>). <span class="math inline">\(\lambda\)</span> is an exponential growth rate.</p>
+<p>Here, we define a function to calculate <span class="math inline">\(N_t^A\)</span>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-2"></a><span class="kw">library</span>(microbenchmark)</span>
+<span id="cb1-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-3"></a></span>
+<span id="cb1-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-4"></a><span class="co">#&#39; calculate the number of adults at time t, given exponential growth or decline</span></span>
+<span id="cb1-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-5"></a><span class="co">#&#39; @param N0 number of adults at time 0</span></span>
+<span id="cb1-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-6"></a><span class="co">#&#39; @param t  time</span></span>
+<span id="cb1-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-7"></a><span class="co">#&#39; @param lambda exponential growth rate parameter</span></span>
+<span id="cb1-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-8"></a>N_adults &lt;-<span class="st"> </span><span class="cf">function</span>(N0, t, lambda) {</span>
+<span id="cb1-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-9"></a>  N0 <span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(lambda <span class="op">*</span><span class="st"> </span>t)</span>
+<span id="cb1-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-10"></a>}</span></code></pre></div>
+<p>Let’s see what that would look like over 60 years, starting from a few different <span class="math inline">\(N_\mathrm{init}\)</span>
+values and growing/shrinking at a range of values.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-1"></a>A_traj &lt;-<span class="st"> </span><span class="kw">expand_grid</span>(</span>
+<span id="cb2-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-2"></a>  <span class="dt">Ninit =</span> <span class="kw">c</span>(<span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>, <span class="dv">1500</span>, <span class="dv">2000</span>), </span>
+<span id="cb2-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-3"></a>  <span class="dt">lambda =</span> <span class="kw">seq</span>(<span class="op">-</span><span class="fl">0.03</span>, <span class="fl">0.03</span>, <span class="dt">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb2-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-4"></a>)<span class="op">%&gt;%</span></span>
+<span id="cb2-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-5"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb2-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-6"></a>    <span class="dt">num_adults =</span> <span class="kw">map2</span>(Ninit, lambda, <span class="cf">function</span>(x, y) <span class="kw">N_adults</span>(x, <span class="dv">0</span><span class="op">:</span><span class="dv">60</span>, y)),</span>
+<span id="cb2-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-7"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb2-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-8"></a><span class="st">  </span><span class="kw">unnest</span>(num_adults) <span class="op">%&gt;%</span></span>
+<span id="cb2-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-9"></a><span class="st">  </span><span class="kw">group_by</span>(Ninit, lambda) <span class="op">%&gt;%</span></span>
+<span id="cb2-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-10"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">60</span>)</span>
+<span id="cb2-11"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-11"></a></span>
+<span id="cb2-12"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-12"></a><span class="kw">ggplot</span>(A_traj, <span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y =</span> num_adults, <span class="dt">colour =</span> <span class="kw">factor</span>(lambda))) <span class="op">+</span></span>
+<span id="cb2-13"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-13"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
+<span id="cb2-14"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-14"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Ninit)</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Now we are going to write a function to simulate sampled pairs from
+such a population, and then we will simulate some of them to be half-siblings
+according to the probabilities in their inferential model.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-1"></a><span class="co">#&#39; simulate sampling n sharks a year from year Slo to Shi and return all the sample pairs</span></span>
+<span id="cb3-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-2"></a><span class="co">#&#39; @param npy number of sharks to sample each year (num per year)</span></span>
+<span id="cb3-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-3"></a><span class="co">#&#39; @param Slo year to start sampling</span></span>
+<span id="cb3-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-4"></a><span class="co">#&#39; @param Shi final year in which to sample</span></span>
+<span id="cb3-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-5"></a><span class="co">#&#39; @param ages a vector of the ages at which individuals are sampled</span></span>
+<span id="cb3-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-6"></a><span class="co">#&#39; @param age_wts vector of expected proportion of each age in the sample</span></span>
+<span id="cb3-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-7"></a><span class="co">#&#39; @param N0 initial population size</span></span>
+<span id="cb3-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-8"></a><span class="co">#&#39; @param lambda population growth rate</span></span>
+<span id="cb3-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-9"></a><span class="co">#&#39; @param Thi final time to simulate an abundance (must be &gt;= than Shi)</span></span>
+<span id="cb3-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-10"></a><span class="co">#&#39; @param phiA Adult annual survival probability</span></span>
+<span id="cb3-11"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-11"></a><span class="co">#&#39; @return This returns a list of three components: `pairs`: a tibble of all the pairs,</span></span>
+<span id="cb3-12"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-12"></a><span class="co">#&#39; `pair_counts`: a tibble of counts of different pair types of different age differences,</span></span>
+<span id="cb3-13"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-13"></a><span class="co">#&#39; and `samples`: a simple tibble of just the samples, and `N`: a tibble of the</span></span>
+<span id="cb3-14"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-14"></a><span class="co">#&#39; number of adults each year.</span></span>
+<span id="cb3-15"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-15"></a>simulate_pairs &lt;-<span class="st"> </span><span class="cf">function</span>(</span>
+<span id="cb3-16"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-16"></a>  <span class="dt">npy =</span> <span class="dv">10</span>,</span>
+<span id="cb3-17"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-17"></a>  <span class="dt">Slo =</span> <span class="dv">20</span>,</span>
+<span id="cb3-18"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-18"></a>  <span class="dt">Shi =</span> <span class="dv">40</span>,</span>
+<span id="cb3-19"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-19"></a>  <span class="dt">ages =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">8</span>,</span>
+<span id="cb3-20"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-20"></a>  <span class="dt">age_wts =</span> <span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">length</span>(ages)),</span>
+<span id="cb3-21"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-21"></a>  <span class="dt">N0 =</span> <span class="dv">800</span>,</span>
+<span id="cb3-22"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-22"></a>  <span class="dt">lambda =</span> <span class="fl">0.01</span>,</span>
+<span id="cb3-23"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-23"></a>  <span class="dt">Thi =</span> <span class="dv">60</span>,</span>
+<span id="cb3-24"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-24"></a>  <span class="dt">phiA =</span> <span class="fl">0.94</span></span>
+<span id="cb3-25"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-25"></a>) {</span>
+<span id="cb3-26"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-26"></a>  </span>
+<span id="cb3-27"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-27"></a>  A_traj &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
+<span id="cb3-28"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-28"></a>    <span class="dt">year =</span> <span class="dv">0</span><span class="op">:</span>Thi</span>
+<span id="cb3-29"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-29"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb3-30"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-30"></a><span class="st">    </span><span class="kw">mutate</span>(</span>
+<span id="cb3-31"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-31"></a>      <span class="dt">num_adults =</span> <span class="kw">N_adults</span>(N0, year, lambda)</span>
+<span id="cb3-32"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-32"></a>    )</span>
+<span id="cb3-33"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-33"></a>  </span>
+<span id="cb3-34"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-34"></a>  samples &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
+<span id="cb3-35"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-35"></a>    <span class="dt">samp_year =</span> <span class="kw">rep</span>(Slo<span class="op">:</span>Shi, <span class="dt">each=</span>npy)</span>
+<span id="cb3-36"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-36"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb3-37"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-37"></a><span class="st">    </span><span class="kw">mutate</span>(</span>
+<span id="cb3-38"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-38"></a>      <span class="dt">age =</span> <span class="kw">sample</span>(ages, <span class="dt">size =</span> <span class="kw">n</span>(), <span class="dt">replace =</span> <span class="ot">TRUE</span>, <span class="dt">prob =</span> age_wts),</span>
+<span id="cb3-39"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-39"></a>      <span class="dt">born_year =</span> samp_year <span class="op">-</span><span class="st"> </span>age</span>
+<span id="cb3-40"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-40"></a>    ) <span class="op">%&gt;%</span></span>
+<span id="cb3-41"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-41"></a><span class="st">    </span><span class="kw">left_join</span>(A_traj, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;born_year&quot;</span> =<span class="st"> &quot;year&quot;</span>))</span>
+<span id="cb3-42"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-42"></a>  </span>
+<span id="cb3-43"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-43"></a>    </span>
+<span id="cb3-44"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-44"></a>  n &lt;-<span class="st"> </span><span class="kw">nrow</span>(samples)</span>
+<span id="cb3-45"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-45"></a>  s1 &lt;-<span class="st"> </span>samples[<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="dt">each =</span> n),]</span>
+<span id="cb3-46"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-46"></a>  s2 &lt;-<span class="st"> </span>samples[<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="dt">times =</span> n),]</span>
+<span id="cb3-47"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-47"></a>  <span class="kw">names</span>(s2) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">names</span>(s2), <span class="st">&quot;.old&quot;</span>)</span>
+<span id="cb3-48"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-48"></a>  </span>
+<span id="cb3-49"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-49"></a>  pairs &lt;-<span class="st"> </span><span class="kw">bind_cols</span>(s1, s2) <span class="op">%&gt;%</span></span>
+<span id="cb3-50"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-50"></a><span class="st">    </span><span class="kw">filter</span>(born_year.old <span class="op">&lt;</span><span class="st"> </span>born_year) <span class="op">%&gt;%</span></span>
+<span id="cb3-51"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-51"></a><span class="st">    </span><span class="kw">mutate</span>(</span>
+<span id="cb3-52"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-52"></a>      <span class="dt">age_diff =</span> born_year <span class="op">-</span><span class="st"> </span>born_year.old,</span>
+<span id="cb3-53"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-53"></a>      <span class="dt">HSP_prob =</span> (<span class="dv">4</span><span class="op">/</span>num_adults) <span class="op">*</span><span class="st"> </span>(phiA <span class="op">^</span><span class="st"> </span>(born_year <span class="op">-</span><span class="st"> </span>born_year.old)),</span>
+<span id="cb3-54"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-54"></a>      <span class="dt">isHSP =</span> <span class="kw">rbernoulli</span>(<span class="kw">n</span>(), <span class="dt">p =</span> HSP_prob)</span>
+<span id="cb3-55"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-55"></a>    )</span>
+<span id="cb3-56"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-56"></a>  </span>
+<span id="cb3-57"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-57"></a>  pair_counts &lt;-<span class="st"> </span>pairs <span class="op">%&gt;%</span></span>
+<span id="cb3-58"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-58"></a><span class="st">    </span><span class="kw">count</span>(born_year, age_diff, HSP_prob, isHSP) <span class="op">%&gt;%</span></span>
+<span id="cb3-59"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-59"></a><span class="st">    </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> isHSP, <span class="dt">values_from =</span> n, <span class="dt">values_fill =</span> 0L) <span class="op">%&gt;%</span></span>
+<span id="cb3-60"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-60"></a><span class="st">    </span><span class="kw">rename</span>(<span class="dt">n_UP =</span> <span class="st">`</span><span class="dt">FALSE</span><span class="st">`</span>, <span class="dt">n_HSP =</span> <span class="st">`</span><span class="dt">TRUE</span><span class="st">`</span>)</span>
+<span id="cb3-61"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-61"></a>  </span>
+<span id="cb3-62"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-62"></a>  <span class="kw">list</span>(</span>
+<span id="cb3-63"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-63"></a>    <span class="dt">pairs =</span> pairs,</span>
+<span id="cb3-64"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-64"></a>    <span class="dt">pair_counts =</span> pair_counts,</span>
+<span id="cb3-65"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-65"></a>    <span class="dt">pair_data =</span> pair_counts <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>HSP_prob),</span>
+<span id="cb3-66"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-66"></a>    <span class="dt">samples =</span> samples,</span>
+<span id="cb3-67"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-67"></a>    <span class="dt">N =</span> A_traj</span>
+<span id="cb3-68"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-68"></a>  )</span>
+<span id="cb3-69"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb3-69"></a>}</span></code></pre></div>
+<p>Now that we have done that, let’s simulate some pairs. We will assume that 20 sharks
+were sampled per year—that is more than <span class="citation">Hillary <em>et al.</em> (<a href="#ref-hillary2018genetic" role="doc-biblioref">2018</a>)</span> had, I think, but it
+makes the likelihood surface a little cleaner, so, since we can simulate whatever we want,
+we will simulate an abundance of data:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb4-1"></a><span class="kw">set.seed</span>(<span class="dv">5</span>)</span>
+<span id="cb4-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb4-2"></a></span>
+<span id="cb4-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb4-3"></a>sim_vals &lt;-<span class="st"> </span><span class="kw">simulate_pairs</span>(<span class="dt">npy =</span> <span class="dv">20</span>, <span class="dt">age_wts =</span> <span class="dv">8</span><span class="op">:</span><span class="dv">3</span>)</span></code></pre></div>
+<p>At this juncture, it is worth stopping for a moment and looking at two of the elements of the
+list <code>sim_vals</code>. The <code>pair_counts</code> show the number of half-sibling pairs of different types, and also shows the half-sibling pair probability that was used to simulate them:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb5-1"></a>sim_vals<span class="op">$</span>pair_counts</span></code></pre></div>
+<pre><code>## # A tibble: 325 × 5
+##    born_year age_diff HSP_prob  n_UP n_HSP
+##        &lt;int&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+##  1        13        1  0.00413    10     0
+##  2        14        1  0.00409    35     0
+##  3        14        2  0.00384    14     0
+##  4        15        1  0.00405    84     0
+##  5        15        2  0.00380    60     0
+##  6        15        3  0.00357    24     0
+##  7        16        1  0.00401   216     0
+##  8        16        2  0.00376   124     2
+##  9        16        3  0.00354    90     0
+## 10        16        4  0.00333    36     0
+## # … with 315 more rows</code></pre>
+<p>In this tibble, <code>n_HSP</code> is the number of half-sibling pairs found in which the younger member was
+born in <code>born_year</code> and the older member was born <code>age_diff</code> years before. As you can see, there
+are a lot of categories for which no HSPs are found. That is to be expected—they are pretty rare, and, of course, you expect to see fewer of them if the population is large…that is how CKMR works… The <code>HSP_prob</code> column gives the probability of seeing an HSP of a certain category given
+the values of the parameters that were used to simulate the data.</p>
+<p>Typically if you had some observed data, you wouldn’t compute the <code>HSP_prob</code> for parameter
+values you didn’t know. So, if you had observed data it would look like:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb7-1"></a>sim_vals<span class="op">$</span>pair_data</span></code></pre></div>
+<pre><code>## # A tibble: 325 × 4
+##    born_year age_diff  n_UP n_HSP
+##        &lt;int&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1        13        1    10     0
+##  2        14        1    35     0
+##  3        14        2    14     0
+##  4        15        1    84     0
+##  5        15        2    60     0
+##  6        15        3    24     0
+##  7        16        1   216     0
+##  8        16        2   124     2
+##  9        16        3    90     0
+## 10        16        4    36     0
+## # … with 315 more rows</code></pre>
+<p>And the goal from those data would be to estimate the parameters that might have produced these data.</p>
+<p>It is, however, worthwhile to plot the half-sibling pair probabilities, just to look at those.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb9-1"></a>sim_vals<span class="op">$</span>pairs <span class="op">%&gt;%</span></span>
+<span id="cb9-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb9-2"></a><span class="st">  </span><span class="kw">group_by</span>(born_year, age_diff) <span class="op">%&gt;%</span></span>
+<span id="cb9-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb9-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">HSP_prob =</span> <span class="kw">mean</span>(HSP_prob)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb9-4"></a><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> born_year, <span class="dt">y =</span> HSP_prob, <span class="dt">fill =</span> <span class="kw">factor</span>(age_diff))) <span class="op">+</span></span>
+<span id="cb9-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb9-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">21</span>) <span class="op">+</span></span>
+<span id="cb9-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb9-6"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year the younger member of pair was born&quot;</span>) <span class="op">+</span></span>
+<span id="cb9-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb9-7"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Half-sibling probability&quot;</span>)</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;born_year&#39;. You
+## can override using the `.groups` argument.</code></pre>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="an-r-function-to-compute-the-negative-log-likelihood" class="section level2 hasAnchor">
+<h2><span class="header-section-number">1.2</span> An R function to compute the negative log-likelihood<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#an-r-function-to-compute-the-negative-log-likelihood" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To estimate that parameters that gave rise to the simulated data, we can start with an R function to compute the negative log-likelihood—in other words, the probability of our observed data given
+values of the parameters, which are the initial population size <span class="math inline">\(N_\mathrm{init}\)</span>, the
+population growth rate <span class="math inline">\(\lambda\)</span>, and the probability that an adult survives for a year, <span class="math inline">\(\phi_A\)</span>.
+The following R function computes that CKMR pseudolikelihood:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-1"></a><span class="co">#&#39; Return the negative log likelihood of the parameter values given the data</span></span>
+<span id="cb11-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-2"></a><span class="co">#&#39; @param pars a  vector (Ninit, lambda, phiA)</span></span>
+<span id="cb11-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-3"></a><span class="co">#&#39; @param X a tibble like the pair_counts component of the output list from</span></span>
+<span id="cb11-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-4"></a><span class="co">#&#39; `simulate_pairs()`.</span></span>
+<span id="cb11-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-5"></a>hsp_nll &lt;-<span class="st"> </span><span class="cf">function</span>(pars, X) {</span>
+<span id="cb11-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-6"></a>  N0 &lt;-<span class="st"> </span>pars[<span class="dv">1</span>]</span>
+<span id="cb11-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-7"></a>  L &lt;-<span class="st"> </span>pars[<span class="dv">2</span>]</span>
+<span id="cb11-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-8"></a>  P &lt;-<span class="st"> </span>pars[<span class="dv">3</span>]</span>
+<span id="cb11-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-9"></a></span>
+<span id="cb11-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-10"></a>  LL &lt;-<span class="st"> </span>X <span class="op">%&gt;%</span></span>
+<span id="cb11-11"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-11"></a><span class="st">    </span><span class="kw">mutate</span>(</span>
+<span id="cb11-12"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-12"></a>      <span class="dt">N =</span> N0 <span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(L <span class="op">*</span><span class="st"> </span>born_year),</span>
+<span id="cb11-13"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-13"></a>      <span class="dt">hspp =</span> (<span class="dv">4</span> <span class="op">/</span><span class="st"> </span>N) <span class="op">*</span><span class="st"> </span>P <span class="op">^</span><span class="st"> </span>age_diff,</span>
+<span id="cb11-14"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-14"></a>      <span class="dt">logl =</span> <span class="kw">log</span>(hspp) <span class="op">*</span><span class="st"> </span>n_HSP <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>hspp) <span class="op">*</span><span class="st"> </span>n_UP</span>
+<span id="cb11-15"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-15"></a>    )</span>
+<span id="cb11-16"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-16"></a></span>
+<span id="cb11-17"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-17"></a>  <span class="op">-</span><span class="kw">sum</span>(LL<span class="op">$</span>logl)</span>
+<span id="cb11-18"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb11-18"></a>}</span></code></pre></div>
+<p>Let’s first compute the negative log-likelihood for the values used in the simulation:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb12-1"></a><span class="kw">hsp_nll</span>(</span>
+<span id="cb12-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb12-2"></a>  <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dv">800</span>, <span class="fl">0.01</span>, <span class="fl">0.94</span>),</span>
+<span id="cb12-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb12-3"></a>  <span class="dt">X =</span> sim_vals<span class="op">$</span>pair_data</span>
+<span id="cb12-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb12-4"></a>)</span></code></pre></div>
+<pre><code>## [1] 1508</code></pre>
+<p>Since this is a negative log likelihood, a smaller number is better. We can see that if we
+choose parameter values that are far from the true ones we get a bigger (less good) value of the
+negative log likelihood.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb14-1"></a><span class="kw">hsp_nll</span>(</span>
+<span id="cb14-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb14-2"></a>  <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dv">1800</span>, <span class="fl">0.05</span>, <span class="fl">0.94</span>),</span>
+<span id="cb14-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb14-3"></a>  <span class="dt">X =</span> sim_vals<span class="op">$</span>pair_data</span>
+<span id="cb14-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb14-4"></a>)</span></code></pre></div>
+<pre><code>## [1] 1752</code></pre>
+<p>It is a fun exercise to visualize this log-likelihood surface. But we are not going to do that
+with this <code>hsp_nll</code> function, because it is quite slow. Observe how many milliseconds it takes to evaluate the likelihood using the <code>hsp_nll()</code> function:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-1"></a>mb &lt;-<span class="st"> </span>microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</span>
+<span id="cb16-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-2"></a>  <span class="dt">R_version =</span> <span class="kw">hsp_nll</span>(</span>
+<span id="cb16-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-3"></a>    <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dv">1800</span>, <span class="fl">0.05</span>, <span class="fl">0.94</span>),</span>
+<span id="cb16-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-4"></a>    <span class="dt">X =</span> sim_vals<span class="op">$</span>pair_data</span>
+<span id="cb16-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-5"></a>  ),</span>
+<span id="cb16-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-6"></a>  <span class="dt">times =</span> <span class="dv">100</span></span>
+<span id="cb16-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-7"></a>)</span>
+<span id="cb16-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-8"></a></span>
+<span id="cb16-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-9"></a><span class="co"># on average, typically more than 2 milliseconds:</span></span>
+<span id="cb16-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-10"></a>mb</span></code></pre></div>
+<pre><code>## Unit: milliseconds
+##       expr   min    lq  mean median    uq   max neval
+##  R_version 2.666 2.807 2.946  2.852 2.909 7.158   100</code></pre>
+<p>In general, straight-up R is a little underpowered for computing these sorts of
+likelihoods, and there are some serious advantages to calculating them in compiled code
+using the package TMB. We will do that next.</p>
+</div>
+<div id="evaluate-the-likelihood-with-tmb" class="section level2 hasAnchor">
+<h2><span class="header-section-number">1.3</span> Evaluate the likelihood with TMB<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#evaluate-the-likelihood-with-tmb" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You need the following code in a file <code>TMB/hsp_nll.cpp</code>, relative to the
+current working directory. (That file is already in this repository).</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-1"></a><span class="ex">//</span> simple half-sibling CKMR with exponential pop growth and known ages</span>
+<span id="cb18-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-2"></a><span class="co">#include &lt;TMB.hpp&gt;</span></span>
+<span id="cb18-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-3"></a><span class="ex">template</span><span class="op">&lt;</span>class Type<span class="op">&gt;</span></span>
+<span id="cb18-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-4"></a><span class="ex">Type</span> objective_function<span class="op">&lt;</span>Type<span class="op">&gt;</span>::operator() <span class="kw">()</span></span>
+<span id="cb18-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-5"></a><span class="kw">{</span></span>
+<span id="cb18-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-6"></a>  <span class="ex">DATA_VECTOR</span>(n_UP);</span>
+<span id="cb18-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-7"></a>  <span class="ex">DATA_VECTOR</span>(n_HSP);</span>
+<span id="cb18-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-8"></a>  <span class="ex">DATA_VECTOR</span>(born_year);</span>
+<span id="cb18-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-9"></a>  <span class="ex">DATA_VECTOR</span>(age_diff);</span>
+<span id="cb18-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-10"></a>  <span class="ex">PARAMETER</span>(N_init);</span>
+<span id="cb18-11"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-11"></a>  <span class="ex">PARAMETER</span>(lambda);</span>
+<span id="cb18-12"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-12"></a>  <span class="ex">PARAMETER</span>(phiA);</span>
+<span id="cb18-13"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-13"></a>  <span class="ex">ADREPORT</span>(N_init);</span>
+<span id="cb18-14"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-14"></a>  <span class="ex">ADREPORT</span>(lambda);</span>
+<span id="cb18-15"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-15"></a>  <span class="ex">ADREPORT</span>(phiA);</span>
+<span id="cb18-16"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-16"></a></span>
+<span id="cb18-17"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-17"></a>  <span class="ex">Type</span> N<span class="kw">;</span>    <span class="ex">//</span> for storing the pop size at time of younger kids birth</span>
+<span id="cb18-18"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-18"></a>  <span class="ex">Type</span> hsp<span class="kw">;</span>  <span class="ex">//</span> for storing the half-sibling pair prob</span>
+<span id="cb18-19"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-19"></a></span>
+<span id="cb18-20"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-20"></a>  <span class="ex">Type</span> nll = 0<span class="kw">;</span></span>
+<span id="cb18-21"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-21"></a></span>
+<span id="cb18-22"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-22"></a>  <span class="kw">for(</span><span class="ex">int</span> i=0<span class="kw">;</span><span class="ex">i</span><span class="op">&lt;</span>n_UP.size(<span class="kw">)</span>; <span class="ex">i++</span>) <span class="kw">{</span></span>
+<span id="cb18-23"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-23"></a>    <span class="ex">N</span> = N_init * exp(lambda * born_year[i]);</span>
+<span id="cb18-24"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-24"></a>    <span class="ex">hsp</span> = (4 / N) <span class="ex">*</span> pow(phiA, age_diff[i]);</span>
+<span id="cb18-25"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-25"></a>    <span class="ex">nll</span> -= log(hsp) <span class="ex">*</span> n_HSP[i] + log(1 - hsp) <span class="ex">*</span> n_UP[i]<span class="kw">;</span></span>
+<span id="cb18-26"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-26"></a>  <span class="kw">}</span></span>
+<span id="cb18-27"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-27"></a></span>
+<span id="cb18-28"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-28"></a>  <span class="bu">return</span> nll<span class="kw">;</span></span>
+<span id="cb18-29"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-29"></a><span class="kw">}</span></span></code></pre></div>
+<p>That file first must be compiled and loaded, and then we make data and parameter lists:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb19-1"></a><span class="kw">library</span>(TMB)</span></code></pre></div>
+<pre><code>## Warning in checkMatrixPackageVersion(): Package version inconsistency detected.
+## TMB was built with Matrix version 1.4.1
+## Current Matrix version is 1.3.4
+## Please re-install &#39;TMB&#39; from source using install.packages(&#39;TMB&#39;, type = &#39;source&#39;) or ask CRAN for a binary version of &#39;TMB&#39; matching CRAN&#39;s &#39;Matrix&#39; package</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-1"></a><span class="kw">compile</span>(<span class="st">&quot;TMB/hsp_nll.cpp&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-1"></a><span class="kw">dyn.load</span>(<span class="kw">dynlib</span>(<span class="st">&quot;TMB/hsp_nll&quot;</span>))</span>
+<span id="cb23-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-2"></a></span>
+<span id="cb23-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-3"></a><span class="co"># then get our data in a list of vectors</span></span>
+<span id="cb23-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-4"></a>data &lt;-<span class="st"> </span>sim_vals<span class="op">$</span>pair_data <span class="op">%&gt;%</span></span>
+<span id="cb23-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-5"></a><span class="st">  </span><span class="kw">select</span>(n_UP, n_HSP, born_year, age_diff) <span class="op">%&gt;%</span></span>
+<span id="cb23-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-6"></a><span class="st">  </span><span class="kw">as.list</span>()</span>
+<span id="cb23-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-7"></a></span>
+<span id="cb23-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-8"></a><span class="co"># and then our starting parameters</span></span>
+<span id="cb23-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-9"></a>parameters &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">N_init =</span> <span class="dv">1000</span>, <span class="dt">lambda =</span> <span class="fl">0.001</span>, <span class="dt">phiA =</span> <span class="fl">0.9</span>)</span></code></pre></div>
+<p>Now, if we want to play around with evaluating the likelihood function with TMB
+we need to make our AD function. At least on a Mac, TMB seems
+unable to deal with having the object files in a subdirectory, we momentarily
+switch to the TMB directory:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb24-1"></a><span class="kw">setwd</span>(<span class="st">&quot;TMB&quot;</span>)</span>
+<span id="cb24-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb24-2"></a>obj &lt;-<span class="st"> </span><span class="kw">MakeADFun</span>(<span class="dt">data =</span> data, <span class="dt">parameters =</span> parameters, <span class="dt">DLL=</span><span class="st">&quot;hsp_nll&quot;</span>)</span>
+<span id="cb24-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb24-3"></a><span class="kw">setwd</span>(<span class="st">&quot;..&quot;</span>)</span></code></pre></div>
+<p>Now, we might want to see how long it takes for this compiled version
+of the HSP negative log likelihood to be computed:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb25-1"></a>mb2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(</span>
+<span id="cb25-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb25-2"></a>  <span class="dt">TMB_version =</span> obj<span class="op">$</span><span class="kw">fn</span>(<span class="dt">x =</span> parameters), <span class="dt">times =</span> <span class="dv">1000</span></span>
+<span id="cb25-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb25-3"></a>)</span>
+<span id="cb25-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb25-4"></a></span>
+<span id="cb25-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb25-5"></a><span class="co"># this is in microseconds, so it is effectively 100 times faster</span></span>
+<span id="cb25-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb25-6"></a><span class="co"># to evalaute this using TMB.</span></span>
+<span id="cb25-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb25-7"></a>mb2</span></code></pre></div>
+<pre><code>## Unit: microseconds
+##         expr   min    lq  mean median    uq   max
+##  TMB_version 28.11 28.78 29.54  29.04 29.35 127.9
+##  neval
+##   1000</code></pre>
+</div>
+<div id="visualize-those-log-likelihood-values" class="section level2 hasAnchor">
+<h2><span class="header-section-number">1.4</span> Visualize those log likelihood values<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#visualize-those-log-likelihood-values" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now that we have a fast way to evaluate those, using TMB, let’s
+evaluate a lot of log likelihoods so we can make some contour plots. We will
+evaluate the log likelihood over a range of values of the three parameters:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-1"></a>LL_tib &lt;-<span class="st"> </span><span class="kw">expand_grid</span>(</span>
+<span id="cb27-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-2"></a>  <span class="dt">N_init =</span> <span class="kw">seq</span>(<span class="dv">200</span>, <span class="dv">2000</span>, <span class="dt">by =</span> <span class="dv">20</span>),</span>
+<span id="cb27-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-3"></a>  <span class="dt">lambda =</span> <span class="kw">seq</span>(<span class="op">-</span><span class="fl">0.04</span>, <span class="fl">0.04</span>, <span class="dt">by =</span> <span class="fl">0.01</span>),</span>
+<span id="cb27-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-4"></a>  <span class="dt">phiA =</span> <span class="kw">seq</span>(<span class="fl">0.85</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb27-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-5"></a>) <span class="op">%&gt;%</span></span>
+<span id="cb27-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-6"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">parameters =</span> <span class="kw">pmap</span>(</span>
+<span id="cb27-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-7"></a>    <span class="dt">.l =</span> <span class="kw">list</span>(<span class="dt">a =</span> N_init, <span class="dt">b =</span> lambda, <span class="dt">c=</span> phiA),</span>
+<span id="cb27-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-8"></a>    <span class="dt">.f =</span> <span class="cf">function</span>(a,b,c) <span class="kw">list</span>(<span class="dt">N_init =</span> a, <span class="dt">lambda =</span> b, <span class="dt">phiA =</span> c)</span>
+<span id="cb27-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-9"></a>  )) <span class="op">%&gt;%</span></span>
+<span id="cb27-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-10"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb27-11"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-11"></a>    <span class="dt">nll =</span> <span class="kw">map_dbl</span>(</span>
+<span id="cb27-12"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-12"></a>      <span class="dt">.x =</span> parameters,</span>
+<span id="cb27-13"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-13"></a>      <span class="dt">.f =</span> <span class="cf">function</span>(y) obj<span class="op">$</span><span class="kw">fn</span>(<span class="dt">x =</span> y)</span>
+<span id="cb27-14"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-14"></a>    )</span>
+<span id="cb27-15"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb27-15"></a>  )</span></code></pre></div>
+<p>With all those results, we can make a contour plot, faceted over lambda values
+to visualize:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb28-1"></a>LL_tib <span class="op">%&gt;%</span></span>
+<span id="cb28-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb28-2"></a><span class="st">  </span><span class="kw">group_by</span>(lambda) <span class="op">%&gt;%</span></span>
+<span id="cb28-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb28-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">nll =</span> <span class="kw">ifelse</span>(nll <span class="op">&gt;</span><span class="st"> </span><span class="kw">min</span>(nll) <span class="op">+</span><span class="st"> </span><span class="dv">20</span>, <span class="ot">NA</span>, nll)) <span class="op">%&gt;%</span></span>
+<span id="cb28-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb28-4"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb28-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb28-5"></a><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> N_init, <span class="dt">y =</span> phiA, <span class="dt">z =</span> nll)) <span class="op">+</span></span>
+<span id="cb28-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb28-6"></a><span class="st">  </span><span class="kw">geom_contour</span>(<span class="dt">binwidth =</span> <span class="dv">1</span>, <span class="dt">colour =</span> <span class="st">&quot;gray&quot;</span>) <span class="op">+</span></span>
+<span id="cb28-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb28-7"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
+<span id="cb28-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb28-8"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>lambda) <span class="op">+</span></span>
+<span id="cb28-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb28-9"></a><span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb28-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb28-10"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="dv">800</span>, <span class="dt">colour =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">+</span></span>
+<span id="cb28-11"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb28-11"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.94</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: Removed 9477 rows containing non-finite values
+## (stat_contour).</code></pre>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-17-1.png" width="100%" /></p>
+<p>I am sure there is a cleaner way of dropping all the contour lines smaller than a certain value, but
+I am not going to bother with it here. The blue and red lines show where the actual “true” simulated values of <span class="math inline">\(N_\mathrm{init}\)</span> and <span class="math inline">\(\phi_A\)</span> are, respectively.
+Recall that the true value of <span class="math inline">\(\lambda\)</span> is 0.01. And see on that facet that the true
+values of <span class="math inline">\(N_\mathrm{init}\)</span> and <span class="math inline">\(\phi_A\)</span> are near the top of the likelihood (or the
+bottom of the negative log likelihood, if you prefer to think of it that way).</p>
+<p>We see that with this much data, and whilst assuming the correct growth rate, the abundance
+and the adult survival are estimated quite accurately.</p>
+<p>The question remains, however, of how much information there is about <span class="math inline">\(\lambda\)</span>. Can we
+estimate that well?</p>
+</div>
+<div id="omg-lets-investigate-the-tmbstan-package" class="section level2 hasAnchor">
+<h2><span class="header-section-number">1.5</span> OMG! Let’s investigate the tmbstan package!<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#omg-lets-investigate-the-tmbstan-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>One very nice feature of using TMB is that we can plug our TMB object directly into Stan
+for doing Bayesian inference via No-U-turn MCMC sampling. We do this with
+the ‘tmbstan’ package. Awesome!</p>
+<p>Note that we sort of need to impose some bounds on the parameters. Otherwise,
+as one might expect seeing the contour plots of the likelihood surfaces, we can
+get estimated survival parameters exceeding 1.0, which just doesn’t make sense.
+This is one particularly nice feature of using the TMB object in a Bayesian context—it
+seems easier to impose these sorts of parameter bounds, than when using the TMB
+object to maximize the likelihood.</p>
+<p>For some reason that I don’t full understand, we have to remake the TMB AD function before
+we run the following. Something about having used <code>obj$fn</code> to compute the values
+of the Neg Log Likelihood, in order to make our pretty contour plots, has gummed things
+up. But no worries, we just define it again:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb30-1"></a><span class="kw">setwd</span>(<span class="st">&quot;TMB&quot;</span>)</span>
+<span id="cb30-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb30-2"></a>obj &lt;-<span class="st"> </span><span class="kw">MakeADFun</span>(<span class="dt">data =</span> data, <span class="dt">parameters =</span> parameters, <span class="dt">DLL=</span><span class="st">&quot;hsp_nll&quot;</span>)</span>
+<span id="cb30-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb30-3"></a><span class="kw">setwd</span>(<span class="st">&quot;..&quot;</span>)</span></code></pre></div>
+<p>Now we can hand that to tmbstan and do a short MCMC run:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb31-1"></a><span class="kw">library</span>(tmbstan)</span></code></pre></div>
+<pre><code>## Loading required package: rstan</code></pre>
+<pre><code>## Loading required package: StanHeaders</code></pre>
+<pre><code>## rstan (Version 2.21.5, GitRev: 2e1f913d3ca3)</code></pre>
+<pre><code>## For execution on a local, multicore CPU with excess RAM we recommend calling
+## options(mc.cores = parallel::detectCores()).
+## To avoid recompilation of unchanged Stan programs, we recommend calling
+## rstan_options(auto_write = TRUE)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rstan&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     extract</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb38-1"></a><span class="kw">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb38-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb38-2"></a>fit &lt;-<span class="st"> </span><span class="kw">tmbstan</span>(</span>
+<span id="cb38-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb38-3"></a>  obj,</span>
+<span id="cb38-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb38-4"></a>  <span class="dt">chains=</span><span class="dv">1</span>,</span>
+<span id="cb38-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb38-5"></a>  <span class="dt">lower =</span> <span class="kw">c</span>(<span class="dt">N_init =</span> <span class="dv">20</span>, <span class="dt">lambda =</span> <span class="fl">-0.5</span>, <span class="dt">phiA =</span> <span class="fl">0.2</span>),</span>
+<span id="cb38-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb38-6"></a>  <span class="dt">upper =</span> <span class="kw">c</span>(<span class="dt">N_init =</span> <span class="ot">Inf</span>, <span class="dt">lambda =</span> <span class="fl">0.5</span>, <span class="dt">phiA =</span> <span class="fl">1.0</span>), </span>
+<span id="cb38-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb38-7"></a>  <span class="dt">iter =</span> <span class="dv">7500</span></span>
+<span id="cb38-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb38-8"></a>)</span></code></pre></div>
+<pre><code>## 
+## SAMPLING FOR MODEL &#39;tmb_generic&#39; NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 8.5e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.85 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 7500 [  0%]  (Warmup)
+## Chain 1: Iteration:  750 / 7500 [ 10%]  (Warmup)
+## Chain 1: Iteration: 1500 / 7500 [ 20%]  (Warmup)
+## Chain 1: Iteration: 2250 / 7500 [ 30%]  (Warmup)
+## Chain 1: Iteration: 3000 / 7500 [ 40%]  (Warmup)
+## Chain 1: Iteration: 3750 / 7500 [ 50%]  (Warmup)
+## Chain 1: Iteration: 3751 / 7500 [ 50%]  (Sampling)
+## Chain 1: Iteration: 4500 / 7500 [ 60%]  (Sampling)
+## Chain 1: Iteration: 5250 / 7500 [ 70%]  (Sampling)
+## Chain 1: Iteration: 6000 / 7500 [ 80%]  (Sampling)
+## Chain 1: Iteration: 6750 / 7500 [ 90%]  (Sampling)
+## Chain 1: Iteration: 7500 / 7500 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 3.79468 seconds (Warm-up)
+## Chain 1:                3.99838 seconds (Sampling)
+## Chain 1:                7.79306 seconds (Total)
+## Chain 1:</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb40-1"></a><span class="co"># and here is a summary of the result:</span></span>
+<span id="cb40-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb40-2"></a>fit</span></code></pre></div>
+<pre><code>## Inference for Stan model: hsp_nll.
+## 1 chains, each with iter=7500; warmup=3750; thin=1; 
+## post-warmup draws per chain=3750, total post-warmup draws=3750.
+## 
+##            mean se_mean     sd     2.5%      25%
+## N_init   915.51   10.08 351.90   416.03   668.15
+## lambda     0.00    0.00   0.01    -0.02    -0.01
+## phiA       0.93    0.00   0.02     0.89     0.91
+## lp__   -1505.94    0.04   1.29 -1509.39 -1506.50
+##             50%      75%    97.5% n_eff Rhat
+## N_init   860.22  1079.69  1780.87  1218    1
+## lambda     0.00     0.01     0.03  1209    1
+## phiA       0.92     0.94     0.96  1324    1
+## lp__   -1505.61 -1505.00 -1504.50   954    1
+## 
+## Samples were drawn using NUTS(diag_e) at Mon May 23 18:19:06 2022.
+## For each parameter, n_eff is a crude measure of effective sample size,
+## and Rhat is the potential scale reduction factor on split chains (at 
+## convergence, Rhat=1).</code></pre>
+<p>Anyone who has spent months trying to “roll their own” MCMC sampler
+will recognize that this was uncharacteristically painless. That is part of
+the joy of being able to calculate gradients (with the auto-differentiation
+features of TMB) to use those in Hamiltonian Monte Carlo. Also, the maintainers
+of Stan, TMB, and tmbstan have done an amazing job!</p>
+<p>If you want a really slick visual representation of the results from the
+MCMC, you can do:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb42-1"></a><span class="kw">library</span>(shinystan)</span>
+<span id="cb42-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb42-2"></a></span>
+<span id="cb42-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb42-3"></a><span class="kw">launch_shinystan</span>(fit)</span></code></pre></div>
+<p>We don’t do that in this Rmarkown document, because you need to be in a
+an interactive session for it to work, but, just know that it pops up a
+shiny window like this:
+<img src="images/shinystan.png" width="100%" /></p>
+<p>Also, if we wanted to start our chain from different starting values
+and run it in parallel on different cores, we can do that like this, though it
+seems the interface to this has changed a little. Try <code>?tmbstan</code> for details.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-1"></a>cores &lt;-<span class="st"> </span>parallel<span class="op">::</span><span class="kw">detectCores</span>()<span class="op">-</span><span class="dv">1</span></span>
+<span id="cb43-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-2"></a><span class="kw">options</span>(<span class="dt">mc.cores =</span> cores)</span>
+<span id="cb43-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-3"></a></span>
+<span id="cb43-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-4"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb43-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-5"></a>init.list &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span>cores, <span class="cf">function</span>(x) {</span>
+<span id="cb43-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-6"></a>    <span class="kw">c</span>(</span>
+<span id="cb43-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-7"></a>      <span class="dt">N_init =</span> <span class="kw">runif</span>(<span class="dv">1</span>, <span class="dt">min =</span> <span class="dv">2000</span>, <span class="dt">max =</span> <span class="dv">20000</span>),</span>
+<span id="cb43-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-8"></a>      <span class="dt">lambda =</span> <span class="kw">runif</span>(<span class="dv">1</span>, <span class="fl">-0.04</span>, <span class="fl">0.04</span>),</span>
+<span id="cb43-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-9"></a>      <span class="dt">phiA =</span> <span class="kw">runif</span>(<span class="dv">1</span>, <span class="fl">0.75</span>, <span class="fl">0.999</span>)</span>
+<span id="cb43-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-10"></a>    )}</span>
+<span id="cb43-11"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-11"></a>  )</span>
+<span id="cb43-12"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-12"></a></span>
+<span id="cb43-13"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-13"></a>fit2 &lt;-<span class="st"> </span><span class="kw">tmbstan</span>(</span>
+<span id="cb43-14"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-14"></a>  obj, </span>
+<span id="cb43-15"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-15"></a>  <span class="dt">chains=</span>cores, </span>
+<span id="cb43-16"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-16"></a>  <span class="dt">open_progress=</span><span class="ot">FALSE</span>, </span>
+<span id="cb43-17"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-17"></a>  <span class="dt">init=</span>init.fn,</span>
+<span id="cb43-18"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-18"></a>  <span class="dt">lower =</span> <span class="kw">c</span>(<span class="dt">N_init =</span> <span class="dv">20</span>, <span class="dt">lambda =</span> <span class="fl">-0.5</span>, <span class="dt">phiA =</span> <span class="fl">0.2</span>),</span>
+<span id="cb43-19"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-19"></a>  <span class="dt">upper =</span> <span class="kw">c</span>(<span class="dt">N_init =</span> <span class="ot">Inf</span>, <span class="dt">lambda =</span> <span class="fl">0.5</span>, <span class="dt">phiA =</span> <span class="fl">1.0</span>),</span>
+<span id="cb43-20"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-20"></a>  <span class="dt">iter =</span> <span class="dv">6000</span>,</span>
+<span id="cb43-21"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-21"></a>  <span class="dt">warmup =</span> <span class="dv">2000</span></span>
+<span id="cb43-22"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-22"></a>)</span></code></pre></div>
+<p>That is remarkably easy and slick. I’m impressed.</p>
+</div>
+<div id="references" class="section level2 hasAnchor">
+<h2><span class="header-section-number">1.6</span> References<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
+<div id="refs" class="references">
+<div>
+<p>Hillary R, Bravington M, Patterson T <em>et al.</em> (2018) Genetic relatedness reveals total population size of white sharks in eastern australia and new zealand. <em>Scientific reports</em>, <strong>8</strong>, 1–9.</p>
+</div>
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-hillary2018genetic">
+<p>Hillary R, Bravington M, Patterson T <em>et al.</em> (2018) Genetic relatedness reveals total population size of white sharks in eastern australia and new zealand. <em>Scientific reports</em>, <strong>8</strong>, 1–9.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook/js/app.min.js"></script>
+<script src="libs/gitbook/js/clipboard.min.js"></script>
+<script src="libs/gitbook/js/plugin-search.js"></script>
+<script src="libs/gitbook/js/plugin-sharing.js"></script>
+<script src="libs/gitbook/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook/js/jquery.highlight.js"></script>
+<script src="libs/gitbook/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/eriqande/tws-ckmr-2022/edit/master/002-great-white-example.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": "https://github.com/eriqande/tws-ckmr-2022/commits/master/002-great-white-example.Rmd",
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["tws-ckmr-2022.pdf", "tws-ckmr-2022.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
