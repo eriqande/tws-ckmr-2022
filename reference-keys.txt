@@ -7,4 +7,3 @@ an-r-function-to-compute-the-negative-log-likelihood
 evaluate-the-likelihood-with-tmb
 visualize-those-log-likelihood-values
 omg-lets-investigate-the-tmbstan-package
-references

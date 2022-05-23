@@ -149,7 +149,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.3" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#evaluate-the-likelihood-with-tmb"><i class="fa fa-check"></i><b>1.3</b> Evaluate the likelihood with TMB</a></li>
 <li class="chapter" data-level="1.4" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#visualize-those-log-likelihood-values"><i class="fa fa-check"></i><b>1.4</b> Visualize those log likelihood values</a></li>
 <li class="chapter" data-level="1.5" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#omg-lets-investigate-the-tmbstan-package"><i class="fa fa-check"></i><b>1.5</b> OMG! Let’s investigate the tmbstan package!</a></li>
-<li class="chapter" data-level="1.6" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#references"><i class="fa fa-check"></i><b>1.6</b> References</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
@@ -399,7 +398,7 @@ with this <code>hsp_nll</code> function, because it is quite slow. Observe how m
 <span id="cb16-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-10"></a>mb</span></code></pre></div>
 <pre><code>## Unit: milliseconds
 ##       expr   min    lq  mean median    uq   max neval
-##  R_version 2.666 2.807 2.946  2.852 2.909 7.158   100</code></pre>
+##  R_version 2.607 2.704 2.945  2.793 3.049 6.984   100</code></pre>
 <p>In general, straight-up R is a little underpowered for computing these sorts of
 likelihoods, and there are some serious advantages to calculating them in compiled code
 using the package TMB. We will do that next.</p>
@@ -471,10 +470,8 @@ of the HSP negative log likelihood to be computed:</p>
 <span id="cb25-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb25-6"></a><span class="co"># to evalaute this using TMB.</span></span>
 <span id="cb25-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb25-7"></a>mb2</span></code></pre></div>
 <pre><code>## Unit: microseconds
-##         expr   min    lq  mean median    uq   max
-##  TMB_version 28.11 28.78 29.54  29.04 29.35 127.9
-##  neval
-##   1000</code></pre>
+##         expr  min    lq  mean median    uq   max neval
+##  TMB_version 27.2 28.45 31.72  28.78 29.33 112.6  1000</code></pre>
 </div>
 <div id="visualize-those-log-likelihood-values" class="section level2 hasAnchor">
 <h2><span class="header-section-number">1.4</span> Visualize those log likelihood values<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#visualize-those-log-likelihood-values" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -565,8 +562,8 @@ up. But no worries, we just define it again:</p>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;tmb_generic&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 8.5e-05 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.85 seconds.
+## Chain 1: Gradient evaluation took 8.3e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.83 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -583,9 +580,9 @@ up. But no worries, we just define it again:</p>
 ## Chain 1: Iteration: 6750 / 7500 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 7500 / 7500 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 3.79468 seconds (Warm-up)
-## Chain 1:                3.99838 seconds (Sampling)
-## Chain 1:                7.79306 seconds (Total)
+## Chain 1:  Elapsed Time: 4.26173 seconds (Warm-up)
+## Chain 1:                4.87049 seconds (Sampling)
+## Chain 1:                9.13222 seconds (Total)
 ## Chain 1:</code></pre>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb40-1"></a><span class="co"># and here is a summary of the result:</span></span>
 <span id="cb40-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb40-2"></a>fit</span></code></pre></div>
@@ -604,7 +601,7 @@ up. But no worries, we just define it again:</p>
 ## phiA       0.92     0.94     0.96  1324    1
 ## lp__   -1505.61 -1505.00 -1504.50   954    1
 ## 
-## Samples were drawn using NUTS(diag_e) at Mon May 23 18:19:06 2022.
+## Samples were drawn using NUTS(diag_e) at Mon May 23 18:26:22 2022.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
 ## convergence, Rhat=1).</code></pre>
@@ -648,9 +645,6 @@ seems the interface to this has changed a little. Try <code>?tmbstan</code> for 
 <span id="cb43-21"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-21"></a>  <span class="dt">warmup =</span> <span class="dv">2000</span></span>
 <span id="cb43-22"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb43-22"></a>)</span></code></pre></div>
 <p>That is remarkably easy and slick. I’m impressed.</p>
-</div>
-<div id="references" class="section level2 hasAnchor">
-<h2><span class="header-section-number">1.6</span> References<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 
 <div id="refs" class="references">
 <div>
