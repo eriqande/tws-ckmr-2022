@@ -1,0 +1,85 @@
+--- 
+title: "Close-kin mark-recapture: theory and practice --- Spokane, Washington, USA"
+author: "Paul B. Conn and Eric C. Anderson"
+date: "`r Sys.Date()`"
+documentclass: krantz
+bibliography: [references.bib]
+biblio-style: apalike
+csl: molecular-ecology.csl
+link-citations: yes
+colorlinks: yes
+lot: yes
+lof: yes
+site: bookdown::bookdown_site
+description: "A book example for a Chapman & Hall book."
+github-repo: yihui/bookdown-crc
+graphics: yes
+#cover-image: images/cover.jpg
+header-includes: 
+  - \usepackage{booktabs}
+fig-retina: 2
+---
+
+
+```{r setup, include=FALSE}
+options(
+  htmltools.dir.version = FALSE, formatR.indent = 2, width = 55, digits = 4
+)
+```
+
+# Preface {-}
+
+This is the website/book associated with the _Close-kin mark-recapture: theory and practice_ workshop to be held at The Wildlife Society meetings Nov 6, 2022 in Spokane, Washington.
+
+
+```{r include=FALSE}
+# put my knitr options here
+options(knitr.graphics.auto_pdf = TRUE)
+```
+
+## Setting up your computer {#setting-computer}
+
+This course covers topics in close-kin mark recapture, and relies
+heavily on the R programming language.  In order to follow
+along with the code and be successful in running all of the
+examples, it will be helpful (if not imperative) to have recent versions of
+R and RStudio, and updated versions of a number of packages.  
+
+The following is a description of the software needed to engage in the
+course.  This setup was tested on a Mac with an Intel chip running BigSur OSX 11, but
+should also work on most other Mac or Windows operating systems.
+
+
+### Step 2. Install a number of R packages that are relatively easy to install
+
+Our work will require a number of packages that can be found in binary
+form on CRAN.  As such, installing them is typically not to arduous.
+
+This year, we are exploring use of the 'renv' package to help with installing
+necessary packages.
+
+### Step 3.  Make sure you have git and an account on GitHub
+
+In a two-day workshop, we don't have time to go deeply, if much at all, into
+the many uses of the version control software, `git`, and the cloud-based code management
+system GitHub, that is built upon git.  But, if you are interested in version control for
+your analyses, and you are interested in using GitHub to share and present the results
+of your research, then you really will want to become proficient with both `git` and
+GitHub.
+
+Fortunately, there is an outstanding, free book on the web that goes into
+great detail about how to use git and GitHub with R and RStudio.  It is available
+at [https://happygitwithr.com/](https://happygitwithr.com/), and it is well worth
+a read, and particularly following the steps in:
+
+- **Chapter 4. Register a GitHub account**.
+- **Chapter 6. Install Git**  (Note: Mac users , if `xcode-select --install`
+    ran successfully, then git will have been installed).
+- **Chapter 7. Introduce yourself to git**
+
+If you want to use GitHub, you will also have to establish an SSH public/private
+key pair to authenticate your computer to GitHub. That is described in:
+
+- **Chapter 10: Set up keys for SSH**
+
+
