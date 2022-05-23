@@ -1,0 +1,431 @@
+# Simulation and Inference Play with Hillary et al.'s White Shark CKMR example
+
+Here we explore the models used in @hillary2018genetic to estimate abundance of white
+sharks in Australia.  Looking through the paper, I didn't
+find any direct mention of a public repository of data that was used in the paper,
+nor any repository of code for their analyses. So, we are just going to simulate
+some data here from their model (first just from their inference model, and maybe later
+we will do so with a simple individual-based-model) so that we have something to work with.
+One nice thing about simulating from their inference model is that doing so offers a good
+way to gain a better understanding their inference model.
+
+
+
+## Simulating from their inferential model 
+
+They start with a demographic model of exponential growth:
+$$
+N_t^A = N_\mathrm{init}e^{\lambda t}
+$$
+where $N_t^A$ is the number of adults at time $t$ and $N_\mathrm{init}$ is the initial number
+of adults (at time $t = 0$). $\lambda$ is an exponential growth rate.  
+
+Here, we define a function to calculate $N_t^A$:
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(microbenchmark)
+
+#' calculate the number of adults at time t, given exponential growth or decline
+#' @param N0 number of adults at time 0
+#' @param t  time
+#' @param lambda exponential growth rate parameter
+N_adults <- function(N0, t, lambda) {
+  N0 * exp(lambda * t)
+}
+```
+
+Let's see what that would look like over 60 years, starting from a few different $N_\mathrm{init}$
+values and growing/shrinking at a range of values.
+```{r}
+A_traj <- expand_grid(
+  Ninit = c(600, 800, 1000, 1200, 1500, 2000), 
+  lambda = seq(-0.03, 0.03, by = 0.01)
+)%>%
+  mutate(
+    num_adults = map2(Ninit, lambda, function(x, y) N_adults(x, 0:60, y)),
+  ) %>%
+  unnest(num_adults) %>%
+  group_by(Ninit, lambda) %>%
+  mutate(year = 0:60)
+
+ggplot(A_traj, aes(x = year, y = num_adults, colour = factor(lambda))) +
+  geom_line() +
+  facet_wrap(~ Ninit)
+
+```
+
+Now we are going to write a function to simulate sampled pairs from
+such a population, and then we will simulate some of them to be half-siblings
+according to the probabilities in their inferential model.
+
+```{r}
+#' simulate sampling n sharks a year from year Slo to Shi and return all the sample pairs
+#' @param npy number of sharks to sample each year (num per year)
+#' @param Slo year to start sampling
+#' @param Shi final year in which to sample
+#' @param ages a vector of the ages at which individuals are sampled
+#' @param age_wts vector of expected proportion of each age in the sample
+#' @param N0 initial population size
+#' @param lambda population growth rate
+#' @param Thi final time to simulate an abundance (must be >= than Shi)
+#' @param phiA Adult annual survival probability
+#' @return This returns a list of three components: `pairs`: a tibble of all the pairs,
+#' `pair_counts`: a tibble of counts of different pair types of different age differences,
+#' and `samples`: a simple tibble of just the samples, and `N`: a tibble of the
+#' number of adults each year.
+simulate_pairs <- function(
+  npy = 10,
+  Slo = 20,
+  Shi = 40,
+  ages = 3:8,
+  age_wts = rep(1, length(ages)),
+  N0 = 800,
+  lambda = 0.01,
+  Thi = 60,
+  phiA = 0.94
+) {
+  
+  A_traj <- tibble(
+    year = 0:Thi
+  ) %>%
+    mutate(
+      num_adults = N_adults(N0, year, lambda)
+    )
+  
+  samples <- tibble(
+    samp_year = rep(Slo:Shi, each=npy)
+  ) %>%
+    mutate(
+      age = sample(ages, size = n(), replace = TRUE, prob = age_wts),
+      born_year = samp_year - age
+    ) %>%
+    left_join(A_traj, by = c("born_year" = "year"))
+  
+    
+  n <- nrow(samples)
+  s1 <- samples[rep(1:n, each = n),]
+  s2 <- samples[rep(1:n, times = n),]
+  names(s2) <- paste0(names(s2), ".old")
+  
+  pairs <- bind_cols(s1, s2) %>%
+    filter(born_year.old < born_year) %>%
+    mutate(
+      age_diff = born_year - born_year.old,
+      HSP_prob = (4/num_adults) * (phiA ^ (born_year - born_year.old)),
+      isHSP = rbernoulli(n(), p = HSP_prob)
+    )
+  
+  pair_counts <- pairs %>%
+    count(born_year, age_diff, HSP_prob, isHSP) %>%
+    pivot_wider(names_from = isHSP, values_from = n, values_fill = 0L) %>%
+    rename(n_UP = `FALSE`, n_HSP = `TRUE`)
+  
+  list(
+    pairs = pairs,
+    pair_counts = pair_counts,
+    pair_data = pair_counts %>% select(-HSP_prob),
+    samples = samples,
+    N = A_traj
+  )
+}
+```
+
+
+Now that we have done that, let's simulate some pairs.  We will assume that 20 sharks
+were sampled per year---that is more than @hillary2018genetic had, I think, but it
+makes the likelihood surface a little cleaner, so, since we can simulate whatever we want,
+we will simulate an abundance of data:
+```{r}
+set.seed(5)
+
+sim_vals <- simulate_pairs(npy = 20, age_wts = 8:3)
+```
+
+At this juncture, it is worth stopping for a moment and looking at two of the elements of the
+list `sim_vals`.  The `pair_counts` show the number of half-sibling pairs of different types, and also shows the half-sibling pair probability that was used to simulate them:
+```{r}
+sim_vals$pair_counts
+```
+In this tibble, `n_HSP` is the number of half-sibling pairs found in which the younger member was
+born in `born_year` and the older member was born `age_diff` years before.  As you can see, there
+are a lot of categories for which no HSPs are found.  That is to be expected---they are pretty rare, and, of course, you expect to see fewer of them if the population is large...that is how CKMR works... The `HSP_prob` column gives the probability of seeing an HSP of a certain category given
+the values of the parameters that were used to simulate the data.
+
+Typically if you had some observed data, you wouldn't compute the `HSP_prob` for parameter
+values you didn't know.   So, if you had observed data it would look like:
+```{r}
+sim_vals$pair_data
+```
+And the goal from those data would be to estimate the parameters that might have produced these data.
+
+It is, however, worthwhile to plot the half-sibling pair probabilities, just to look at those.
+```{r}
+sim_vals$pairs %>%
+  group_by(born_year, age_diff) %>%
+  summarise(HSP_prob = mean(HSP_prob)) %>% 
+ggplot(aes(x = born_year, y = HSP_prob, fill = factor(age_diff))) +
+  geom_point(shape = 21) +
+  xlab("Year the younger member of pair was born") +
+  ylab("Half-sibling probability")
+```
+
+## An R function to compute the negative log-likelihood
+
+To estimate that parameters that gave rise to the simulated data, we can start with an R function to compute the negative log-likelihood---in other words, the probability of our observed data given
+values of the parameters, which are the initial population size $N_\mathrm{init}$, the
+population growth rate $\lambda$, and the probability that an adult survives for a year, $\phi_A$.
+The following R function computes that CKMR pseudolikelihood:
+```{r}
+#' Return the negative log likelihood of the parameter values given the data
+#' @param pars a  vector (Ninit, lambda, phiA)
+#' @param X a tibble like the pair_counts component of the output list from
+#' `simulate_pairs()`.
+hsp_nll <- function(pars, X) {
+  N0 <- pars[1]
+  L <- pars[2]
+  P <- pars[3]
+
+  LL <- X %>%
+    mutate(
+      N = N0 * exp(L * born_year),
+      hspp = (4 / N) * P ^ age_diff,
+      logl = log(hspp) * n_HSP + log(1 - hspp) * n_UP
+    )
+
+  -sum(LL$logl)
+}
+
+```
+
+Let's first compute the negative log-likelihood for the values used in the simulation:
+```{r}
+hsp_nll(
+  pars = c(800, 0.01, 0.94),
+  X = sim_vals$pair_data
+)
+```
+
+Since this is a negative log likelihood, a smaller number is better.  We can see that if we
+choose parameter values that are far from the true ones we get a bigger (less good) value of the
+negative log likelihood.
+```{r}
+hsp_nll(
+  pars = c(1800, 0.05, 0.94),
+  X = sim_vals$pair_data
+)
+```
+
+It is a fun exercise to visualize this log-likelihood surface.  But we are not going to do that
+with this `hsp_nll` function, because it is quite slow.  Observe how many milliseconds it takes to evaluate the likelihood using the `hsp_nll()` function:
+```{r}
+mb <- microbenchmark::microbenchmark(
+  R_version = hsp_nll(
+    pars = c(1800, 0.05, 0.94),
+    X = sim_vals$pair_data
+  ),
+  times = 100
+)
+
+# on average, typically more than 2 milliseconds:
+mb
+```
+
+In general, straight-up R is a little underpowered for computing these sorts of
+likelihoods, and there are some serious advantages to calculating them in compiled code
+using the package TMB.  We will do that next.
+
+
+## Evaluate the likelihood with TMB
+
+You need the following code in a file `TMB/hsp_nll.cpp`, relative to the
+current working directory. (That file is already in this repository).
+```sh
+`r paste(readLines("TMB/hsp_nll.cpp"), collapse = "\n")`
+```
+That file first must be compiled and loaded, and then we make data and parameter lists:
+```{r}
+library(TMB)
+
+compile("TMB/hsp_nll.cpp")
+dyn.load(dynlib("TMB/hsp_nll"))
+
+# then get our data in a list of vectors
+data <- sim_vals$pair_data %>%
+  select(n_UP, n_HSP, born_year, age_diff) %>%
+  as.list()
+
+# and then our starting parameters
+parameters <- list(N_init = 1000, lambda = 0.001, phiA = 0.9)
+```
+
+Now, if we want to play around with evaluating the likelihood function with TMB
+we need to make our AD function.  At least on a Mac, TMB seems
+unable to deal with having the object files in a subdirectory, we momentarily
+switch to the TMB directory:
+```{r, warning=FALSE}
+setwd("TMB")
+obj <- MakeADFun(data = data, parameters = parameters, DLL="hsp_nll")
+setwd("..")
+```
+
+Now, we might want to see how long it takes for this compiled version
+of the HSP negative log likelihood to be computed:
+```{r}
+mb2 <- microbenchmark(
+  TMB_version = obj$fn(x = parameters), times = 1000
+)
+
+# this is in microseconds, so it is effectively 100 times faster
+# to evalaute this using TMB.
+mb2
+```
+
+## Visualize those log likelihood values 
+
+
+Now that we have a fast way to evaluate those, using TMB, let's
+evaluate a lot of log likelihoods so we can make some contour plots. We will
+evaluate the log likelihood over a range of values of the three parameters:
+```{r}
+LL_tib <- expand_grid(
+  N_init = seq(200, 2000, by = 20),
+  lambda = seq(-0.04, 0.04, by = 0.01),
+  phiA = seq(0.85, 1, by = 0.01)
+) %>%
+  mutate(parameters = pmap(
+    .l = list(a = N_init, b = lambda, c= phiA),
+    .f = function(a,b,c) list(N_init = a, lambda = b, phiA = c)
+  )) %>%
+  mutate(
+    nll = map_dbl(
+      .x = parameters,
+      .f = function(y) obj$fn(x = y)
+    )
+  )
+
+```
+
+
+With all those results, we can make a contour plot, faceted over lambda values
+to visualize:
+```{r, fig.width=6, out.width='100%'}
+LL_tib %>%
+  group_by(lambda) %>%
+  mutate(nll = ifelse(nll > min(nll) + 20, NA, nll)) %>%
+  ungroup() %>%
+ggplot(aes(x = N_init, y = phiA, z = nll)) +
+  geom_contour(binwidth = 1, colour = "gray") +
+  theme(legend.position = "none") +
+  facet_wrap(~lambda) +
+  theme_bw() +
+  geom_vline(xintercept = 800, colour = "blue") +
+  geom_hline(yintercept = 0.94, colour = "red")
+```
+
+
+I am sure there is a cleaner way of dropping all the contour lines smaller than a certain value, but
+I am not going to bother with it here.    The blue and red lines show where the actual "true" simulated values of $N_\mathrm{init}$ and $\phi_A$ are, respectively.
+Recall that the true value of $\lambda$ is 0.01. And see on that facet that the true
+values of $N_\mathrm{init}$ and $\phi_A$ are near the top of the likelihood (or the
+bottom of the negative log likelihood, if you prefer to think of it that way).
+
+We see that with this much data, and whilst assuming the correct growth rate, the abundance
+and the adult survival are estimated quite accurately.
+
+The question remains, however, of how much information there is about $\lambda$.  Can we
+estimate that well? 
+
+
+## OMG! Let's investigate the tmbstan package!
+
+One very nice feature of using TMB is that we can plug our TMB object directly into Stan
+for doing Bayesian inference via No-U-turn MCMC sampling. We do this with
+the 'tmbstan' package.  Awesome!
+
+Note that we sort of need to impose some bounds on the parameters.  Otherwise,
+as one might expect seeing the contour plots of the likelihood surfaces, we can
+get estimated survival parameters exceeding 1.0, which just doesn't make sense.
+This is one particularly nice feature of using the TMB object in a Bayesian context---it
+seems easier to impose these sorts of parameter bounds, than when using the TMB
+object to maximize the likelihood.
+
+For some reason that I don't full understand, we have to remake the TMB AD function before
+we run the following.  Something about having used `obj$fn` to compute the values
+of the Neg Log Likelihood, in order to make our pretty contour plots, has gummed things
+up.  But no worries, we just define it again:
+```{r, warning=FALSE}
+setwd("TMB")
+obj <- MakeADFun(data = data, parameters = parameters, DLL="hsp_nll")
+setwd("..")
+```
+
+Now we can hand that to tmbstan and do a short MCMC run:
+
+```{r}
+library(tmbstan)
+set.seed(10)
+fit <- tmbstan(
+  obj,
+  chains=1,
+  lower = c(N_init = 20, lambda = -0.5, phiA = 0.2),
+  upper = c(N_init = Inf, lambda = 0.5, phiA = 1.0), 
+  iter = 7500
+)
+
+# and here is a summary of the result:
+fit
+```
+
+Anyone who has spent months trying to "roll their own" MCMC sampler
+will recognize that this was uncharacteristically painless.  That is part of
+the joy of being able to calculate gradients (with the auto-differentiation
+features of TMB) to use those in Hamiltonian Monte Carlo.  Also, the maintainers
+of Stan, TMB, and tmbstan have done an amazing job!
+
+If you want a really slick visual representation of the results from the
+MCMC, you can do:
+```{r, eval=FALSE}
+library(shinystan)
+
+launch_shinystan(fit)
+```
+
+We don't do that in this Rmarkown document, because you need to be in a
+an interactive session for it to work, but, just know that it pops up a
+shiny window like this:
+```{r, echo=FALSE, out.width='100%'}
+knitr::include_graphics(path = "images/shinystan.png")
+```
+
+
+Also, if we wanted to start our chain from different starting values
+and run it in parallel on different cores, we can do that like this, though it
+seems the interface to this has changed a little.  Try `?tmbstan` for details.
+```{r, eval=FALSE}
+cores <- parallel::detectCores()-1
+options(mc.cores = cores)
+
+set.seed(1)
+init.list <- lapply(1:cores, function(x) {
+    c(
+      N_init = runif(1, min = 2000, max = 20000),
+      lambda = runif(1, -0.04, 0.04),
+      phiA = runif(1, 0.75, 0.999)
+    )}
+  )
+
+fit2 <- tmbstan(
+  obj, 
+  chains=cores, 
+  open_progress=FALSE, 
+  init=init.fn,
+  lower = c(N_init = 20, lambda = -0.5, phiA = 0.2),
+  upper = c(N_init = Inf, lambda = 0.5, phiA = 1.0),
+  iter = 6000,
+  warmup = 2000
+)
+
+```
+That is remarkably easy and slick.  I'm impressed.
+
+## References
