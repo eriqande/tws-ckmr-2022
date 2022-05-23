@@ -427,5 +427,3 @@ fit2 <- tmbstan(
 
 ```
 That is remarkably easy and slick.  I'm impressed.
-
-## References
