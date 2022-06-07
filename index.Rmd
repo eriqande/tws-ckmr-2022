@@ -3,7 +3,7 @@ title: "Close-kin mark-recapture: theory and practice --- Spokane, Washington, U
 author: "Paul B. Conn and Eric C. Anderson"
 date: "`r Sys.Date()`"
 documentclass: krantz
-bibliography: [references.bib]
+bibliography: ["references.bib"]
 biblio-style: apalike
 csl: molecular-ecology.csl
 link-citations: yes
