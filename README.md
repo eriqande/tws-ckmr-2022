@@ -44,24 +44,24 @@ command was given, like this:
     ```sh
     open tws-ckmr-2022/tws-ckmr-2022.Rproj
     ```
-When Rstudio opens this way, you should get some messages about not
-having certain packages, and you should see in the R console that you
-need to restore the project package library with `renv::restore()`.
+    When Rstudio opens this way, you should get some messages about not
+    having certain packages, and you should see in the R console that you
+    need to restore the project package library with `renv::restore()`.
 
 3. So, the next step is to issue this command in the R console of the project:
 
     ```r
     renv::restore()
     ```
-When you do this, you will be shown a long list of packages that
-will need to be updated.  Go ahead and respond "y" to the question of
-whether you want these updated or not.  If you already have these versions,
-it seems that `renv` will link to them.  If you these versions are different
-from the ones you have, `renv` should
-download them and store them locally in the repository, I hope.  In other
-words, it should not overwrite any existing packages in your normal
-R library tree.   You will need a compilation toolchain (RTools on Windows
-and the Developer tools on Mac OS) in order to install some of the tools.
+    When you do this, you will be shown a long list of packages that
+    will need to be updated.  Go ahead and respond "y" to the question of
+    whether you want these updated or not.  If you already have these versions,
+    it seems that `renv` will link to them.  If you these versions are different
+    from the ones you have, `renv` should
+    download them and store them locally in the repository, I hope.  In other
+    words, it should not overwrite any existing packages in your normal
+    R library tree.   You will need a compilation toolchain (RTools on Windows
+    and the Developer tools on Mac OS) in order to install some of the tools.
 
 
 
