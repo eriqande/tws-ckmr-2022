@@ -397,8 +397,8 @@ with this <code>hsp_nll</code> function, because it is quite slow. Observe how m
 <span id="cb16-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-9"></a><span class="co"># on average, typically more than 2 milliseconds:</span></span>
 <span id="cb16-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-10"></a>mb</span></code></pre></div>
 <pre><code>## Unit: milliseconds
-##       expr   min   lq  mean median    uq   max neval
-##  R_version 2.773 3.05 3.837  3.528 4.332 8.391   100</code></pre>
+##       expr   min    lq  mean median    uq   max neval
+##  R_version 2.702 2.827 3.477  3.336 3.802 7.423   100</code></pre>
 <p>In general, straight-up R is a little underpowered for computing these sorts of
 likelihoods, and there are some serious advantages to calculating them in compiled code
 using the package TMB. We will do that next.</p>
@@ -467,10 +467,8 @@ of the HSP negative log likelihood to be computed:</p>
 <span id="cb23-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-6"></a><span class="co"># to evalaute this using TMB.</span></span>
 <span id="cb23-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-7"></a>mb2</span></code></pre></div>
 <pre><code>## Unit: microseconds
-##         expr   min    lq  mean median    uq   max
-##  TMB_version 27.68 28.55 32.26  28.85 29.36 121.8
-##  neval
-##   1000</code></pre>
+##         expr   min    lq  mean median   uq   max neval
+##  TMB_version 27.41 28.15 29.94  28.41 28.8 121.1  1000</code></pre>
 </div>
 <div id="visualize-those-log-likelihood-values" class="section level2 hasAnchor">
 <h2><span class="header-section-number">1.4</span> Visualize those log likelihood values<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#visualize-those-log-likelihood-values" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -561,8 +559,8 @@ up. But no worries, we just define it again:</p>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;tmb_generic&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000116 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.16 seconds.
+## Chain 1: Gradient evaluation took 7.9e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.79 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -579,9 +577,9 @@ up. But no worries, we just define it again:</p>
 ## Chain 1: Iteration: 6750 / 7500 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 7500 / 7500 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 4.0031 seconds (Warm-up)
-## Chain 1:                4.2486 seconds (Sampling)
-## Chain 1:                8.25169 seconds (Total)
+## Chain 1:  Elapsed Time: 4.02065 seconds (Warm-up)
+## Chain 1:                4.08812 seconds (Sampling)
+## Chain 1:                8.10877 seconds (Total)
 ## Chain 1:</code></pre>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb38-1"></a><span class="co"># and here is a summary of the result:</span></span>
 <span id="cb38-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb38-2"></a>fit</span></code></pre></div>
@@ -600,7 +598,7 @@ up. But no worries, we just define it again:</p>
 ## phiA       0.92     0.94     0.96  1324    1
 ## lp__   -1505.61 -1505.00 -1504.50   954    1
 ## 
-## Samples were drawn using NUTS(diag_e) at Tue Jun  7 18:50:20 2022.
+## Samples were drawn using NUTS(diag_e) at Tue Jun  7 18:54:41 2022.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
 ## convergence, Rhat=1).</code></pre>
