@@ -2,6 +2,7 @@
 format: 
   revealjs:
     theme: [default, ./quarto-static/eric-noaa.scss]
+    self-contained: true
 editor: source
 ---
 
