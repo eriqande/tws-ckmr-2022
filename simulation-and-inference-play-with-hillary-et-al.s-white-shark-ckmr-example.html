@@ -23,7 +23,7 @@
 <meta name="author" content="Paul B. Conn and Eric C. Anderson" />
 
 
-<meta name="date" content="2022-07-22" />
+<meta name="date" content="2022-08-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -402,8 +402,8 @@ with this <code>hsp_nll</code> function, because it is quite slow. Observe how m
 <span id="cb16-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-9"></a><span class="co"># on average, typically more than 2 milliseconds:</span></span>
 <span id="cb16-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb16-10"></a>mb</span></code></pre></div>
 <pre><code>## Unit: milliseconds
-##       expr  min    lq  mean median    uq   max neval
-##  R_version 2.62 2.723 2.874  2.783 2.897 7.357   100</code></pre>
+##       expr   min    lq  mean median    uq  max neval
+##  R_version 2.647 2.725 2.921  2.777 2.879 7.67   100</code></pre>
 <p>In general, straight-up R is a little underpowered for computing these sorts of
 likelihoods, and there are some serious advantages to calculating them in compiled code
 using the package TMB. We will do that next.</p>
@@ -475,8 +475,10 @@ of the HSP negative log likelihood to be computed:</p>
 <span id="cb25-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb25-6"></a><span class="co"># to evalaute this using TMB.</span></span>
 <span id="cb25-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb25-7"></a>mb2</span></code></pre></div>
 <pre><code>## Unit: microseconds
-##         expr  min    lq  mean median    uq   max neval
-##  TMB_version 28.2 28.79 29.45     29 29.24 97.01  1000</code></pre>
+##         expr   min    lq  mean median    uq   max
+##  TMB_version 28.65 29.36 66.18  29.72 30.52 18330
+##  neval
+##   1000</code></pre>
 </div>
 <div id="visualize-those-log-likelihood-values" class="section level2 hasAnchor">
 <h2><span class="header-section-number">2.4</span> Visualize those log likelihood values<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#visualize-those-log-likelihood-values" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -567,8 +569,8 @@ up. But no worries, we just define it again:</p>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;tmb_generic&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 8.1e-05 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.81 seconds.
+## Chain 1: Gradient evaluation took 9e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.9 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -585,9 +587,9 @@ up. But no worries, we just define it again:</p>
 ## Chain 1: Iteration: 6750 / 7500 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 7500 / 7500 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 3.78205 seconds (Warm-up)
-## Chain 1:                4.0065 seconds (Sampling)
-## Chain 1:                7.78855 seconds (Total)
+## Chain 1:  Elapsed Time: 3.99937 seconds (Warm-up)
+## Chain 1:                4.16583 seconds (Sampling)
+## Chain 1:                8.1652 seconds (Total)
 ## Chain 1:</code></pre>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb40-1"></a><span class="co"># and here is a summary of the result:</span></span>
 <span id="cb40-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb40-2"></a>fit</span></code></pre></div>
@@ -606,7 +608,7 @@ up. But no worries, we just define it again:</p>
 ## phiA       0.92     0.94     0.96  1324    1
 ## lp__   -1505.61 -1505.00 -1504.50   954    1
 ## 
-## Samples were drawn using NUTS(diag_e) at Fri Jul 22 20:49:07 2022.
+## Samples were drawn using NUTS(diag_e) at Wed Aug 24 18:21:18 2022.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
 ## convergence, Rhat=1).</code></pre>
