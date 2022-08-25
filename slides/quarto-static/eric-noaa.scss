@@ -1,0 +1,37 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,300i&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Raleway&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap);
+
+
+/*-- scss:defaults --*/
+
+
+
+// fonts
+$font-family-sans-serif: "Raleway", sans-serif;
+
+$presentation-font-size-root: 24px;
+
+// colors
+//$body-bg: #f0f1eb !default;
+$body-color: #00467F;
+$link-color: #51483d !default;
+$selection-bg: #26351c !default;
+$primary-color: #00467F !default;
+
+$light-bg-text-color: #00467F;
+$dark-bg-text-color: #00467F;
+
+$code-block-bg: transparent;
+$code-bg: transparent;
+
+
+// headings
+$presentation-heading-font: "Raleway", sans-serif;
+$presentation-heading-color: #00467F;;
+
+
+//body {
+//  font: 100% $font-family-sans-serif;
+//  color: $primary-color;
+//}

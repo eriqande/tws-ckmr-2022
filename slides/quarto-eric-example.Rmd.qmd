@@ -1,0 +1,60 @@
+---
+format: 
+  revealjs:
+    theme: [default, ./quarto-static/eric-noaa.scss]
+    self-contained: true
+editor: source
+---
+
+#  {background-image="quarto-static/slideteal.png" background-size="contain"}
+
+::: {style="margin-left: 260px; margin-top: 100px; margin-right: 10px; font-size: 3.2em;"}
+Using Genetic Data to Find Kin Pairs
+:::
+
+::: {style="margin-left: 260px; font-size: 2em;"}
+Eric C. Anderson
+:::
+
+::: {style="margin-left: 260px;"}
+The Wildlife Society CKMR Workshop, Sunday November 6, 2022
+:::
+
+## A First Slide in Quarto {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+What is up! I am just going to drone on and on here to see how far this text wraps in different contexts. Whoa! Is this long enough yet?
+
+$$
+\int_0^1 x^{\alpha - 1}(1-x)^{\beta-1}dx
+$$
+
+## Quarto {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.
+
+## Bullets {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+When you click the **Render** button a document will be generated that includes:
+
+-   Content authored with markdown
+-   Output from executable code
+
+![Nice time in the peaks](images/paste-4FF85FD6.png){fig-alt="Oops! No picture there!"}
+
+This image got inserted by pasting!
+
+## Code {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+#| echo: true
+#| output-location: column-fragment
+x <- 1:10
+y <- x^2
+
+x
+y
+
+plot(x,y)
+```
