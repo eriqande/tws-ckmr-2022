@@ -35,7 +35,7 @@ This is the website/book associated with the _Close-kin mark-recapture: theory a
 
 An approximate schedule for the workshop is as follows:
 
-8:00 - 8:45   Close-kin mark-recapture: A general overview (P. Conn)  
+8:00 - 8:45   Close-kin mark-recapture: An overview (P. Conn)  
 8:45 - 9:30   An introduction to genetic data and inheritance   (E. Anderson)  
 9:30 - 9:45  Break  
 9:45 - 10:30  Statistical inference for CKMR abundance estimation (P. Conn)  

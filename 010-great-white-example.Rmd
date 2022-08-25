@@ -36,7 +36,7 @@ N_adults <- function(N0, t, lambda) {
 
 Let's see what that would look like over 60 years, starting from a few different $N_\mathrm{init}$
 values and growing/shrinking at a range of values.
-```{r}
+```{r simN,cache=TRUE}
 A_traj <- expand_grid(
   Ninit = c(600, 800, 1000, 1200, 1500, 2000), 
   lambda = seq(-0.03, 0.03, by = 0.01)
@@ -135,7 +135,7 @@ Now that we have done that, let's simulate some pairs.  We will assume that 20 s
 were sampled per year---that is more than @hillary2018genetic had, I think, but it
 makes the likelihood surface a little cleaner, so, since we can simulate whatever we want,
 we will simulate an abundance of data:
-```{r}
+```{r sim_pair,cache=TRUE}
 set.seed(5)
 
 sim_vals <- simulate_pairs(npy = 20, age_wts = 8:3)
@@ -159,7 +159,7 @@ sim_vals$pair_data
 And the goal from those data would be to estimate the parameters that might have produced these data.
 
 It is, however, worthwhile to plot the half-sibling pair probabilities, just to look at those.
-```{r}
+```{r hsp_prob,cache=TRUE}
 sim_vals$pairs %>%
   group_by(born_year, age_diff) %>%
   summarise(HSP_prob = mean(HSP_prob)) %>% 
@@ -217,7 +217,7 @@ hsp_nll(
 
 It is a fun exercise to visualize this log-likelihood surface.  But we are not going to do that
 with this `hsp_nll` function, because it is quite slow.  Observe how many milliseconds it takes to evaluate the likelihood using the `hsp_nll()` function:
-```{r}
+```{r logl, cache=TRUE}
 mb <- microbenchmark::microbenchmark(
   R_version = hsp_nll(
     pars = c(1800, 0.05, 0.94),
@@ -243,7 +243,7 @@ current working directory. (That file is already in this repository).
 `r paste(readLines("TMB/hsp_nll.cpp"), collapse = "\n")`
 ```
 That file first must be compiled and loaded, and then we make data and parameter lists:
-```{r}
+```{r compile,cache=TRUE}
 library(TMB)
 
 compile("TMB/hsp_nll.cpp")
@@ -262,7 +262,7 @@ Now, if we want to play around with evaluating the likelihood function with TMB
 we need to make our AD function.  At least on a Mac, TMB seems
 unable to deal with having the object files in a subdirectory, we momentarily
 switch to the TMB directory:
-```{r, warning=FALSE}
+```{r makeAD, warning=FALSE,cache=TRUE}
 setwd("TMB")
 obj <- MakeADFun(data = data, parameters = parameters, DLL="hsp_nll")
 setwd("..")
@@ -270,7 +270,7 @@ setwd("..")
 
 Now, we might want to see how long it takes for this compiled version
 of the HSP negative log likelihood to be computed:
-```{r}
+```{r benchmark, cache=TRUE}
 mb2 <- microbenchmark(
   TMB_version = obj$fn(x = parameters), times = 1000
 )
@@ -286,7 +286,7 @@ mb2
 Now that we have a fast way to evaluate those, using TMB, let's
 evaluate a lot of log likelihoods so we can make some contour plots. We will
 evaluate the log likelihood over a range of values of the three parameters:
-```{r}
+```{r profile,cache=TRUE}
 LL_tib <- expand_grid(
   N_init = seq(200, 2000, by = 20),
   lambda = seq(-0.04, 0.04, by = 0.01),
@@ -308,7 +308,7 @@ LL_tib <- expand_grid(
 
 With all those results, we can make a contour plot, faceted over lambda values
 to visualize:
-```{r, fig.width=6, out.width='100%'}
+```{r contour, fig.width=6, out.width='100%',cache=TRUE}
 LL_tib %>%
   group_by(lambda) %>%
   mutate(nll = ifelse(nll > min(nll) + 20, NA, nll)) %>%
@@ -361,7 +361,7 @@ setwd("..")
 
 Now we can hand that to tmbstan and do a short MCMC run:
 
-```{r}
+```{r tmbstan,cache=TRUE}
 library(tmbstan)
 set.seed(10)
 fit <- tmbstan(

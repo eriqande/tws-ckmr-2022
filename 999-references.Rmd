@@ -4,4 +4,5 @@
 ```{r slides, include=FALSE}
 options(knitr.duplicate.label = "allow")  # because our slides might have code blocks named setup
 rmarkdown::render("slides/eli-example.Rmd", output_dir = "_book/slides")
+rmarkdown::render("slides/paul-talk-1.Rmd", output_dir = "_book/slides")
 ```
