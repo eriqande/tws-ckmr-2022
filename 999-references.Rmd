@@ -12,5 +12,11 @@ quarto::quarto_render(
   "slides/quarto-eric-example.Rmd.qmd",
   output_format = "revealjs"
 )
+quarto::quarto_render(
+  "slides/paul-talk-1.Rmd.qmd",
+  output_format = "revealjs"
+)
 file.rename(from = "slides/quarto-eric-example.Rmd.html", to = "_book/slides/quarto-eric-example.Rmd.html")
+file.rename(from = "slides/paul-talk-1.Rmd.html", to = "_book/slides/paul-talk-1.Rmd.html")
+
 ```
