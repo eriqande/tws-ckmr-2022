@@ -100,3 +100,17 @@ ex1_ckmr <- create_ckmr(
   ge_mod_true_pars_list = list(epsilon = 0.005)
 )
 ```
+
+```{r}
+ex1_Qs <- simulate_Qij(ex1_ckmr, 
+                       calc_relats = c("PO", "FS", "U"),
+                       sim_relats = c("PO", "FS", "HS", "U") )
+
+PO_U_logls <- extract_logls(ex1_Qs,
+                            numer = c(PO = 1),
+                            denom = c(U = 1))
+
+ggplot(PO_U_logls,
+            aes(x = logl_ratio, fill = true_relat)) +
+  geom_density(alpha = 0.25)
+```
