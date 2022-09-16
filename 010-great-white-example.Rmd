@@ -24,6 +24,7 @@ Here, we define a function to calculate $N_t^A$:
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(microbenchmark)
+library(TMB)
 
 #' calculate the number of adults at time t, given exponential growth or decline
 #' @param N0 number of adults at time 0
@@ -242,13 +243,14 @@ current working directory. (That file is already in this repository).
 ```sh
 `r paste(readLines("TMB/hsp_nll.cpp"), collapse = "\n")`
 ```
-That file first must be compiled and loaded, and then we make data and parameter lists:
-```{r compile,cache=TRUE}
-library(TMB)
+That file first must be compiled.
+```{r compile}
 
 compile("TMB/hsp_nll.cpp")
-dyn.load(dynlib("TMB/hsp_nll"))
+```
 
+After that we will make some data and parameter lists:
+```{r}
 # then get our data in a list of vectors
 data <- sim_vals$pair_data %>%
   select(n_UP, n_HSP, born_year, age_diff) %>%
@@ -258,15 +260,24 @@ data <- sim_vals$pair_data %>%
 parameters <- list(N_init = 1000, lambda = 0.001, phiA = 0.9)
 ```
 
-Now, if we want to play around with evaluating the likelihood function with TMB
-we need to make our AD function.  At least on a Mac, TMB seems
-unable to deal with having the object files in a subdirectory, we momentarily
-switch to the TMB directory:
-```{r makeAD, warning=FALSE,cache=TRUE}
-setwd("TMB")
-dyn.load(dynlib('hsp_nll'))
-obj <- TMB::MakeADFun(data = data, parameters = parameters, DLL="hsp_nll")
-setwd("..")
+
+
+Now, to make an AD function with TMB, we need to link to the library
+created when we compiled the file above.  For unknown reasons,on a Mac, TMB seems
+unable to deal with having the compiled object files in a subdirectory, so, in the
+following code chunk we test to see if we are on a Mac, and if we are we momentarily
+switch to the TMB directory.  Otherwise we just run the functions the way we should
+be able to.
+```{r makeAD, warning=FALSE}
+if(Sys.info()["sysname"] == "Darwin") {
+  setwd("TMB")
+  dyn.load(dynlib('hsp_nll'))
+  obj <- TMB::MakeADFun(data = data, parameters = parameters, DLL="hsp_nll")
+  setwd("..")
+} else {
+  dyn.load(dynlib("TMB/hsp_nll"))
+  obj <- TMB::MakeADFun(data = data, parameters = parameters, DLL="TMB/hsp_nll")
+}
 ```
 
 Now, we might want to see how long it takes for this compiled version
