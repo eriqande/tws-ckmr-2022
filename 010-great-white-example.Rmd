@@ -264,7 +264,8 @@ unable to deal with having the object files in a subdirectory, we momentarily
 switch to the TMB directory:
 ```{r makeAD, warning=FALSE,cache=TRUE}
 setwd("TMB")
-obj <- MakeADFun(data = data, parameters = parameters, DLL="hsp_nll")
+dyn.load(dynlib('hsp_nll'))
+obj <- TMB::MakeADFun(data = data, parameters = parameters, DLL="hsp_nll")
 setwd("..")
 ```
 
@@ -355,6 +356,7 @@ of the Neg Log Likelihood, in order to make our pretty contour plots, has gummed
 up.  But no worries, we just define it again:
 ```{r, warning=FALSE}
 setwd("TMB")
+dyn.load(dynlib('hsp_nll'))
 obj <- MakeADFun(data = data, parameters = parameters, DLL="hsp_nll")
 setwd("..")
 ```

@@ -38,9 +38,9 @@ An approximate schedule for the workshop is as follows:
 8:00 - 8:45   Close-kin mark-recapture: An overview (P. Conn)  
 8:45 - 9:30   An introduction to genetic data and inheritance   (E. Anderson)  
 9:30 - 9:45  Break  
-9:45 - 10:30  Statistical inference for CKMR abundance estimation (P. Conn)  
+9:45 - 10:30  Statistical inference for CKMR estimation (P. Conn)  
 10:30 - 11:15  Kin finding (E. Anderson)  
-11:15 - 12:00 Designing a CKMR study  
+11:15 - 12:00  Designing a CKMR study  
 12:00 - 1:00 Lunch  
 1:00 - 5:00 R/TMB labs (full day participants only)  
 
@@ -53,6 +53,18 @@ Workshop attendees had the option of registering for half-day or full-day sessio
 # put my knitr options here
 options(knitr.graphics.auto_pdf = TRUE)
 ```
+
+## Resources
+
+This "book" as well as slides for the workshop are located on github at 
+
+https://github.com/eriqande/tws-ckmr-2022
+
+There is also additional material and examples that may be of interest at
+
+https://closekin.github.io/
+
+
 
 ## Setting up your computer {#setting-computer}
 

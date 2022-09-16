@@ -1,0 +1,612 @@
+---
+format: 
+  revealjs:
+    theme: [default, ./quarto-static/eric-noaa.scss]
+    self-contained: true
+editor: source
+---
+
+#  {background-image="quarto-static/slideteal.png" background-size="contain"}
+
+::: {style="margin-left: 260px; margin-top: 100px; margin-right: 10px; font-size: 3.2em;"}
+CKMR: A general overview
+:::
+
+::: {style="margin-left: 260px; font-size: 2em;"}
+Paul B. Conn
+:::
+
+::: {style="margin-left: 260px;"}
+The Wildlife Society CKMR Workshop, Sunday November 6, 2022
+:::
+
+## Outline {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+1. Introductions
+2. Preliminaries
+3. Capture-recapture vs CKMR
+4. CKMR Workflow
+5. Expected relative reproductive output and pseudo-likelihood
+6. CKMR Assumptions
+7. Random (or not so random) thoughts
+7. A CKMR case study: Bearded seals
+
+## Introductions {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](paul1-images/conn_black_white.jpg)
+
+![](paul1-images/eric.jpg)
+:::
+
+::: {.column width="60%"}
+**Paul Conn**-- Research statistician with the Marine Mammal Laboratory at NOAA Alaska Fisheries Science Center.  
+
+$$\\[1in]$$
+**Eric Anderson**-- Research geneticist at NOAA's Southwest Fisheries Science Center.
+:::
+
+Other acknowledgments: Mark Bravington (CSIRO); Brian Taras, Lori Quakenbush (ADF&G)
+::::
+
+## Preliminaries: Schedule {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+8:00 - 8:45   Close-kin mark-recapture: An overview (P. Conn)  
+8:45 - 9:30   An introduction to genetic data and inheritance   (E. Anderson)  
+9:30 - 9:45   Break  
+9:45 - 10:30    Statistical inference for CKMR abundance estimation (P. Conn)  
+10:30 - 11:15   Kin finding (E. Anderson)  
+11:15 - 12:00   Designing a CKMR study  
+12:00 - 1:00    Lunch  
+1:00 - 5:00   R/TMB labs (full day participants only)<sup>**1**</sup>  
+
+$$\\[1in]$$
+
+<sup>**1**</sup> You should have followed "Setting up your computer" instructions in the 
+workshop book! 
+
+
+## Preliminaries: Resources {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Slides for morning lectures: [https://github.com/eriqande/tws-ckmr-2022/tree/main/slides](https://github.com/eriqande/tws-ckmr-2022/tree/main/slides)
+
+"Book" for afternoon labs: [https://eriqande.github.io/tws-ckmr-2022/](https://eriqande.github.io/tws-ckmr-2022/)
+
+General workshop github repository: [https://github.com/eriqande/tws-ckmr-2022](https://github.com/eriqande/tws-ckmr-2022)
+
+A CKMR website w/ more examples: [https://closekin.github.io/](https://closekin.github.io/)
+
+
+
+## Mark-recapture vs. CKMR {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+* sampling on $>1$ occasion
+* need $p>0.2$ for decent estimation
+* estimate abundance, survival, etc.
+* intensive sampling!
+
+![](paul1-images/hair.png)
+:::
+
+::: {.column width="50%"}
+
+![](paul1-images/goose.jpg){width=80%}
+
+:::
+::::
+
+
+## Mark-recapture vs. CKMR {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Simple MR: Lincoln-Petersen estimator
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+
+```{r}
+#| echo: false
+
+set.seed(2020)
+plot_df = data.frame("x" = runif(100,0,1),"y" = runif(100,0,1),"Sampled"= rbinom(100,1,0.2))
+plot_df$Sampled = factor(plot_df$Sampled)
+library(ggplot2)
+plot1=ggplot(plot_df)+geom_point(aes(x=x,y=y,color=Sampled),size=3)+
+  theme(legend.position="none",text=element_blank())+scale_colour_manual(values = c("orange", "blue"))
+plot1
+
+```
+**Sample occasion 1**: mark $n$ animals (blue) out of a population of $N$ animals 
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+plot_df2 = data.frame("x"=runif(20,0,1),"y" = runif(20,0,1),"Marked"=rbinom(20,1,0.2))
+plot_df2$Marked = factor(plot_df2$Marked)
+plot2 = ggplot(plot_df2)+geom_point(aes(x=x,y=y,color=Marked),size=3)+
+  theme(legend.position="none",text=element_blank())+scale_colour_manual(values = c("orange", "blue"))
+
+plot2
+``` 
+
+
+**Sample occasion 2**: capture $M$ animals, $m$ of which were previously marked
+
+* Goal: estimate population size, $N$
+* Intuition: $m/M = n/N$
+* estimator: $\hat{N} = nM/m$
+
+:::
+::::
+
+
+## Mark-recapture vs. CKMR {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### CKMR
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](paul1-images/bear_po.png)
+
+:::
+
+::: {.column width="50%"}
+
+* offspring "mark" two parents
+* sampling on $\ge 1$ occasion 
+* observed kin pair frequncies used to estimate *adult* survival and abundance
+* No need to release animals live
+* potentially easier data to come by (harvests)
+:::
+::::
+
+
+
+## Mark-recapture vs. CKMR {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### CKMR
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+![Cartoon credit: M. Bravington](paul1-images/CKMR_LP_fish.jpg)
+
+:::
+
+::: {.column width="30%"}
+
+
+
+:::
+::::
+
+* Example: sample $n_j = 4$ juveniles, $M = 6$ adults (dark colored)
+* Want to make inference about the number of adults
+* Each juvenile has exactly two parents ($n=8$)
+* Compare genetics of sampled juveniles to sampled adults for parental relationships
+* $m=3$ parents found
+* $\hat{N} = nM/m = 8*6/3 = 16$
+* Amazing!
+
+
+## Mark-recapture vs. CKMR {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### CKMR
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+![Cartoon credit: M. Bravington](paul1-images/CKMR_LP_fish.jpg)
+
+:::
+
+::: {.column width="30%"}
+
+![](paul1-images/RawdingScreenshot.jpg)
+
+
+:::
+::::
+
+* Example: sample $n_j = 4$ juveniles, $M = 6$ adults (dark colored)
+* Want to make inference about the number of adults
+* Each juvenile has exactly two parents ($n=8$)
+* Compare genetics of sampled juveniles to sampled adults for parental relationships
+* $m=3$ parents found
+* $\hat{N} = nM/m = 8*6/3 = 16$
+* Amazing!
+
+## Mark-recapture vs. CKMR {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Beyond Lincoln-Petersen
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+$\color{blue}{\text{Mark-recapture}}$
+
+* Large explosion in mark-recapture literature
+* Extensions allowing multiple occasions
+* Survival estimation (CJS)
+* Spatial capture-recapture (including multistate)
+* Flexible software (e.g., Mark)
+
+:::
+
+::: {.column width="50%"}
+
+$\color{blue}{\text{CKMR}}$
+
+* Relatively new
+* Extensions for multiple years (monitoring programs)
+* Use of half-siblings to estimate adult survival
+* Few spatial applications
+* Kin-finding software but no specific software for estimation (must tailor to study system)
+
+:::
+::::
+
+### $\color{red}{\rightarrow \text{Likelihood}}$
+
+## CKMR in a nutshell {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+A framework for estimating *adult* abundance and survival using the frequency of
+observed kinship relationships 
+
+Parent-offspring pairs (POPs) \rightarrow Adult abundance and reproductive schedules (assuming age is known...)
+
+Half-sibling pairs (HSPs) \rightarrow Adult abundance and survival (again assuming ages are known)
+
+
+## CKMR Workflow {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+![](paul1-images/ckmr_process1.png)
+
+## CKMR Workflow {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+![](paul1-images/ckmr_process2.png)
+
+## Pseudo-likelihood {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+Compare each genotyped sample to all of the others.  We can then maximize the 
+pseudo-likelihood
+
+$\prod_i \prod_{j>i} p_{ij} y_{ij} + (1-p_{ij}) (1-y_{ij})$
+
+$y_{ij}$ is a binary random variable taking on the value 1.0 if animals
+$i$ and $j$ are a match.  
+
+$p_{ij}$ is the probability of a match
+
+![](paul1-images/Are_you_my_mother.jpg)
+
+## Pseudo-likelihood {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+Compare each genotyped sample to all of the others.  We can then maximize the 
+pseudo-likelihood
+
+$\prod_i \prod_{j>i} p_{ij} y_{ij} + (1-p_{ij}) (1-y_{ij})$
+
+$y_{ij}$ is a binary random variable taking on the value 1.0 if animals
+$i$ and $j$ are a match.  
+
+$p_{ij}$ is the probability of a match
+
+![](paul1-images/Are_you_my_mother.jpg)
+
+### $\color{red}{\text{In reality, random variables are not independent!!}}$ 
+
+### $\color{red}{\text{So the pseudo-likelihood is an *approximation*}}$
+
+
+
+## Expected relative reproductive output {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+But how do we figure out what the $p_{ij}$ probabilities are?  And how are these related to what we care about (abundance and survival)?
+
+-Depends on what type of relationship is being considered, sex of parent, etc.
+
+-Calculations rely on ERRO
+
+:::
+
+::: {.column width="50%"}
+
+Lexis diagrams are helpful!
+
+![](paul1-images/Lexis_MO2.png)
+
+:::
+::::
+
+## Expected relative reproductive output {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Simple example: mother-offspring pairs, knife-edged sexual maturity, no heterogeneity in reproductive success, $b_i < b_j$
+
+\begin{equation*} p_{ij} = \begin{cases}
+      0, & \text{if}\ a_i(b_j) < a_{mat} \\
+      1/N_{b_j}^F, & \text{otherwise}
+    \end{cases}
+\end{equation*}
+
+In words: the probability of a mother-offspring pair is zero if the potential mother was reproductively immature at the time of $j$'s birth.  If the potential mother *was* reproductively mature, it is simply 1 over the number of reproductively mature females.
+
+
+## Expected relative reproductive output {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Simple example: mother-offspring pairs, knife-edged sexual maturity, no heterogeneity in reproductive success, $b_i < b_j$
+
+\begin{equation*} p_{ij} = \begin{cases}
+      0, & \text{if}\ a_i(b_j) < a_{mat} \\
+      1/N_{b_j}^F, & \text{otherwise}
+    \end{cases}
+\end{equation*}
+
+In words: the probability of a mother-offspring pair is zero if the potential mother was reproductively immature at the time of $j$'s birth.  If the potential mother *was* reproductively mature, it is simply 1 over the number of reproductively mature females.
+
+### $\color{red}{\text{Ages are important!}}$
+
+
+## CKMR Assumptions {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+ 1. Accurate genotyping (no false positives!)
+ 
+ 2. Population and sampling model is accurate 
+
+ 3. Kinship comparisons are "independent" (or close enough...)
+ 
+ 4. No heterogeneity in kinship probabilities that can't be explained by observed (or  
+    inferred) covariates 
+    
+    * Age
+    
+    * Spatial location
+    
+    * Status (Mating hierarchy)
+
+
+## CKMR Assumptions - Implications {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+    
+ 1. Accurate genotyping (no false positives!)
+ 
+ We need enough genetic markers to tell apart various kin groups.  For parent-offspring pairs we 
+ might only need 200 SNPs or so, but for half-siblings it is nice to have 3-4K (after pruning ill-behaved loci).
+
+$\color{red}{\rightarrow \text{High quality tissue samples}}$
+
+
+## CKMR Assumptions - Implications {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+    
+ 2. Population model is accurate
+ 
+For species where reproductive maturity is not instantaneous, we need to model pre-adult population dynamics, so
+we need some idea of early survival and reproductive schedules (decent early life history information!).  We also need to
+get the underlying Leslie matrix right (pre vs. postbreeding census, etc.)
+
+Accurate sampling models have more to do with independent fates.  E.g. we won't want to model mothers and offspring harvested
+in the same year.
+
+## CKMR Assumptions - Implications {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+ 3. Kinship comparisons are "independent" (or close enough...)
+ 
+
+The quality of the pseudo-likelihood as an approximation decreases as the amount of relatedness in a population
+increases.  The usual effect when this happens in statistics is that precision (e.g., confidence intervals) is
+overstated.  
+
+CKMR has been conducted on populations as low as $\approx 600$ but we don't want to go super low.  
+
+
+## CKMR Assumptions - Implications {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+4. No heterogeneity in kinship probabilities that can't be explained by observed (or  
+    inferred) covariates 
+    
+    * Age
+    * Spatial location
+    * Status (mating hierarchy)
+    
+:::: {.columns}
+
+::: {.column width="50%"}
+
+If covariates are available, and important, they should be modeled!  In some cases, e.g., heterogeneity in reproductive
+success due to dominance, we might need to leave out father-offspring comparisons or model them differently somehow (see bearded
+seal example). 
+
+One strategy is to omit certain categories of comparison (e.g., only making cross-cohort comparisons)
+
+:::
+::: {.column width="50%"}
+
+![](paul1-images/big_buck.jpg)
+
+:::
+::::
+
+## So what populations is CKMR good for? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+* Populations that are "not too big and not too small" (e.g. several hundred to ten million or so)
+Need $\approx 50$ kin pairs to produce reasonable estimates, required # of samples increases with $\sqrt{N}$
+
+* Decent genetic variation (severe inbreeding may make it difficult to discriminate different kin pair types)
+
+* Good "mixing" (either through movement or through sampling)  
+
+* ~~Group living species~~
+
+* One mother and one father!  No weird breeding systems (e.g., armadillos)
+
+* Ages are helpful!
+
+* Some will require case-specific developments (philopatry, spatial structure, pair bonding)
+
+:::
+
+::: {.column width="50%"}
+
+![](paul1-images/goldilocks.jpg)
+
+:::
+::::
+
+## So what populations is CKMR good for? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Completed or underway as of 2022 (c/o M. Bravington)
+
+![](paul1-images/map-ck-2022.jpg)
+
+
+## How easy is it to conduct CKMR experiments? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Skill level probably depends on what type of data (e.g., POP-only, POP+HSP, single cohort vs. multiple cohort)
+
+* Relatively low cost, especially after markers and aging methods are developed (epigenetics?)
+
+* You're going to want to have a biologist, biometrician, and a geneticist involved.  Very few people have all skills and it's a lot to
+ask of a single person (especially a grad student!!!)
+
+* Many models will need to be population- and data-dependent and will require bespoken code.  That said, there are examples and templates out there that will help.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](paul1-images/einstein.jpg){width=50%}
+:::
+
+::: {.column width="50%"}
+
+![](paul1-images/money.jpg){width=50%}
+
+:::
+::::
+
+
+## CKMR: historical ecology {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](paul1-images/angel.jpg)
+
+:::
+
+::: {.column width="50%"}
+
+:::
+::::
+
+## CKMR: historical ecology {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](paul1-images/angel.jpg)
+
+
+
+:::
+
+::: {.column width="50%"}
+
+* CKMR "looks backwards" - inference is made based on ERRO at the time of offspring's births
+
+
+:::
+::::
+
+
+## CKMR: historical ecology {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](paul1-images/angel.jpg)
+
+![](paul1-images/belugaCI.png)
+
+:::
+
+::: {.column width="50%"}
+
+* CKMR "looks backwards" - inference is made based on ERRO at the time of offspring's births
+
+* Precision tends to be best "back in time" - precision in present day not usually as good (especially for long-lived
+species; see beluga example [here](https://closekin.github.io/beluga_design.html))
+
+* Implications for monitoring/management
+
+* There are sometimes ways to help improve precision in the present by designing a CKMR experiment correctly!
+
+:::
+::::
+
+## A CKMR case study: bearded seals {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Paper in prep (Taras, Conn, Quakenbush, Bravington, Baylis). Annual sampling of bearded seal subsistence harvests (tissue samples + teeth) by ADF&G
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](paul1-images/bearded_cameron.png){width=300}
+
+![](paul1-images/bearded_sampling_locations.jpg){width=400}
+:::
+
+::: {.column width="50%"}
+
+![](paul1-images/bd_skinning_pt_hope.jpg){width=300}
+![](paul1-images/Samples_per_year_bd.jpg){width=300}
+:::
+::::
+
+
+## A CKMR case study: bearded seals {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Our paper isn't published yet so I can't make data public yet. So I "adjusted" a few data points so it still tells the same
+general story but can't be scooped because it's not real data.
+
+![](paul1-images/bearded_cameron.png)
+
+
+## A CKMR case study: Weirded seals! {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Our paper isn't published yet so I can't make data public yet. So I "adjusted" a few data points so it still tells the same
+general story but can't be scooped because it's not real data.
+
+![](paul1-images/bearded_white.jpg)
+
+
