@@ -197,14 +197,15 @@ of adults (at time <span class="math inline">\(t = 0\)</span>). <span class="mat
 <p>Here, we define a function to calculate <span class="math inline">\(N_t^A\)</span>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-1"></a><span class="kw">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-2"></a><span class="kw">library</span>(microbenchmark)</span>
-<span id="cb1-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-3"></a></span>
-<span id="cb1-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-4"></a><span class="co">#&#39; calculate the number of adults at time t, given exponential growth or decline</span></span>
-<span id="cb1-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-5"></a><span class="co">#&#39; @param N0 number of adults at time 0</span></span>
-<span id="cb1-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-6"></a><span class="co">#&#39; @param t  time</span></span>
-<span id="cb1-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-7"></a><span class="co">#&#39; @param lambda exponential growth rate parameter</span></span>
-<span id="cb1-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-8"></a>N_adults &lt;-<span class="st"> </span><span class="cf">function</span>(N0, t, lambda) {</span>
-<span id="cb1-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-9"></a>  N0 <span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(lambda <span class="op">*</span><span class="st"> </span>t)</span>
-<span id="cb1-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-10"></a>}</span></code></pre></div>
+<span id="cb1-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-3"></a><span class="kw">library</span>(TMB)</span>
+<span id="cb1-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-4"></a></span>
+<span id="cb1-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-5"></a><span class="co">#&#39; calculate the number of adults at time t, given exponential growth or decline</span></span>
+<span id="cb1-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-6"></a><span class="co">#&#39; @param N0 number of adults at time 0</span></span>
+<span id="cb1-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-7"></a><span class="co">#&#39; @param t  time</span></span>
+<span id="cb1-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-8"></a><span class="co">#&#39; @param lambda exponential growth rate parameter</span></span>
+<span id="cb1-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-9"></a>N_adults &lt;-<span class="st"> </span><span class="cf">function</span>(N0, t, lambda) {</span>
+<span id="cb1-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-10"></a>  N0 <span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(lambda <span class="op">*</span><span class="st"> </span>t)</span>
+<span id="cb1-11"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb1-11"></a>}</span></code></pre></div>
 <p>Let’s see what that would look like over 60 years, starting from a few different <span class="math inline">\(N_\mathrm{init}\)</span>
 values and growing/shrinking at a range of values.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb2-1"></a>A_traj &lt;-<span class="st"> </span><span class="kw">expand_grid</span>(</span>
@@ -444,28 +445,32 @@ current working directory. (That file is already in this repository).</p>
 <span id="cb18-27"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-27"></a></span>
 <span id="cb18-28"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-28"></a>  <span class="bu">return</span> nll<span class="kw">;</span></span>
 <span id="cb18-29"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb18-29"></a><span class="kw">}</span></span></code></pre></div>
-<p>That file first must be compiled and loaded, and then we make data and parameter lists:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb19-1"></a><span class="kw">library</span>(TMB)</span>
-<span id="cb19-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb19-2"></a></span>
-<span id="cb19-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb19-3"></a><span class="kw">compile</span>(<span class="st">&quot;TMB/hsp_nll.cpp&quot;</span>)</span></code></pre></div>
+<p>That file first must be compiled.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb19-1"></a><span class="kw">compile</span>(<span class="st">&quot;TMB/hsp_nll.cpp&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-1"></a><span class="kw">dyn.load</span>(<span class="kw">dynlib</span>(<span class="st">&quot;TMB/hsp_nll&quot;</span>))</span>
-<span id="cb21-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-2"></a></span>
-<span id="cb21-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-3"></a><span class="co"># then get our data in a list of vectors</span></span>
-<span id="cb21-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-4"></a>data &lt;-<span class="st"> </span>sim_vals<span class="op">$</span>pair_data <span class="op">%&gt;%</span></span>
-<span id="cb21-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-5"></a><span class="st">  </span><span class="kw">select</span>(n_UP, n_HSP, born_year, age_diff) <span class="op">%&gt;%</span></span>
-<span id="cb21-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-6"></a><span class="st">  </span><span class="kw">as.list</span>()</span>
-<span id="cb21-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-7"></a></span>
-<span id="cb21-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-8"></a><span class="co"># and then our starting parameters</span></span>
-<span id="cb21-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-9"></a>parameters &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">N_init =</span> <span class="dv">1000</span>, <span class="dt">lambda =</span> <span class="fl">0.001</span>, <span class="dt">phiA =</span> <span class="fl">0.9</span>)</span></code></pre></div>
-<p>Now, if we want to play around with evaluating the likelihood function with TMB
-we need to make our AD function. At least on a Mac, TMB seems
-unable to deal with having the object files in a subdirectory, we momentarily
-switch to the TMB directory:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-1"></a><span class="kw">setwd</span>(<span class="st">&quot;TMB&quot;</span>)</span>
-<span id="cb22-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-2"></a><span class="kw">dyn.load</span>(<span class="kw">dynlib</span>(<span class="st">&#39;hsp_nll&#39;</span>))</span>
-<span id="cb22-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-3"></a>obj &lt;-<span class="st"> </span>TMB<span class="op">::</span><span class="kw">MakeADFun</span>(<span class="dt">data =</span> data, <span class="dt">parameters =</span> parameters, <span class="dt">DLL=</span><span class="st">&quot;hsp_nll&quot;</span>)</span>
-<span id="cb22-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-4"></a><span class="kw">setwd</span>(<span class="st">&quot;..&quot;</span>)</span></code></pre></div>
+<p>After that we will make some data and parameter lists:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-1"></a><span class="co"># then get our data in a list of vectors</span></span>
+<span id="cb21-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-2"></a>data &lt;-<span class="st"> </span>sim_vals<span class="op">$</span>pair_data <span class="op">%&gt;%</span></span>
+<span id="cb21-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-3"></a><span class="st">  </span><span class="kw">select</span>(n_UP, n_HSP, born_year, age_diff) <span class="op">%&gt;%</span></span>
+<span id="cb21-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-4"></a><span class="st">  </span><span class="kw">as.list</span>()</span>
+<span id="cb21-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-5"></a></span>
+<span id="cb21-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-6"></a><span class="co"># and then our starting parameters</span></span>
+<span id="cb21-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb21-7"></a>parameters &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">N_init =</span> <span class="dv">1000</span>, <span class="dt">lambda =</span> <span class="fl">0.001</span>, <span class="dt">phiA =</span> <span class="fl">0.9</span>)</span></code></pre></div>
+<p>Now, to make an AD function with TMB, we need to link to the library
+created when we compiled the file above. For unknown reasons,on a Mac, TMB seems
+unable to deal with having the compiled object files in a subdirectory, so, in the
+following code chunk we test to see if we are on a Mac, and if we are we momentarily
+switch to the TMB directory. Otherwise we just run the functions the way we should
+be able to.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-1"></a><span class="cf">if</span>(<span class="kw">Sys.info</span>()[<span class="st">&quot;sysname&quot;</span>] <span class="op">==</span><span class="st"> &quot;Darwin&quot;</span>) {</span>
+<span id="cb22-2"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-2"></a>  <span class="kw">setwd</span>(<span class="st">&quot;TMB&quot;</span>)</span>
+<span id="cb22-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-3"></a>  <span class="kw">dyn.load</span>(<span class="kw">dynlib</span>(<span class="st">&#39;hsp_nll&#39;</span>))</span>
+<span id="cb22-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-4"></a>  obj &lt;-<span class="st"> </span>TMB<span class="op">::</span><span class="kw">MakeADFun</span>(<span class="dt">data =</span> data, <span class="dt">parameters =</span> parameters, <span class="dt">DLL=</span><span class="st">&quot;hsp_nll&quot;</span>)</span>
+<span id="cb22-5"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-5"></a>  <span class="kw">setwd</span>(<span class="st">&quot;..&quot;</span>)</span>
+<span id="cb22-6"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-6"></a>} <span class="cf">else</span> {</span>
+<span id="cb22-7"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-7"></a>  <span class="kw">dyn.load</span>(<span class="kw">dynlib</span>(<span class="st">&quot;TMB/hsp_nll&quot;</span>))</span>
+<span id="cb22-8"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-8"></a>  obj &lt;-<span class="st"> </span>TMB<span class="op">::</span><span class="kw">MakeADFun</span>(<span class="dt">data =</span> data, <span class="dt">parameters =</span> parameters, <span class="dt">DLL=</span><span class="st">&quot;TMB/hsp_nll&quot;</span>)</span>
+<span id="cb22-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb22-9"></a>}</span></code></pre></div>
 <p>Now, we might want to see how long it takes for this compiled version
 of the HSP negative log likelihood to be computed:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb23-1"></a>mb2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(</span>
