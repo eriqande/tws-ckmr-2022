@@ -1,0 +1,102 @@
+---
+title: "USing CKMRsim on the bearded seal data"
+output: html_notebook
+---
+
+Paul sent me the data.  It is in the `private` directory which has been
+gitignored.
+
+It needs a little processing to get it into something that we can use in CKMRsim.
+
+## Getting the genotypes
+
+```{r}
+library(tidyverse)
+library(CKMRsim)
+
+
+load("../private/mvb-Cbeardo18-hsps.rda")
+
+# get a character matrix of genotypes
+x <- Cbeardo18
+storage.mode(x) <- "integer"
+geno_names <- attr(x, "diplos")
+d <- dim(x)
+g <- geno_names[t(x)]    # makes a vector of genotypes. First the 2569 of the first sample.
+                         # then the 2569 of the second, sample, etc.
+gc1 <- str_sub(g, 1, 1)  # allelic type of first gene copy
+gc2 <- str_sub(g, 2, 2)  # allelic type of second gene copy
+
+# now we make a big vector that is the the two gene copies at the first locus
+# in the first sample, then the two geno copies at the second locus in the first sample
+# and so forth
+big_vec <- rbind(gc1, gc2) %>% as.vector()
+
+# now we squash that back into a matrix that has two columns for every locus
+# and one row for each sample
+gmat <- matrix(big_vec, byrow = TRUE, ncol = 2 * d[2])
+```
+
+`gmat` is now a standard "two-column" genotype matrix.  
+
+Let's attach some locus names to that, and also the sample names,
+and turn it into a tibble.  
+```{r}
+locus_info <- attr(Cbeardo18, "locinfo") %>% 
+  as_tibble()
+loc_names <- rep(locus_info$Locus, each = 2) %>%
+  paste0(c(".1", ".2"))
+
+sample_tib <- attr(Cbeardo18, "info") %>%
+  as_tibble()
+
+colnames(gmat) <- loc_names
+
+genos <- bind_cols(
+  sample_tib %>% select(Our_sample),
+  as_tibble(gmat)
+)
+```
+
+Ok! Now, `genos` is our basic genotype data set.  That is what we would use going forward
+to play around with CKMRsim.  But, in fact, we want it in long format:
+```{r}
+long_genos <- genos %>%
+  rename(Indiv = Our_sample) %>%
+  pivot_longer(
+    cols = -Indiv, 
+    names_to = c("Locus", "gene_copy"), 
+    names_sep = "\\.", 
+    values_to = "Allele"
+  )
+```
+
+
+Let's get those allele freqs in the necessary format:
+```{r}
+afreqs_ready <- long_genos %>%
+  count(Locus, Allele) %>%
+  group_by(Locus) %>%
+  mutate(Freq = n / sum(n),
+         Chrom = "Unk",
+         Pos = as.integer(factor(Locus, levels = locus_info$Locus))) %>%
+  ungroup() %>%
+  select(Chrom, Pos, Locus, Allele, Freq) %>%
+  arrange(Pos, desc(Freq)) %>%
+  mutate(AlleIdx = NA,
+         LocIdx = NA) %>%
+  filter(!is.na(Allele)) %>%
+  reindex_markers()
+```
+
+Now make a CKMRsim object
+```{r}
+ex1_ckmr <- create_ckmr(
+  D = afreqs_ready,
+  kappa_matrix = kappas[c("PO", "FS", "HS", "U"), ],
+  ge_mod_assumed = ge_model_TGIE,
+  ge_mod_true = ge_model_TGIE,
+  ge_mod_assumed_pars_list = list(epsilon = 0.005),
+  ge_mod_true_pars_list = list(epsilon = 0.005)
+)
+```
