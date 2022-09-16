@@ -1,4 +1,5 @@
 workshop-schedule
+resources
 setting-computer
 step-2.-install-a-number-of-r-packages-that-are-relatively-easy-to-install
 step-3.-make-sure-you-have-git-and-an-account-on-github
