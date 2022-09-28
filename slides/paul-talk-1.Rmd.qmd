@@ -70,7 +70,8 @@ workshop book!
 
 ## Preliminaries: Resources {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
-Slides for morning lectures: [https://github.com/eriqande/tws-ckmr-2022/tree/main/slides](https://github.com/eriqande/tws-ckmr-2022/tree/main/slides)
+Slides for morning lectures: 
+Lecture 1 (intro) [https://eriqande.github.io/tws-ckmr-2022/slides/paul-talk-1.Rmd.htm](https://eriqande.github.io/tws-ckmr-2022/slides/paul-talk-1.Rmd.htm)
 
 "Book" for afternoon labs: [https://eriqande.github.io/tws-ckmr-2022/](https://eriqande.github.io/tws-ckmr-2022/)
 
@@ -287,7 +288,7 @@ Half-sibling pairs (HSPs) \rightarrow Adult abundance and survival (again assumi
 Compare each genotyped sample to all of the others.  We can then maximize the 
 pseudo-likelihood
 
-$\prod_i \prod_{j>i} p_{ij} y_{ij} + (1-p_{ij}) (1-y_{ij})$
+$\prod_i \prod_{j>i} p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}$
 
 $y_{ij}$ is a binary random variable taking on the value 1.0 if animals
 $i$ and $j$ are a match.  
@@ -345,12 +346,12 @@ Lexis diagrams are helpful!
 ### Simple example: mother-offspring pairs, knife-edged sexual maturity, no heterogeneity in reproductive success, $b_i < b_j$
 
 \begin{equation*} p_{ij} = \begin{cases}
-      0, & \text{if}\ a_i(b_j) < a_{mat} \\
+      0, & \text{if}\ a_i(b_j) < a_{mat} \text{ or } d_i < b_j \\
       1/N_{b_j}^F, & \text{otherwise}
     \end{cases}
 \end{equation*}
 
-In words: the probability of a mother-offspring pair is zero if the potential mother was reproductively immature at the time of $j$'s birth.  If the potential mother *was* reproductively mature, it is simply 1 over the number of reproductively mature females.
+In words: the probability of a mother-offspring pair is zero if the potential mother was reproductively immature or dead at the time of $j$'s birth.  If the potential mother *was* reproductively mature, it is simply 1 over the number of reproductively mature females.
 
 
 ## Expected relative reproductive output {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
@@ -372,12 +373,11 @@ In words: the probability of a mother-offspring pair is zero if the potential mo
 
  1. Accurate genotyping (no false positives!)
  
- 2. Population and sampling model is accurate 
+ 2. Population and sampling models are accurate 
 
  3. Kinship comparisons are "independent" (or close enough...)
  
- 4. No heterogeneity in kinship probabilities that can't be explained by observed (or  
-    inferred) covariates 
+ 4. No undiagnosed relationship between kinship probabilities and sampling probabilities that can't be explained by observed (or inferred) covariates
     
     * Age
     
@@ -398,14 +398,22 @@ $\color{red}{\rightarrow \text{High quality tissue samples}}$
 
 ## CKMR Assumptions - Implications {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
     
- 2. Population model is accurate
+ 2. Population model and sampling models are accurate
  
-For species where reproductive maturity is not instantaneous, we need to model pre-adult population dynamics, so
+* For species where reproductive maturity is not instantaneous, we need to model pre-adult population dynamics, so
 we need some idea of early survival and reproductive schedules (decent early life history information!).  We also need to
 get the underlying Leslie matrix right (pre vs. postbreeding census, etc.)
 
-Accurate sampling models have more to do with independent fates.  E.g. we won't want to model mothers and offspring harvested
-in the same year.
+* Accurate sampling models have more to do with independent fates.  E.g. we won't want to model mothers and dependent offspring harvested
+in the same year, half-siblings harvested together, etc.
+
+:::{.callout-important}
+## Do sampling events over-represent the frequency of kin pairs in the population?
+CKMR estimates likely to be biased!!!  One strategy is to omit certain categories of comparison (e.g., only making cross-cohort HSP comparisons, do not make mother-offspring
+comparisons for females and young harvested at the same time)
+:::
+
+
 
 ## CKMR Assumptions - Implications {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
@@ -421,22 +429,19 @@ CKMR has been conducted on populations as low as $\approx 600$ but we don't want
 
 ## CKMR Assumptions - Implications {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
-4. No heterogeneity in kinship probabilities that can't be explained by observed (or  
-    inferred) covariates 
-    
-    * Age
-    * Spatial location
-    * Status (mating hierarchy)
+
     
 :::: {.columns}
 
 ::: {.column width="50%"}
 
-If covariates are available, and important, they should be modeled!  In some cases, e.g., heterogeneity in reproductive
-success due to dominance, we might need to leave out father-offspring comparisons or model them differently somehow (see bearded
-seal example). 
+4. No undiagnosed relationship between kinship probabilities and sampling probabilities that can't be explained by observed (or inferred) covariates 
+    
+    * Age
+    * Spatial location
+    * Status (mating hierarchy)
 
-One strategy is to omit certain categories of comparison (e.g., only making cross-cohort comparisons)
+
 
 :::
 ::: {.column width="50%"}
@@ -445,6 +450,14 @@ One strategy is to omit certain categories of comparison (e.g., only making cros
 
 :::
 ::::
+
+:::{.callout-important}
+## Is there a relationship between kinship and sampling probabilities ?
+CKMR estimates likely to be biased!!!  If covariates are available to explain this relationship, they should be modeled to fix the problem.  In some cases, e.g., highly fecund individuals having a greater propensity to be harvested, we might need to adjust our estimation strategy (e.g., leave out father-offspring comparisons for deer) or model them differently somehow.
+:::
+
+ 
+
 
 ## So what populations is CKMR good for? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
@@ -465,7 +478,7 @@ Need $\approx 50$ kin pairs to produce reasonable estimates, required # of sampl
 
 * One mother and one father!  No weird breeding systems (e.g., armadillos)
 
-* Ages are helpful!
+* Ages are extremely helpful (teeth? epigenetics? sampling young?)
 
 * Some will require case-specific developments (philopatry, spatial structure, pair bonding)
 
@@ -610,3 +623,16 @@ general story but can't be scooped because it's not real data.
 ![](paul1-images/bearded_white.jpg)
 
 
+## A CKMR case study: Weirded seals! {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Size of Beringia DPS thought to be 400-500K seals!  
+
+* We had something like 2000 tissue samples over $\approx 20$ 
+years.
+
+* Can we use this to get an idea of overall abundance?  What special things will we need to 
+consider when fitting models to these data?
+
+
+
+![](paul1-images/bearded_conroy.jpg){width=300}
