@@ -1,0 +1,870 @@
+---
+format: 
+  revealjs:
+    theme: [default, ./quarto-static/eric-noaa.scss]
+    self-contained: true
+editor: source
+---
+
+#  {background-image="quarto-static/slideteal.png" background-size="contain"}
+
+::: {style="margin-left: 260px; margin-top: 100px; margin-right: 10px; font-size: 3.2em;"}
+Statistical inference for CKMR estimation
+:::
+
+::: {style="margin-left: 260px; font-size: 2em;"}
+Paul B. Conn
+:::
+
+::: {style="margin-left: 260px;"}
+The Wildlife Society CKMR Workshop, Sunday November 6, 2022
+:::
+
+## Outline {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* ERRO Revisited
+* Parent-offspring probabilities
+* Half-sib probabilities
+* Types of models: age-structured vs. adult-only
+* Addressing assumption violations through comparison restrictions
+* Addressing assumption violations through modeling
+* Data formatting
+* Pseudo-likelihood & optimization
+* Application to weirded seals
+
+
+## ERRO revisited {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+Expected Relative Reproductive Output (ERRO) 
+
+Ratio of expected reproductive output (# offspring) of a potential parent to the total
+expected reproductive output of the population in the year of a potential offspring's birth.
+
+
+
+\begin{equation*}
+  ERRO_i(y) =  \frac{R_i(y)}{R_+(y)} 
+\end{equation*}
+
+where:
+
+* $R_i(y)$ is the expected reproductive output of individaul $i$ in year $y$
+
+* $R_+(y)$ is the total reproductive output of the population in year $y$
+
+
+## ERRO revisited {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+In terms of practical parameters (and functions of parameters), calculation of ERRO depends on: 
+
+(1) age-specific abundances in the year of interest, 
+(2) expected reproductive output of age $a$ animals
+
+Assuming a 50/50 sex ratio, and that we're interested in computing ERRO for 
+mother $i$ in the year of $j$'s birth (relative to females only) is:
+
+\begin{equation*}
+  ERRO_i (b_j) =  \frac{R_i(b_j)}{R_+(b_j)} =  \frac{I_{ij} f_{a_i(b_j)}}{\sum_a 0.5 N_{b_j,a} f_a}
+\end{equation*}
+
+where:
+
+* $f_a$ is fecundity of age $a$ females (i.e. expected number of offspring)
+
+* $N_{t,a}$ is the abundance of age $a$ individuals at time $t$
+
+* $a_i(b_j)$ is the age of individual $i$ in the year of $j$'s birth.
+
+* $I_{ij}$ is an indicator taking on 1.0 if individual $i$ was alive in year $b_j$ and
+is zero otherwise
+
+
+## POP probabilities {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+In the case where we know ages perfectly, the probability of a mother-offspring 
+pair (MOP) is exactly ERRO!!
+
+\begin{equation*}
+  p_{ij} | b_i, b_j, d_i = ERRO_i(b_j) =  \frac{I_{ij} f_{a_i(b_j)}}{\sum_a 0.5 N_{b_j,a} f_a}
+\end{equation*}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+* We will often make different calculations for MOPs and FOPs (father-offspring pairs) owing to different fecundity schedules (and perhaps survival schedules).
+
+* When ages are uncertain, ERRO $\ne$ $p_{ij}$ because we must integrate over possible
+ages of animals (stay tuned...)
+
+:::
+
+::: {.column width="50%"}
+
+![](paul1-images/Lexis_MO2.png)
+
+:::
+::::
+
+
+## HSP probabilities {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Half-sibling pairs are trickier, but still make use of ERRO!!  Since we don't 
+observe the parent ($h$), or know when it dies, we must sum over probabilities for each possible parent alive at time $b_i$
+
+
+\begin{eqnarray*}
+  p_{ij} | b_i, b_j & = & \sum_{h}  \frac{R_h(b_i)}{R_+(b_i)} \frac{R_h(b_j)}{R_+(b_j)}
+\end{eqnarray*}
+
+* We'll again often break thinks down by maternal- and/or paternal HSPs (MHSPs, PHSPs)
+
+
+## HSP probabilities {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Assuming a 50/50 sex ratio, and $b_i<b_j$, a maternal HSP (MHSP) probability *could* be
+
+\begin{eqnarray*}
+  p_{ij} | b_i, b_j & = & \sum_{h \in \mathcal{F}_{b_i}}  \frac{f_{a_h(b_i)}}{\sum_a 0.5 N_{b_i,a} f_a} \times 
+                          \phi_h({b_i \rightarrow b_j}) \times \frac{ f_{a_h(b_j)}}{\sum_a 0.5                                N_{b_j,a} f_a}  
+\end{eqnarray*}
+
+* $\mathcal{F}_{b_i}$ the set of all females alive at $b_i$
+
+* $\phi_h({b_i \rightarrow b_j})$ is the probability that potential mother $h$ survives from
+  the time of $i$'s birth to the time of $j$'s birth
+
+## HSP probabilities {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Assuming a 50/50 sex ratio, a maternal HSP (MHSP) probability *could* be
+
+\begin{eqnarray*}
+  p_{ij} | b_i, b_j & = & \sum_{h}  \frac{f_{a_h(b_i)}}{\sum_a 0.5 N_{b_i,a} f_a} \times 
+                          \phi_h({b_i \rightarrow b_j}) \times \frac{ f_{a_h(b_j)}}{\sum_a 0.5                                N_{b_j,a} f_a}  \\
+                    & = & \sum_a \frac{0.5 N_{b_i,a} f_a}{\sum_{a^\prime} 0.5 
+                          N_{b_i,a^\prime} f_{a^\prime}} 
+                          \left( \prod_{t=b_i}^{b_j-1} S_{ta} \right)
+                          \frac{ f_{a+\delta_{ij}}}{\sum_{a^\prime} 0.5 
+                          N_{b_j,a^\prime} f_{a^\prime}}   \\
+                    & = & \sum_a \frac{N_{b_i,a} f_a}{\sum_{a^\prime}  
+                          N_{b_i,a^\prime} f_{a^\prime}} 
+                          \left( \prod_{t=b_i}^{b_j-1} S_{ta} \right)
+                          \frac{ f_{a+\delta_{ij}}}{\sum_{a^\prime} 
+                          0.5 N_{b_j,a^\prime} f_{a^\prime}}
+\end{eqnarray*}
+
+
+* $S_{ta}$ is annual survival for age $a$ animals in year $t$
+* $\delta_{ij} = b_j - b_i$
+
+
+
+## Types of models: age-structured vs. adult-only {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+So far, we've written probabilities in terms of
+
+* Age-specific fecundity (this will also likely be sex-specific!)
+* Age- and time-specific abundance
+* Age (and maybe time- or sex-specific) survival
+
+## Types of models: age-structured vs. adult-only {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+So far, we've written probabilities in terms of
+
+* Age-specific fecundity (this will also likely be sex-specific!)
+* Age- and time-specific abundance
+* Age (and maybe time- or sex-specific) survival
+
+
+\rightarrow  This is way too many parameters to estimate with close-kin data!!
+
+\rightarrow  And remember, we can't make inference about immature survival or abundance using CKMR data!
+
+
+## Types of models: age-structured vs. adults-the-same {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Two commonly used approaches:
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+**(1) A complete age-structured model, where immature survival probabilities are provided by the analyst (constant values, priors)**
+
+* Leslie matrix style
+* Initial age structure set to stable age/stage proportions
+* Initial abundance, adult survival and possibly fecundity-at-age estimated
+* Population trend and later abundances emergent properties of population model
+
+![](paul2-images/caswell.jpg){width=30%}
+
+:::
+
+::: {.column width="50%"}
+
+:::
+::::
+
+## Types of models: age-structured vs. adults-the-same {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Two commonly used approaches:
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+**(1) A complete age-structured model, where immature survival probabilities are provided by the analyst (constant values, priors)**
+
+* Leslie matrix style
+* Initial age structure set to stable age/stage proportions
+* Initial abundance, adult survival and possibly fecundity-at-age estimated
+* Population trend and later abundances emergent properties of population model
+
+![](paul2-images/caswell.jpg){width=30%}
+:::
+
+
+::: {.column width="50%"}
+**(2) An adults-only model, where we treat adults as all equal, regardless of age**
+
+* "Knife-edged maturity"
+
+Change this
+
+![](paul2-images/fec_age_fem_bearded.png){width=60%}
+
+
+:::
+::::
+
+## Types of models: age-structured vs. adults-the-same {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Two commonly used approaches:
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+**(1) A complete age-structured model, where immature survival probabilities are provided by the analyst (constant values, priors)**
+
+* Leslie matrix style
+* Initial age structure set to stable age/stage proportions
+* Initial abundance, adult survival and possibly fecundity-at-age estimated
+* Population trend and later abundances emergent properties of population model
+
+![](paul2-images/caswell.jpg){width=30%}
+:::
+
+
+::: {.column width="50%"}
+**(2) An adults-only model, where we treat adults as all equal, regardless of age**
+
+* "Knife-edged maturity"
+
+Into this!!  Model adult = 5+ abundance and survival only
+
+![](paul2-images/fec_age_fem_bearded_knife.png){width=60%}
+
+:::
+::::
+
+
+## Types of models: age-structured vs. adults-the-same {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Advantages and disadvantages:
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+**(1) A complete age-structured model, where immature survival probabilities are provided by the analyst (constant values, priors)**
+
+* More "realistic"
+* Dependent on good life history info for immature animals
+* More adaptable (aging error, etc.)
+* Harder to program
+
+:::
+
+::: {.column width="50%"}
+
+**(2) An adults-only model, where we treat adults as all equal, regardless of age**
+
+* Calculations much easier! (next slide)
+* Include adult abundance and trend directly in the likelihood
+* Harder to adapt to aging error, etc.
+* May have to throw out some PO pairs (where parent is not an "adult" according to age cutoff)
+
+![](paul2-images/holding_nose.png){width=30%}
+:::
+::::
+
+## Types of models: age-structured vs. adults-the-same {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Simple model where $N_{t+1}^{Ad} = \lambda N_t^{Ad}$
+
+MOP:
+
+\begin{eqnarray*}
+\text{Age-structured:  }  p_{ij} | b_i, b_j, d_i & = & \frac{I_{ij} f_{a_i(b_j)}}{\sum_a 0.5 N_{b_j,a} f_a} \\
+\text{Adults-only:  }  p_{ij}^* | b_i, b_j, d_i & = & \frac{I_{ij} }{0.5 N_t^{Ad}}
+\end{eqnarray*}
+
+
+MHSP:
+\begin{eqnarray*}
+\text{Age-structured:  }   p_{ij} | b_i, b_j & = & \sum_a \frac{N_{b_i,a} f_a}{\sum_{a^\prime}  
+                          N_{b_i,a^\prime} f_{a^\prime}} 
+                          \left( \prod_{t=b_i}^{b_j-1} S_{ta} \right)
+                          \frac{ f_{a+\delta_{ij}}}{\sum_{a^\prime} 
+                          0.5 N_{b_j,a^\prime} f_{a^\prime}} \\
+\text{Adults-only:  }                            p_{ij}^* | b_i, b_j & = &  \frac{N_{b_i}^{Ad}}{N_{b_i}^{Ad}} \left( \prod_{t=b_i}^{b_j-1} S_t 
+                          \right)\frac{1}{0.5 N_{b_j}^{Ad}} \\
+                      & = &   \frac{\prod_{t=b_i}^{b_j-1} S_t}{0.5 N_{b_j}^{Ad}}
+
+\end{eqnarray*}
+
+
+
+## Addressing assumption violations through comparison restrictions {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+We'll often want to remove comparisons (and, yes kin matches too!) for encounters that 
+are likely to violate CKMR assumptions:
+
+* Dependence of fates between mothers and possibly dependent young 
+  + Do not make comparisons involving animals harvested the year they were born
+  + Do not make comparisons with adult females and others that were born in the year of 
+    the adult females harvest
+    
+* Limit half-sibling comparisons to cross cohort comparisons [if ages are reliable]
+
+* Perhaps just ignore adult males as parents (okay to look for their mothers) if
+  major dominance 
+  
+* Perhaps ignore half-sibling comparisons entirely if there tend to be a lot of full siblings
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Aging error
+
+So far, we've assumed aging error is known with certainty.  Often it is anything but!!
+
+In order to model it, we really need to have an aging error model.  i.e., given true age $a$, what is the probability of aging an animal as age $\tilde{a}$?  Call this distribution $[\tilde{a}|a]$.
+
+```{r aging_error,echo=FALSE}
+  Age = c(0:10)
+  Probability = rep(0,11)
+  mu = 5
+  sd = 1
+  Probability = dnorm(Age,mu,sd)
+  Probability = Probability/sum(Probability)
+  plot(Age,Probability,type="l",xlab='Assigned age')
+  abline(v=5,col="blue")
+```
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Aging error
+
+How to get the aging error distribution, $[\tilde{a}|a]$?
+
+* Gold standard (subset of animals with known ages) - allows you to estimate bias in 
+aging method (Conn & Diefenbach 2007)
+
+* Multiple age readings from a subset of animals - allows you to estimate precision of the aging criterion but need to assume age readings are unbiased (Fisheries papers like Richards et al. 1992)
+
+Summaries from aging labs from individual teeth will not typically be sufficient to get a handle on aging error!
+
+![](paul2-images/cementum.png){width=30%}
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Aging error
+
+According to Bayes rule, 
+
+\begin{equation*}
+  [a_i | \tilde{a}_i] \propto [\tilde{a}_i | a_i] [a_i]
+\end{equation*}
+
+That is, the probability that an animal is truly aged $a_i$, given that it was assigned
+age $\tilde{a}_i$ is a product of the aging error model and a prior distribution on age!
+
+Example:
+
+| $\pi_a$ |  $s_a$ | $\pi_a s_a$ | $Pr(a_i)$ |
+| -----|:----:|:-----:|:-----:|
+| 0.5      |  0.0  | 0.0 | 0.0 |
+| 0.3      |  1.0  | 0.3 | 0.6 |
+| 0.2      |  1.0  | 0.2 | 0.4 |
+
+* $\pi_a$ is the *expected* proportion of age $a$ animals in the population (e.g.,
+from stable age calculations)
+
+* $s_a$ is the selectivity / relative detection probability of age $a$ animals
+
+* $\rightarrow$  We'll likely need to know, assume, or set a prior for $s_a$!! 
+
+
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Aging error
+
+Assuming we have data to estimate aging error distributions and a prior distribution of
+ages, we can implement a CKMR model that sums across the possibility of different age combinations
+
+![](paul2-images/lexis_age_error1.png)
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Aging error
+
+Assuming we have data to estimate aging error distributions and a prior distribution of
+ages, we can implement a CKMR model that sums across the possibility of different age combinations
+
+![](paul2-images/lexis_age_error2.png)
+
+$p_{ij} = \sum_{a_i} \sum_{a_j} w_{a_i,a_j} \tilde{p}_{ij}$
+
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Cross cohort HSPs
+
+We'll still want to eliminate these where possible (e.g., don't compare young-of-year harvested in same year), but when we have aging error, assigning cohorts is imperfect!
+
+* We can use knowledge of the mating system to describe the probability of getting an HSP born in the same year
+
+* We'll need to account for the distribution of litter sizes, expected proportion of half-siblings / full-siblings in same litter
+
+* The probability of HSPs born in the same year will usually be low for most harvested mammals!
+
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Imperfect HSP determinations
+
+If HSP analysis is even possible (it might not be if there is a high frequency of full sibs), it is still often difficult to fully discriminate half-siblings from lower order kin (half-nibling, etc.).  False positives really foul things up, so need to account for this somehow.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+
+```{r mixture, echo=FALSE}
+  X = c(-50:150)
+  Y_no = 500*dnorm(X,0,30)
+  Y_sib = 100*dnorm(X,100,20)
+  Plot_df = data.frame("PLOD_value"=rep(X,2),"Expected_Count"=c(Y_no,Y_sib),Type=c(rep("Distant",length(X)),rep("HSP",length(X))))
+  library(ggplot2)
+  ggplot(Plot_df)+geom_line(aes(x=PLOD_value,y=Expected_Count,group=Type,color=Type),,size=1.1)+theme(text=element_text(size=24))
+```
+
+:::
+::::
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Imperfect HSP determinations
+
+If HSP analysis is even possible (it might not be if there is a high frequency of full sibs), it is still often difficult to fully discriminate half-siblings from lower order kin (half-nibling, etc.).  False positives really foul things up, so need to account for this somehow.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+
+```{r mixture2, echo=FALSE}
+  X = c(-50:150)
+  Y_no = 500*dnorm(X,0,30)
+  Y_sib = 100*dnorm(X,100,20)
+  Plot_df = data.frame("PLOD_value"=rep(X,2),"Expected_Count"=c(Y_no,Y_sib),Type=c(rep("Distant",length(X)),rep("HSP",length(X))))
+  library(ggplot2)
+  ggplot(Plot_df)+geom_line(aes(x=PLOD_value,y=Expected_Count,group=Type,color=Type),size=1.3)+theme(text=element_text(size=24))+
+    geom_vline(xintercept = 90,size=1.3)
+```
+:::
+
+::: {.column width="50%"}
+
+* Pick a threshold, $t$, so that PLOD scores to the right have a *low* probability of belonging to lower order kin. 
+
+* Calculate $\alpha = \int_t^\infty \text{Normal}(\mu_{HSP},\sigma^2_{HSP})$
+
+* Remove HSP kin pairs with PLODs $<t$ from the analysis!
+
+* Replace $p_{ij}$ for HSPs with $p_{ij}^\prime = \alpha p_{ij}$
+
+* Conduct analysis as usual!
+:::
+::::
+
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Parental sex uncertainty (HSPs)
+
+* In many cases, male and female may have different reproductive and mortality schedules so need to be treated differently
+
+* For HSPs, mtDNA can be used to infer parental sex if mt-haplotype diversity is high
+
+* If there are a limited number of haplotypes, sharing mtDNA is not a definitive sex determination...we're back in mixture model land!
+
+* Use frequency of each haplotype ($\tau_x$) to determine probabilities of sex (Bayes rule again!)
+
+![](paul2-images/mtDNA.jpg)
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Heterogeneity in reproductive success
+
+
+In CKMR analysis, all we have to go on is observed covariates (which hopefully includes
+age or a proxy).  If there is considerable heterogeneity in reproductive success that can't be explained by covariates, the number of *effective* adults may be $<<$ than the census number of adults.
+
+In mammals, this is more likely to be an issue with males (dominance)
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Approaches: 
+
+* Leave paternal comparisons out
+
+* Leave them in and model the number of effective male breeders as $\tilde{N}^M_t = \kappa N^M_t$, where $0 \le \kappa \le 1$.  
+
+* Males unlikely to provide much demographic information, but $\kappa$ might be of interest in its own right!
+
+:::
+
+::: {.column width="50%"}
+
+![](paul2-images/fighting-sea-lions.jpg)
+:::
+::::
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Spatial heterogeneity in relatedness
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+
+* Only an issue if the probability of sampling an individual varies spatially
+
+* Has been addressed using compartment models (several discrete areas) in bluefin tuna models
+
+* No continuous space analogue yet (ala spatial capture-recapture)
+
+* Need to know something about movement, and *also* have a model for how abundance varies over space to calculate ERRO spatially 
+
+* There's a poster at TWS that might be worth checking out (Gilia Patterson, OSU)
+
+:::
+
+::: {.column width="50%"}
+![](paul2-images/fin_whale_map.jpg)
+:::
+
+::::
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+### Grandparent-grandchild pairs
+
+We don't *actually* observe HSPs, but a combination of HSPs and grandparent-grandchild pairs (same idb)
+
+Two approaches:
+
+* Restrict comparisons to those that involve birth dates differences shorter than $2 \times$ the age of sexual maturity
+
+* Model GGHSPs as a mixture!
+
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+### Grandparent-grandchild pairs
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+* mtDNA again has something to say!  
+
+* Calculation differs depending on whether GGHSP shares mtDNA or not, sex of older animal
+
+* Ugly, but can be written out.  E.g.
+
+
+
+
+
+:::
+
+::: {.column width="50%"}
+
+![](paul2-images/GGP.png)
+:::
+
+::::
+
+$$
+Pr(GGP,m_{ij}=1|s_i=0,d_i,b_i,b_j) = \sum_{t=b_i}^{\min(d_i,b_j)} \frac{f_{t-b_i} N_{b_j,b_j-t}}{\sum_a  f_a N_{t,a}}
+  \frac{  2 f_{b_j-t}}{\sum_a f_a N_{b_j,a}}
+$$
+
+## Data formatting {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+You've got kin!  Now what?!
+
+:::: {.columns}
+
+::: {.column width="95%"}
+
+![](paul2-images/got-dna.jpg)
+:::
+::::
+
+## Data formatting {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Hopefully at this stage data are cleaned to some degree.  One wants to start with something like this...
+
+| ID  | Age | Sample_year | Sex  | Cov1... |
+|-----|-----|-------------|------|---------|
+| WS1 |  5  |   2018      | F    | loc1    |
+| WS2 |  2  |   2020      | M    | loc2    |  
+
+
+And then a file giving kin matches like
+
+| ID1  | ID2 | PO | HSP
+|------|-----|----|-----|
+| WS1  |WS356| 1 | 0 |
+| WS32 |WS111| 0 | 1 |
+
+
+
+## Data formatting {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### An interlude: Sufficient statistics in mark-recapture and mark-recovery models
+
+* Prior to the early 2000s, mark-recapture analysis was done with sufficient statistics
+(i.e., $m_{ij}$ arrays) like in the Table below from Hestbeck et al. (1993)
+
+* Different sizes of arrays for different models
+
+* Not easily extensible / amenable to individual covariates
+
+:::: {.columns}
+
+::: {.column width="80%"}
+
+![](paul2-images/mij.jpg){width=700}
+
+:::
+
+::: {.column width="20%"}
+
+![](paul2-images/Cavell_Brownie.jpg)
+
+:::
+::::
+
+## Data formatting {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### An interlude: Sufficient statistics in mark-recapture and mark-recovery models
+
+
+* In the early 2000s, things largely changed over to encounter history modeling.  Individual covariates were easier to implement this way and computational abilities of PCs had increased  to make this feasible
+
+::: {style="font-size: 1.7em;"}
+``` {.sh filename="Enc_hists.inp"}
+100010 1 27.6;
+111000 1 34.2; 
+etc.
+```
+:::
+
+* Lowest common denominator!!
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](paul2-images/phidot.jpg){width=200}
+
+:::
+
+::: {.column width="50%"}
+
+![](paul2-images/rmark.jpg){width=200}
+
+:::
+::::
+
+## Data formatting {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+:::{.callout-tip}
+## Recall the general form for CKMR pseudo-likelihood 
+
+$\prod_i \prod_{j>i} p_{ij}^{y_{ij}} (1-p_{ij})^{1-y_{ij}}$
+:::
+
+However, if we conduct inference for each individual separately with this naive
+pseudo-likelihood we have $\binom{n}{2}$ comparisons!
+
+| n | # comparisons |
+|---------|:-----|
+| 500      | 124,750   | 
+| 1000     | 499,500  | 
+| 2000     | 1,999,000  | 
+| 10000    | 49,950,000 |
+
+$\rightarrow$ Maybe not too bad with small sample sizes, but extremely problematic for large ones
+particularly when likelihood calculations are costly.
+
+
+## Data formatting {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Unfortunately, we're going to have to retreat into sufficient statistics land!
+
+:::
+
+::: {.column width="50%"}
+
+![](https://media.giphy.com/media/e1Lv6Gvd8bFFC/giphy.gif)
+:::
+::::
+
+In particular, we'll summarize (# of comparisons, # of successes) as a function
+of relevant covariates to our analysis.  These often include things like
+
+* birth year of older animal ($b_1$)
+* birth year of younger animal ($b_2$)
+* death year of older animal ($y_1$)
+* sex of older animal ($s_1$)
+* location of harvest 
+
+
+## Data formatting {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Example: 
+
+POPs:
+
+$L_{pop} \propto \prod_{b_1} \prod_{b_2} \prod_{y_1} \prod_s p_{b_1,b_2,y_1,s}^{m_{b_1,b_2,y_1,s}} (1-p_{b_1,b_2,y_1,s})^{n_{b_1,b_2,y_1,s}-m_{b_1,b_2,y_1,s}}$
+
+where
+
+* $n_{blah, blah}$ is the number of comparisons with blah, blah covariates
+* $m_{blah, blah}$ is the number of kin matches with blah, blah covariates
+
+Let's say we're looking at a 20 year study where the max age of an animal is 20 years old. Then we'll probably want to run a CKMR model for 40 years.  We thus have to potentially perform 40 years $\times$ 40 years $\times$ 20 years $\times$ 2 sexes = 64,000 calculations per likelihood evaluation.  However, in practice, this can often be improved on by eliminating impossible combinations (e.g., $b_1 \ge b_2$, $y_1 < b_2$, $n_{blah,bah}=0$, etc.)
+
+:::{.callout-tip}
+## Format close-kin data into *arrays* of comparisons & matches
+* vast computational improvement!
+* the number of calculations does not depend on sample size!
+:::
+
+
+## Pseudo-likelihood and optimization {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+In general in statistics, we optimize the likelihood by minimizing the negative log-likelihood as a function of parameters $\boldsymbol{\theta}$.  This is the approach we'll take here, sometimes putting priors on parameters (so minimizing a negative log-posterior).
+
+$L_{pop}|\boldsymbol{\theta} \propto \prod_{b_1} \prod_{b_2} \prod_{y_1} \prod_s p_{b_1,b_2,y_1,s}^{m_{b_1,b_2,y_1,s}} (1-p_{b_1,b_2,y_1,s})^{n_{b_1,b_2,y_1,s}-m_{b_1,b_2,y_1,s}}$
+
+$NLL_{pop}|\boldsymbol{\theta} \propto \sum_{b_1} \sum_{b_2} \sum_{y_1} \sum_s m_{b_1,b_2,y_1,s} \log(p_{b_1,b_2,y_1,s}) +  (n_{b_1,b_2,y_1,s}-m_{b_1,b_2,y_1,s}) \log (1-p_{b_1,b_2,y_1,s})$
+
+* For "simple" models, log-likelihoods can be written and minimized in R
+
+* For "complicated" models, we'll often want some type of auto-differentiation procedure
+to minimize the negative log-likelihood (e.g. TMB + nlminb)
+
+* Values for $p_{b_1,b_2,y_1,s}$ can get very small.  We'll want to prevent numerical underflow by doing something like $\log(p+(p==0))$
+
+* May also want to consider a Poisson approx. to the binomial
+
+* For models with POPs *and* HSPs, minimize $NLL_{pop}+NLL_{hsp}$!
+
+## Pseudo-likelihood and optimization {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* For POP-only models, $\boldsymbol{\theta}$ can include adult abundance and fecundity-at-age schedules (there is typically much less info about the latter; probably worth specifying a prior)
+
+* For HSP-only models, $\boldsymbol{\theta}$ can include adult abundance and adult survival 
+
+* These parameters enter into the likelihood through $p_{blah,blah}$
+
+## Weirded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* POPs + GGHSP
+
+* Out of $\approx 1500$ samples, 2 POPs, 8 maternal GGHSPs, 17 paternal GGHSPs 
+
+* Age structured CKMR model
+
+* Assume fixed fecundity-at-age (females), maturity-at-age (males) schedules; prior distribution on mortality 
+
+![](paul2-images/bearded_life_history.jpg)
+
+## Weirded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Penalty if $\lambda$ differs from target value (typically 1.0) 
+
+* Tried one model with reduced adult male abundance reflecting heterogeneity in male repro success
+
+* Tried several thresholds for HSP PLOD scores
+
+![](paul2-images/HSP_plod_bearded.png)
+
+
+## Weirded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Negative log-pseudo-likelihoods coded in TMB
+
+* 'nlminb' in R used to minimize NLPLs
+
+| $\lambda$ |  HSP cutoff | Male het? | $\approx \hat{N}$ | $\approx CV$ |
+| -----|:-----:|:-----:|:-----:|:-----:|
+1.00 | 40 |	no | 230000	| 0.25 |
+1.00 | 40	| yes |	410000 | 0.35 |
+1.00 |	50 |	no	| 260000	| 0.20 |
+1.00	| 30 |	no |	200000 |	0.20 |
+1.02	| 40 |	no |	240000 |	0.20 |
+0.98 |	40 |	no |	230000	| 0.20 |
+
+
+## Weirded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Updated survival priors: lower maximum survival, but reduced senescent effect
+
+![](paul2-images/bearded_surv_prior_posterior.png)
+
+
+## Weirded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Some thoughts...
+
+* Uncertainty almost certainly underestimated
+
+* Estimates are mostly lower than those expected from comprehensive aerial surveys (400-500K)
+
+* What population are we estimating??
+
+![](paul1-images/bearded_sampling_locations.jpg)
+
+
+

@@ -40,7 +40,7 @@ An approximate schedule for the workshop is as follows:
 9:30 - 9:45  Break  
 9:45 - 10:30  Statistical inference for CKMR estimation (P. Conn)  
 10:30 - 11:15  Kin finding (E. Anderson)  
-11:15 - 12:00  Designing a CKMR study  
+11:15 - 12:00  Designing a CKMR experiment  
 12:00 - 1:00 Lunch  
 1:00 - 5:00 R/TMB labs (full day participants only)  
 
