@@ -8,12 +8,23 @@ gitignored.
 
 It needs a little processing to get it into something that we can use in CKMRsim.
 
-## Getting the genotypes
+## Download the Mendel binary if necessary
 
 ```{r}
 library(tidyverse)
 library(CKMRsim)
 
+if(system.file("bin/mendel", package = "CKMRsim") == "") {
+  install_mendel(Dir = system.file(package = "CKMRsim"))
+}
+```
+
+
+
+
+## Getting the genotypes
+
+```{r}
 
 load("../private/mvb-Cbeardo18-hsps.rda")
 
@@ -712,7 +723,11 @@ The 19 half-siblings seem pretty solid to me.
 I think that this calls for a whoa-like splatter plot. I will have to
 do it once with the nulls being lumped in with the A allele and another
 time with them lumped into the B allele.
-```{r}
+
+We don't run this because we don't want to add all the dependencies to the
+renv.  But here is the code.
+
+```r
 library(whoa)
 long_tib012 <- long_genos %>%
   pivot_wider(names_from = gene_copy, values_from = Allele) %>%
@@ -749,4 +764,3 @@ geno_freqs_scatter(Alump_expy)
 
 Those are totally fine.  No weirdness there!  OK!
 
-I am not going to put whoa and its dependencies into the renv lockfile.
