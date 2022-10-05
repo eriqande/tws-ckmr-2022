@@ -443,6 +443,7 @@ We'll still want to eliminate these where possible (e.g., don't compare young-of
 * The probability of HSPs born in the same year will usually be low for most harvested mammals!
 
 
+
 ## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 ### Imperfect HSP determinations
@@ -516,6 +517,30 @@ If HSP analysis is even possible (it might not be if there is a high frequency o
 * Use frequency of each haplotype ($\tau_x$) to determine probabilities of sex (Bayes rule again!)
 
 ![](paul2-images/mtDNA.jpg)
+
+
+## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Obligate skip breeding
+
+What if a mother can't reproduce while raising young?
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+* Doesn't really impact POP calculations
+* *Does* impact HSP calculations.  For instance, $Pr(Y_{ij})=0$ whenever
+$b_j - b_i < \text{inter-birth interval}$
+
+:::
+
+::: {.column width="50%"}
+
+![](paul2-images/grizzlies.png)
+
+:::
+::::
 
 ## Addressing assumption violations through modeling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 

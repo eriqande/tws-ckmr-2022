@@ -1,0 +1,201 @@
+
+# Design of CKMR Experiments
+
+In this lab, we'll look at various tools to help design CKMR experiments.  We're relatively liberal with what we call a "design" tool.  It could be optimizing
+sample allocation to achieve maximum precision for a given parameter (e.g., which sexes and ages to target), or it could simply be examining the effect of different
+types of assumption violations on estimator performance.  After all, if a particular type of model is likely to lead to highly biased parameter estimates, it is probably best to adapt model structure, or to leave out certain types of kin comparisons
+that are likely to violate assumptions.
+
+We'll consider two specific examples: (1) optimizing sample allocation in @hillary2018genetic white shark example, and (2) conducting individual-based 
+simulation to investigate impacts of assumption violations in CKMR models for "weirded seals".  As a reminder, weirded seals are our pet name for bearded seals in and around Alaska, but with some of the data changed to protect their integrity
+prior to the bearded seal study actually being published.
+
+
+## White shark design example
+
+In a previous lab, we looked at @hillary2018genetic model using cross-cohort comparisons of half siblings caught as juveniles.  We might look at a few things with this example, such as how we would partition samples across years and ages if we had the ability to do so.  Presumably, the optimal allocation would depend on the parameter
+we were interested in (e.g., population growth ($\lambda$), adult survival ($S$) or
+terminal year abundance (call this $N_T$).  Both $\lambda$ and $S$ are parameters of the CKMR model, but $N_T$ is a derived parameter (that is, a *function* of parameters) and can be computed as 
+
+\begin{equation*}
+  N_T = N_0 * \exp(\lambda  T) 
+\end{equation*}
+
+where $T$ is the number of years in the study.
+
+## Fisher information ideas
+
+We'll be using Fisher information ideas to compare anticipated precision
+associated with various white shark sampling designs.  As articulated in the 
+slides on design for this workshop, this involves a number of steps:
+
+1. Allocate potential sample sizes to particular years, ages, sexes, etc. (basically the different covariates one is modeling).  These can be expectations (fractions)!
+
+2. Compute sufficient statistics (expected \# of comparisons and number of matches for each covariate combination)
+
+3. Treating these as data, calculate second derivatives of the negative log-pseudo-likelihood at the true parameter values
+
+4. Calculate the expected variance-covariance matrix of parameters in the usual way (inverse of the numeric Fisher information matrix)
+
+5. Calculate expected variance of any functions of parameters using the delta method
+
+6. Compare precision (e.g. CV) associated with different designs!!
+
+
+Fortunately, we already have the infrastructure set up to help us the negative log-pseudo-likelihood (both in R and TMB).  We *could* use numerical second derivatives (e.g., using the $numDeriv$ package in R) and
+not even have to deal with minimizing the NLPL, but Template Model Builder is well set up to produce numerical variance-covariance matrices (including functions of parameters), so why don't we just follow the path of least resistance and fit our model using TMB.  We'll still need
+to formulate some alternative designs and what the expected data would look like under each.
+
+## Calculating expected data under different design scenarios
+
+Let's set up "true" population dynamics to consist of a stable population with 1000 adults
+which we assume to be constant over a 20 year period. We'll set the assume a constant adult survival probability of 0.94, and that sampling occurs over the last 10 years of the time interval.  We'll assume that sampling targets juveniles (ages 3-8) only, so the most we'll have to go back in time is 8 years (which is why the model needs to go back further in time than just the years that are sampled!!). 
+
+```{r, message=FALSE, warning=FALSE}
+Ninit = 1000 
+lambda = 0.0
+n_yrs = 20
+N = matrix(Ninit,20)
+phiA = 0.94
+ylo=11
+yhi=20
+ages = c(3:8)  #only 3 - 8 yrs olds sampled
+
+#' Function to calculate # of expected pairs given true adult abundance, adult
+#' survival, and # of juvenile white sharks sampled per year (males and female parents modeled together!)
+#' @param Npy vector of number of sharks to sample each year (num per year)
+#' @param ages a vector of the ages at which individuals are sampled
+#' @param age_wts vector of expected proportion of each age in the sample
+#' @param N Vector of number of adults per year
+#' @param phiA Adult annual survival probability
+#' @return This returns two upper triangular matrices `M` and `EC`, both of which have dimension 
+#' (n_yrs x #' n_yrs).  The M matrix holds the number of comparisons where the row indexes the 
+#' birth year of the older #' half-sib, and the column gives the birth year of the younger 
+#' half sib.  The EC matrix is organized the same way, but holds the expected half-sib count 
+#' (i.e. # of matches)
+expected_data <- function(Npy,ylo,yhi,ages,age_wts,N,phiA){
+  age_wts = age_wts/sum(age_wts)  #normalize if not 
+  n_ages = max(ages)+1 #nb this is just age 0 to the max of sampled age
+  age_prob = rep(0,n_ages)
+  age_prob[ages+1]=age_wts/sum(age_wts)
+  n_yrs = length(Npy)
+  M = EC = matrix(0,n_yrs,n_yrs)
+  
+  # expected number sampled by year and age
+  N_samp = matrix(0,n_yrs,max(ages)+1)  #this holds expected number sampled by year and age (w/ age 0)
+  for(iyr in 1:n_yrs){
+    N_samp[iyr,]=Npy[iyr]*age_prob
+  }
+  # convert to number sampled by birth year
+  N_samp_by = rep(0,n_yrs)
+  for(iyr in 11:n_yrs){   #this would need to be changed to make general - i.e., sampling occurred < year 10
+    for(iage in 1:n_ages){
+      N_samp_by[iyr-iage+1]=N_samp_by[iyr-iage+1]+N_samp[iyr,iage]
+    }
+  }
+  
+  #Number of comparisons, probability of matches, expected number of matches
+  for(iyr in 1:(n_yrs-1)){
+    for(iyr2 in (iyr+1):n_yrs){
+      M[iyr,iyr2]=N_samp_by[iyr]*N_samp_by[iyr2]
+      age_diff = iyr2-iyr
+      HSP_prob = 4/N[iyr]*(phiA^age_diff) #nb: there's some duplication here!
+      EC[iyr,iyr2]=M[iyr,iyr2]*HSP_prob
+    }
+  }
+  
+  list(EC=EC,M=M)
+}
+```
+
+
+Let's looks at a few scenarios, including (1) sampling ages proportional to their approximate
+abundance in the population, and (2) sampling ages biased towards younger age classes.  We'll sample
+20 individuals per year, as might occur in a balanced monitoring program.  We'll generate an expected
+number of comparisons and an expected count for each combination of birth years for half-sib comparisons
+(omitting same-cohort comparisons).
+
+```{r, message=FALSE, warning=FALSE}
+Npy = rep(0,20)
+Npy[11:20] = 20 
+# sampling proportional to what we'd expect with a constant survival probability of 0.92
+age_wts_prop = 0.92^c(0:5) #since "ages" is 3:8, this needs to consist of 6 weights
+age_wts_young = c(5:1)  #5 times more likely to sample & genotype a 3 year old than an 8 year old
+Exp_data_prop = expected_data(Npy,ylo,yhi,ages,age_wts=age_wts_prop,N,phiA)
+Exp_data_young = expected_data(Npy,ylo,yhi,ages,age_wts=age_wts_young,N,phiA)
+
+```
+
+One thing we can look at right away is the number of kin pairs for the two designs.  For the design
+with proportional age sampling the number of HSPs is `r sum(Exp_data_prop$EC)`; for the design focusing 
+disproportionally on younger ages, we have `r sum(Exp_data_young$EC)` HSPs.  Why might we have more HSPs when
+focusing on younger ages?  I believe this is entirely because, on average, we are sampling individuals with birth years that are closer to each other, and potential parents will experience lower cumulative mortality between successive birth events. In fact, this has to be the case given that relative reproductive output is constant in this scenario (stable population) and the only thing that effects HSP probabilities that is different is survival!
+
+## Calculating expected variance under different design scenarios
+
+Now let's fit a "correct" model to these data - that is, one in which all assumptions are met.  Note
+that we don't actually need to fit a model to do design calculations, but TMB computes variance estimates
+and delta method approximations for functions of parameters, so we'll sacrifice a tiny bit of time
+estimating parameters in order to make our lives easier.  If we were going to consider a large number of designs (or to do formal optimization of a design using quadratic programming or something) we'd want to revisit this
+decision!!  So, let's compile a TMB model, fit a model to data, and look at estimated standard errors of 
+various quantities.  
+
+
+
+```{r estimate}
+# compile TMB negative log pseudo-likeihood function
+library(TMB)
+compile("TMB/hsp_nll2.cpp")
+
+# format data and specify starting values for parameters
+format_data <- function(M,EC){
+  Indices_gt0 = which(M>0,arr.ind=TRUE)
+  Data = list(
+    n_HSP = EC[Indices_gt0],
+    n_UP = M[Indices_gt0]-EC[Indices_gt0],
+    born_year = Indices_gt0[,2],  #for this HSP calc only need birth year of the *younger* animal
+    age_diff = Indices_gt0[,2]-Indices_gt0[,1],
+    present_year= 20  #terminal year for abundance estimate
+  )
+  Data
+}
+
+Data_prop = format_data(M=Exp_data_prop$M,EC=Exp_data_prop$EC)
+Data_young = format_data(Exp_data_young$M,Exp_data_young$EC)
+  
+Parms = list("N_init" = 1000, "lambda"=1.0, phiA=0.94)
+
+dyn.load(dynlib("TMB/hsp_nll2"))
+obj <- TMB::MakeADFun(data = Data_prop, parameters = Parms, DLL="hsp_nll2")
+Opt = nlminb(start=Parms, objective=obj$fn, gradient=obj$gr)
+SD_report_prop=sdreport(obj)
+
+obj <- TMB::MakeADFun(data = Data_young, parameters = Parms, DLL="hsp_nll2")
+Opt = nlminb(start=Parms, objective=obj$fn, gradient=obj$gr)
+SD_report_young=sdreport(obj)
+# 
+```
+
+Okay, let's see what TMB did for us.  First let's check that our estimates are truth - they should be 
+very close since we're using expected values.
+
+```{r estimates}
+print(SD_report_prop$value)
+print(SD_report_young$value)
+```
+
+Well that's reassuring!  How about standard errors?
+
+```{r SDs}
+print(SD_report_prop$sd)
+print(SD_report_young$sd)
+```
+
+So there is actually a large improvement in estimator performance (across all
+parameters) when sampling focuses on the youngest juvenile white sharks!!  In fact,
+standard errors are 25-30\% lower which is pretty substantial.  This is
+because interbirth intervals are likely to be shorter, increasing the number of HSPs.  
+Hopefully you can see why conducting this type of analysis is important - it will help
+to get the most bang for your buck in deciding what types of samples to target and genotype.
+
+
