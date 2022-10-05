@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.2.1",
+    "Version": "4.2.0",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -16,6 +16,29 @@
       "Repository": "CRAN",
       "Hash": "4e348572ffcaa2fb1e610e7a941f6f3a",
       "Requirements": []
+    },
+    "CKMRsim": {
+      "Package": "CKMRsim",
+      "Version": "0.1.1.999",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "CKMRsim",
+      "RemoteUsername": "eriqande",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "4d771464f7f94de88311886c33a32cf0c31bc940",
+      "Hash": "ee450b991990886ed2ccc862f3560e30",
+      "Requirements": [
+        "Rcpp",
+        "dplyr",
+        "ggplot2",
+        "magrittr",
+        "purrr",
+        "readr",
+        "stringr",
+        "tibble",
+        "tidyr"
+      ]
     },
     "DBI": {
       "Package": "DBI",
@@ -291,19 +314,6 @@
       "Repository": "CRAN",
       "Hash": "bb4341986bc8b914f0f0acf2e4a3f2f7",
       "Requirements": []
-    },
-    "cowplot": {
-      "Package": "cowplot",
-      "Version": "1.1.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "b418e8423699d11c7f2087c2bfd07da2",
-      "Requirements": [
-        "ggplot2",
-        "gtable",
-        "rlang",
-        "scales"
-      ]
     },
     "cpp11": {
       "Package": "cpp11",
