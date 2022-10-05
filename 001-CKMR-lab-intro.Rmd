@@ -1,0 +1,26 @@
+
+# CKMR thought experiments and labs
+
+In the second half of this course, we're going to switch gears and delve into some code.  But first,
+we're going to conduct a few thought experiments to try to get you to think critically about
+some of the CKMR concepts we've covered so far.  We'll also be switching from slides to this "book" -
+hopefully this will be a useful resource for those of you who want to look back at course content.
+
+
+## Afternoon schedule 
+
+An approximate schedule for the afternoon is
+
+1:00 - 1:30 Thought experiments
+1:30 - 2:30 Kin finding lab
+2:30 - 2:45 Break
+2:45 - 3:30 White shark estimation example
+3:30 - 4:30 CKMR Design
+4:30 - 5:00 Open!  Feel free to play with code or ask us questions
+
+## Thought experiments
+
+We think it would be useful for participants to break into small groups for this one.  So let's do that!
+
+### Thought experiment 1
+

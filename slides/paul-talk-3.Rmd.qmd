@@ -1,0 +1,323 @@
+---
+format: 
+  revealjs:
+    theme: [default, ./quarto-static/eric-noaa.scss]
+    self-contained: true
+editor: source
+---
+
+#  {background-image="quarto-static/slideteal.png" background-size="contain"}
+
+::: {style="margin-left: 260px; margin-top: 100px; margin-right: 10px; font-size: 3.2em;"}
+Designing a CKMR experiment
+:::
+
+::: {style="margin-left: 260px; font-size: 2em;"}
+Paul B. Conn
+:::
+
+::: {style="margin-left: 260px;"}
+The Wildlife Society CKMR Workshop, Sunday November 6, 2022
+:::
+
+## Outline {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+1. What is the goal?
+2. Rules of thumb
+3. Discounting sample size
+4. Developing a scoping study
+5. Fisher information
+6. Simulation analyses
+7. Costs
+8. Weirded seal case study
+
+:::
+
+::: {.column width="50%"}
+
+![](paul1-images/ckmr_process2.png) 
+
+:::
+::::
+
+## What is the goal? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* What is the objective of the CKMR experiment??  Examples:
+
+  - Estimate a constant (average) abundance of adult females with a CV under X
+  
+  - Estimate population trend of adults ($\lambda$) with a CV under X
+  
+  - Estimate adult abundance in the most recent year of the survey with a CV under X
+  
+  - Estimate adult survival with a CV under X
+  
+* ~~Conduct a CKMR analysis with my harvest data~~
+
+* Goal: Examine whether the objective is even feasible!  If so, optimize data collection and sample size to meet your objective
+
+## Rules of thumb {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+* Many of these were developed with short-term POP analyses in mind (buyer beware!)
+
+* $CV(\hat{N}) \approx 1 / \sqrt{\text{# of kin pairs}}$.  So, for a CV of 0.15 you need about 50 kin pairs...
+
+* How many kin pairs to expect? If a sample of size $n$ consists of 1/2 juveniles and 1/2 adults, we'll be making $0.5n \times 0.5n = 0.25n^2$ comparisons. Each pair examined has approximately a $p=2/N_A$ probability of including a parent ($N_A$ is the number of adults in the population). So
+$E(\text{# of kin pairs}) = 2/N_A \times 0.25n^2 = 0.5 n^2/N_A$.  If we want 50 kin pairs, we'd thus need $n=10 \sqrt{N}$ (Bravington et al. 2016).
+
+* However, results depend on what types of kin pairs (POP, HSP, both) one is looking for, the length of the study, longetivity of the animals, usefulness of adult males for modeling, etc.!!  
+
+![](https://media2.giphy.com/media/Od0QRnzwRBYmDU3eEO/giphy.gif?cid=ecf05e472fn4dw104pcu5727r5g7hpnjinz669e9zz5lauft&rid=giphy.gif&ct=g)
+
+
+## Discounting sample size {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+All these calculations assume that one can use all the samples that one acquires!!  In my (limited) experience, this is seldom the case due to
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+
+* sample corruption
+
+* recording errors
+
+* genotyping qa/qc
+
+* missing data (e.g., ages)
+
+* restriction of dates for modeling
+
+:::
+
+::: {.column width="50%"}
+
+![](paul3-images/trash_bin.png){width=300}
+
+:::
+::::
+
+You probably want to increase sample size by $20\%$ or so to compensate for these!
+
+
+
+## Developing a scoping study {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Goals: 
+
+* Given the biology and my constraints (\$, etc.), is CKMR a useful tool to meet me goals?
+
+* How best should I sample the population to maximize utility for management?
+
+:::: {.columns}
+
+::: {.column width="80%"}
+
+![](https://media1.giphy.com/media/gEvab1ilmJjA82FaSV/giphy.gif?cid=ecf05e47ib3i27ihvj66gd3eqbdcz2mf3onzunmirra2ociq&rid=giphy.gif&ct=g)
+
+:::
+::::
+
+## Developing a scoping study {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### First pass: What type of CKMR data will be useful (if any)?
+
+![](paul3-images/flowchart1.png)
+
+## Developing a scoping study {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### First pass: What type of CKMR data will be useful (if any)?
+
+![](paul3-images/flowchart2.png)
+
+## Developing a scoping study {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Interlude - epigenetics
+
+Roe deer example (Lemaitre et al. 2022, Mol. Ecol. Res.)
+
+![](paul3-images/roe_deer_epi_age.jpg)
+
+
+## Developing a scoping study {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### First pass: What type of CKMR data will be useful (if any)?
+
+
+![](paul3-images/flowchart3.png)
+
+
+
+## Developing a scoping study {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### Second pass: Construct a CKMR model
+
+* Assemble relevant life history information (fecundity-at-age, mortality-at-age).  Are there gaps that can be filled in?
+
+* Age-structured model vs. adults-only model?  Pre- vs. post-breeding census?  Think hard!!
+
+* Develop and parameterize the population model
+
+* Construct functions to calculate CKMR kinship probabilites & calculate log-pseudo-likelihood
+
+
+
+## Fisher Information {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+A fundamental quantity in statistics!  Under some regularity conditions, 
+
+$\mathcal{I}(\theta)=E \left[ \frac{\partial^2}{ \partial\theta^2} \log f(X;\theta)| \theta \right]$
+
+A useful relationship is that $\text{Var}(\hat{\theta}) \ge 1 / (\mathcal{I}(\theta))$
+
+So, the inverse Fisher Information provides a lower bound on variance.
+
+When evaluated numerically, we also have the following relationships:
+
+* **Hessian** : the matrix of second derivatives of the log likelihood function relative to model parameters
+
+* **Fisher Information**: the negative of the Hessian evaluated at the MLE
+
+* **Estimated variance-covariance matrix**: the inverse of the the (numeric) Fisher Information matrix
+
+Given an estimated variance-covariance matrix ($\hat{\boldsymbol{\Sigma}}$) of parameters ($\boldsymbol{\theta}$), we can also use the delta method to compute the variance of a *function* of parameters, $g(\boldsymbol{\theta})$, as
+
+\begin{equation*}
+  \hat{V}(g(\hat{\boldsymbol{\theta}})) \approx g^\prime(\hat{\boldsymbol{\theta}})     \boldsymbol{\Sigma} g^\prime(\hat{\boldsymbol{\theta}})^T
+\end{equation*}
+  
+## Fisher Information {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+This suggests a simple strategy for evaluating the expected variance of different
+designs without having to resort to simulation
+
+1. Allocate potential sample sizes to particular years, ages, sexes, etc. (basically the different covariates one is modeling).  These can be expectations (fractions)!
+
+2. Compute sufficient statistics (expected \# of comparisons and matches for each covariate combination)
+
+3. Treating these as data, calculate second derivatives of the negative log-pseudo-likelihood at the true parameter values
+
+4. Calculate the expected variance-covariance matrix of parameters in the usual way (inverse of the numeric Fisher information matrix)
+
+5. Calculate expected variance of any functions of parameters using the delta method
+
+6. Compare precision (e.g. CV) associated with different designs!!
+
+
+
+## Simulation {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Fischer information can be used to examine relative precision of different designs
+
+* Simulation is also useful (more useful?) when deciding whether (and how) to conduct a CKMR study
+
+  (1) Using $p_{ij}$ probabilities to simulate kin pairs (get at absolute precision of estimates)
+  
+  (2) Using an individual based population model to simulate population dynamics and "sample" the population
+  
+    - Look at precision
+    
+    - Look at the effects of assumption violations!!!
+    
+## Simulation {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+   
+![](paul3-images/ckmr_sim_diagram.png)
+
+## What might I use simulation for? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+   
+* Investigate different approaches for accommodating aging error (including sweeping it under the rug!)
+
+* Investigating spatial heterogeneity in sampling, population dynamics
+
+* Investigating consequences of different reproductive alternatives (heterogeneity, deviations
+from assumed fecundity-at-age schedules)
+
+* How likely am I to go wrong?
+
+* Are there data restrictions that can help mitigate bias?
+
+* Are there alternative modeling frameworks that help alleviate bias?  What is the consequence on
+precision?
+
+![](https://media.giphy.com/media/zXmbOaTpbY6mA/giphy.gif)
+
+
+## Individual-based simulations R packages {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Fortunately, you don't have to reinvent the wheel.  There are sevaral R packages that implement
+individual-based simulation, with mating, movement, mortality, etc., keeping track of kin relationships.  
+They can also simulate sampling (as in a monitoring program).
+
+* **CKMRpop** -- created by Eric Anderson (one of your instructors!), this is probably the most "advanced" package out there and keeps track of a greater number of kin types (e.g., niblings) which can be useful if you're wondering how useful half-sibs will be in populations that have a substantial amount of full siblings.
+
+* **fishsim** -- created by S. Baylis (CSIRO postdoc), I've used this in previous simulation work.  It is flexible in the way things are ordered (mortality, movement, calculation of annual abundance) which may come in handy when implementing different types of population models (pre- vs. post-breeding census, etc.).  Last I checked, efficiency of code could be improved in some places
+
+You will still need to code up a CKMR negative log-pseudo-likelihood!
+
+
+## Costs {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+The ADF&G bearded seal project used (1) DArT for genotyping and mtDNA analyses, (2) CSIRO (Mark Bravington, Shane Baylis) for help with SNP selection, kinship determination, review of CKMR models, and (3) Matson's lab for aging. (this is not an endorsement by the U.S. gov't)
+
+For ~1900 samples, here is a breakdown of costs:
+
+| Item            | Cost   |
+|---------|:-----:|
+| DNA extraction  | $5,000 |
+| DArTseq - 3 plates | $12,000 |
+| DArTcap assay (3,000 SNPs) | $5,000 |
+| DArTcap genotyping (12.50/sample) | $20,000 | 
+| reanalyze DArTseq w DArTcap   | $5,000 |
+| mtDNA on 50 samples involved in matches | $6,250 |
+| MVB SNP selection and kinship determination | $20,000 |
+| MVB review of CKMR modeling   | $10,000   |
+| Matson lab tooth aging (\$10/sample)   | \$16,000 | 
+|   |   |
+| **Total** | $\approx \$100,000$
+
+
+## Costs {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+
+**Indirects**
+
+* Local sampling of seals ($20/sample)
+* Lab supplies, shipping costs
+* Time for ADF&G biologists and technicians
+* Local sample prep
+* Sex markers (DArT did this for free)
+* Time for PIs (biology, analysis, writing)
+* Geneticist consultation
+
+:::
+::: {.column width="40%"}
+![](paul1-images/bearded_cameron.png){width=300}
+:::
+::::
+
+**Going forward!**
+
+* Annual (bi- or triannual?) DArTcap ($12.50/sample)
+* Annual (bi- or triannual?) Aging ($10.00/sample)
+* mtDNA on future matches
+* Shipping costs, sample prep
+
+
+
+
+
+  
+  
+  
