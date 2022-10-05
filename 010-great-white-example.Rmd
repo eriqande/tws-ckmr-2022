@@ -276,7 +276,7 @@ if(Sys.info()["sysname"] == "Darwin") {
   setwd("..")
 } else {
   dyn.load(dynlib("TMB/hsp_nll"))
-  obj <- TMB::MakeADFun(data = data, parameters = parameters, DLL="TMB/hsp_nll")
+  obj <- TMB::MakeADFun(data = data, parameters = parameters, DLL="hsp_nll")
 }
 ```
 
