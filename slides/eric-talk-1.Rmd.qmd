@@ -1,0 +1,79 @@
+---
+format: 
+  revealjs:
+    theme: [default, ./quarto-static/eric-noaa.scss]
+    self-contained: true
+editor: source
+---
+
+#  {background-image="quarto-static/slideteal.png" background-size="contain"}
+
+::: {style="margin-left: 260px; margin-top: 100px; margin-right: 10px; font-size: 3.2em;"}
+Genetic Inheritance and Genetic Data
+:::
+
+::: {style="margin-left: 260px; font-size: 2em;"}
+Eric C. Anderson
+:::
+
+::: {style="margin-left: 260px;"}
+The Wildlife Society CKMR Workshop, Sunday November 6, 2022
+:::
+
+## Outline {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+1. Motivation
+1. Mendelian Inheritance
+2. Identity-by-descent
+3. Physical linkage
+4. Genetic markers and identity in state
+6. Pairwise joint genotype probabilities
+5. Types of genetic markers
+
+
+## Motivation
+
+## Starting from the beginning
+
+:::: {.columns}
+
+::: {.column width="50%" .incremental}
+- Gregor Mendel (1822-1884)
+- Inferred laws of genetic segregation 
+by observing patterns of single-locus traits
+in pea plants.
+- Not applicable to most (polygenic) traits
+- But, we now know his laws are quite applicable
+to the transmission of genetic material
+in _diploid_ organisms.
+- They apply to dicussing the inheritance of a
+_locus_.
+:::
+
+::: {.column width="50%"}
+![](eric-images/mendel.jpg)
+:::
+::::
+
+
+## What the heck is a locus?
+
+- The word "locus" in genetics, much like the word "gene" has been applied to a lot
+of things.
+
+- For our purposes, we will use it to refer to a "chunk" of DNA that is defined
+by its position in the genome.
+
+- For example, around base position X on Chromosome 3:
+
+![](eric-images/karyotypes.jpg)
+
+- Two copies of the DNA at each locus.  One chromosome from mom. Another from dad.
+
+## Mendels Law of Segregation
+
+When gametes are formed, the two copies of each locus _segregate_ so that each
+gamete carries exactly one copy of each locus.
+
+Since individuals are formed by the union of gametes, this dictates the segregation
+of DNA to offspring.
