@@ -19,15 +19,15 @@
     },
     "CKMRsim": {
       "Package": "CKMRsim",
-      "Version": "0.1.1.999",
+      "Version": "0.1.2.999",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "CKMRsim",
       "RemoteUsername": "eriqande",
       "RemoteRef": "HEAD",
-      "RemoteSha": "002837b3cb920db9dfffea4519069945ffb79d5e",
-      "Hash": "965771a49b01ae98d9049e38c6dee302",
+      "RemoteSha": "0c912d0346ea5cf5ed7917e7b99f3ca84e5a04ce",
+      "Hash": "bd222f4bf9606d758632da2067fc4de7",
       "Requirements": [
         "Rcpp",
         "dplyr",
