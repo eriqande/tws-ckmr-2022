@@ -26,8 +26,8 @@
       "RemoteRepo": "CKMRsim",
       "RemoteUsername": "eriqande",
       "RemoteRef": "HEAD",
-      "RemoteSha": "32da4f9ab03f7ce838bd4b9d0d34380803c88b31",
-      "Hash": "7a5db1095f833eeeac79abb3c769ce87",
+      "RemoteSha": "002837b3cb920db9dfffea4519069945ffb79d5e",
+      "Hash": "965771a49b01ae98d9049e38c6dee302",
       "Requirements": [
         "Rcpp",
         "dplyr",
