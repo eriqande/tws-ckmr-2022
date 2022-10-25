@@ -25,11 +25,12 @@ The Wildlife Society CKMR Workshop, Sunday November 6, 2022
 1. Introductions
 2. Preliminaries
 3. Capture-recapture vs CKMR
-4. CKMR Workflow
-5. Expected relative reproductive output and pseudo-likelihood
-6. CKMR Assumptions
-7. Random (or not so random) thoughts
-7. A CKMR case study: Bearded seals
+4. History
+5. CKMR Workflow
+6. Expected relative reproductive output and pseudo-likelihood
+7. CKMR Assumptions
+8. Random (or not so random) thoughts
+9. A CKMR case study: Bearded seals
 
 ## Introductions {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
@@ -66,6 +67,22 @@ $$\\[1in]$$
 
 <sup>**1**</sup> You should have followed "Setting up your computer" instructions in the 
 workshop book! 
+
+## Preliminaries: What we want you to get out of this workshop {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* The basic idea of how CKMR works
+
+* Types of CKMR models and their assumptions
+
+* Strengths and limitations of CKMR for wildlife monitoring and management
+
+* Basic ideas on how to design a CKMR study
+
+* For full day participants, some ideas of how to code things up
+
+We don't expect anyone to be a CKMR expert after taking this workshop.  There are a lot of levels of 
+expertise required for successful CKMR implentations (including ecology, genetics, and statistics) - there are only a few people on earth that are an expert in all of these!!!
+
 
 
 ## Preliminaries: Resources {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
@@ -263,6 +280,24 @@ $\color{blue}{\text{CKMR}}$
 ::::
 
 ### $\color{red}{\rightarrow \text{Likelihood}}$
+
+## History {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Initial development by Hans Skaug (influenced by Tore Schweder) in the late 90s
+* Some convergent evolution (Rawding et al., some other cetacean work)
+* In the 2010s technology improvement and further statistical development (Bravington et al. 2016) really paved the way
+* Web of Science search (Oct 2022)
+
+```{r}
+#| label: fig-hist
+#| fig-cap: Web of Science publications on CKMR or close-kin mark-recapture.
+#| warning: false
+
+library(ggplot2)
+data= data.frame(Years=c(2019,2022,2022,2020,2019,2021,2021,2020,2022,2016,2019,2022,2016,2017,2018,2020,2022,2018,2021,2020,2018,2022,2020))
+
+ggplot(data)+geom_histogram(aes(x=Years)) 
+```
 
 ## CKMR in a nutshell {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
@@ -607,23 +642,13 @@ Paper in prep (Taras, Conn, Quakenbush, Bravington, Baylis). Annual sampling of 
 ::::
 
 
-## A CKMR case study: bearded seals {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
-
-Our paper isn't published yet so I can't make data public yet. So I "adjusted" a few data points so it still tells the same
-general story but can't be scooped because it's not real data.
-
-![](paul1-images/bearded_cameron.png)
 
 
-## A CKMR case study: Weirded seals! {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
-
-Our paper isn't published yet so I can't make data public yet. So I "adjusted" a few data points so it still tells the same
-general story but can't be scooped because it's not real data.
-
-![](paul1-images/bearded_white.jpg)
 
 
-## A CKMR case study: Weirded seals! {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## A CKMR case study: Bearded {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Our paper isn't published yet so I can't make all data public yet. But we can still use life history information, approximate sample sizes, and kin finding data to help motivate ideas and conduct some modeling exercises.
 
 * Size of Beringia DPS thought to be 400-500K seals!  
 
@@ -635,4 +660,3 @@ consider when fitting models to these data?
 
 
 
-![](paul1-images/bearded_conroy.jpg){width=300}

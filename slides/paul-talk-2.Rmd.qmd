@@ -833,7 +833,7 @@ to minimize the negative log-likelihood (e.g. TMB + nlminb)
 
 * These parameters enter into the likelihood through $p_{blah,blah}$
 
-## Weirded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## Bearded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 * POPs + GGHSP
 
@@ -845,7 +845,7 @@ to minimize the negative log-likelihood (e.g. TMB + nlminb)
 
 ![](paul2-images/bearded_life_history.jpg)
 
-## Weirded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## Bearded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 * Penalty if $\lambda$ differs from target value (typically 1.0) 
 
@@ -856,7 +856,7 @@ to minimize the negative log-likelihood (e.g. TMB + nlminb)
 ![](paul2-images/HSP_plod_bearded.png)
 
 
-## Weirded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## Bearded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 * Negative log-pseudo-likelihoods coded in TMB
 
@@ -872,14 +872,14 @@ to minimize the negative log-likelihood (e.g. TMB + nlminb)
 0.98 |	40 |	no |	230000	| 0.20 |
 
 
-## Weirded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## Bearded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 Updated survival priors: lower maximum survival, but reduced senescent effect
 
 ![](paul2-images/bearded_surv_prior_posterior.png)
 
 
-## Weirded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## Bearded seal example {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 ### Some thoughts...
 
