@@ -40,7 +40,7 @@ An approximate schedule for the workshop is as follows:
 9:30 - 9:45  Break  
 9:45 - 10:30  Statistical inference for CKMR estimation (P. Conn)  
 10:30 - 11:15  Kin finding (E. Anderson)  
-11:15 - 12:00  Designing a CKMR experiment (P. Conn)
+11:15 - 12:00  Designing a CKMR experiment (P. Conn)  
 12:00 - 1:00 Lunch  
 1:00 - 5:00 R/TMB labs (full day participants only)  
 
@@ -82,10 +82,13 @@ also work on most other Mac or Windows operating systems.
 ### Step 2. Install a number of R packages that are relatively easy to install
 
 Our work will require a number of packages that can be found in binary
-form on CRAN.  As such, installing them is typically not to arduous.
+form on CRAN.  As such, installing them is typically not too arduous.
 
 This year, we are exploring use of the 'renv' package to help with installing
 necessary packages.
+
+In the full day workshop we will make some use of Template Model Builder (TMB); attendees might
+wish to familiarize themselves with how it works (e.g., https://kaskr.github.io/adcomp/Introduction.html).
 
 ### Step 3.  Make sure you have git and an account on GitHub
 
