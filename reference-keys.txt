@@ -1,8 +1,5 @@
-workshop-schedule
-resources
-setting-computer
-step-2.-install-a-number-of-r-packages-that-are-relatively-easy-to-install
-step-3.-make-sure-you-have-git-and-an-account-on-github
+a-word-about-the-renv-package
+a-word-about-the-tmb-package
 ckmr-thought-experiments-and-labs
 afternoon-schedule
 thought-experiments
@@ -18,3 +15,9 @@ white-shark-design-example
 fisher-information-ideas
 calculating-expected-data-under-different-design-scenarios
 calculating-expected-variance-under-different-design-scenarios
+bearded-seal-simulation-study
+setting-up-simulations-population-dynamics
+setting-up-simulations-ckmrpop
+formatting-data-for-estimation
+fitting-the-ckmr-model
+thought-experiment
