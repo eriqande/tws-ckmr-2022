@@ -290,11 +290,19 @@ when we conduct our simulations - there will be some demographic stochasticity i
 
 ### Setting up simulations: CKMRpop
 
-Our next step will be to use the R package CKMRpop to simulate population dynamics. Let's
-first install the package and its dependencies
-
-```{r CKMRpop-setup}
+Our next step will be to use the R package CKMRpop to simulate population dynamics.
+If you were using the 'CKMRpop' package on your own, you would need to install
+it first like this:
+```{r CKMRpop-not-run-install, eval=FALSE}
 remotes::install_github("eriqande/CKMRpop")
+```
+However, it has already been installed for the `tws-ckmr-2022` RStudio project by the 'renv' package,
+so if you are working in the `tws-ckmr-2022` you do not have to do the above.
+
+However, after installing it, you will have to download the compiled `spip` binary
+which is the underlying simulation engine. That is done with the `install_spip()` function
+from the 'CKMRpop' as shown below:
+```{r CKMRpop-setup}
 library(CKMRpop)
 library(dplyr)
 install_spip(Dir = system.file(package = "CKMRpop"))
