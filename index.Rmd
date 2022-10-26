@@ -84,6 +84,8 @@ https://closekin.github.io/
 
 ## Setting up your computer {.unnumbered #setting-computer}
 
+_This is only really necessary if you are signed up for the full day course_
+
 This course covers topics in close-kin mark recapture, and the second half of the course relies
 heavily on the R programming language.  In order to follow
 along with the code and be successful in running all of the
@@ -175,16 +177,16 @@ steps:
     install.packages("rmarkdown")
     renv::restore()
     ```
-    That should start what might be a fairly lengthy process of downloading, compiling
-    (a few, at least) and installing all the R packages we need, and their dependencies.
-    At the end of all that, 'renv' should give you a list of all the packages that will
+    That should start with 'renv' giving you a list of all the packages that will
     be installed or updated in the repository-local library tree (this should not change
     versions of packages in your own use-wide or system-wide collection of packages), and
     it will ask something like:
     ```{sh, eval=FALSE}
     Do you want to proceed? [y/N]: 
     ```
-    Enter `y`.
+    Enter `y`.  
+    That should launch what could be a fairly lengthy process of downloading, compiling
+    (a few, at least) and installing all the R packages we need, and their dependencies.
 
 
 That should do it, and if it works for most everyone in the course with relatively few
@@ -192,7 +194,24 @@ hitches, then it is a testament to how well the 'renv' package is implemented. I
 some hiccups, we will try our best to help you deal with them.
 
 
+### Updating the project
 
+It is possible that the course instructors may update the project repository
+with new information, code, or content after you have followed the steps
+above to do the initial installation. 
+
+Fortunately, it is easy to get those updates from GitHub.  Updating your
+project can be done in these two easy steps:
+
+1. Pull the changes down from GitHub.  In RStudio, this means hitting the
+    "Pull" button in the Git panel:
+    ![](images/git-pull.png)
+2. Then in the R console, execute the command.
+    ```{r, eval=FALSE}
+    renv::restore()
+    ```
+
+That's it!
 
 ## A word about the 'renv' package  {-}
 

@@ -205,9 +205,10 @@ linkage.
 
 ### Make a pseudo genome for these critters
 
-A quick search for the bearded seal shows they have a Karyotype of 2N=34. 
+A quick search for the bearded seal shows they have a Karyotype of 2n=34. 
 That means they have, 16 pairs of autosomes and one pair of sex chromosomes.
-That is not a huge abundance of chromosomes, but it is not as bad as fruit flies.
+That is not a huge abundance of chromosomes, but it is not as bad as fruit flies,
+which have $2n = 8$---only four pairs of chromosomes.
 If you look at pictures of the karyotype, the smallest chromosomes are about 1/4
 the size of the largest.
 
