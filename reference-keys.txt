@@ -1,5 +1,4 @@
-a-word-about-the-renv-package
-a-word-about-the-tmb-package
+updating-the-project
 ckmr-thought-experiments-and-labs
 afternoon-schedule
 thought-experiments

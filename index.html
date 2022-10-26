@@ -144,9 +144,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#step-1.-install-recent-versions-of-r-and-rstudio"><i class="fa fa-check"></i>Step 1. Install recent versions of R and RStudio</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#step-2.-make-sure-that-you-have-git-installed-on-your-system"><i class="fa fa-check"></i>Step 2. Make sure that you have <code>git</code> installed on your system</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#step-3.-get-the-workshop-materials-from-github-with-rstudio"><i class="fa fa-check"></i>Step 3. Get the workshop materials from GitHub with RStudio</a></li>
+<li class="chapter" data-level="0.0.1" data-path="index.html"><a href="index.html#updating-the-project"><i class="fa fa-check"></i><b>0.0.1</b> Updating the project</a></li>
 </ul></li>
-<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#a-word-about-the-renv-package"><i class="fa fa-check"></i><b>0.1</b> A word about the ‘renv’ package</a></li>
-<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#a-word-about-the-tmb-package"><i class="fa fa-check"></i><b>0.2</b> A word about the TMB package</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#a-word-about-the-renv-package"><i class="fa fa-check"></i>A word about the ‘renv’ package</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#a-word-about-the-tmb-package"><i class="fa fa-check"></i>A word about the TMB package</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html"><i class="fa fa-check"></i><b>1</b> CKMR thought experiments and labs</a><ul>
 <li class="chapter" data-level="1.1" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#afternoon-schedule"><i class="fa fa-check"></i><b>1.1</b> Afternoon schedule</a></li>
@@ -209,6 +210,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>An approximate schedule for the workshop is as follows. Note that when
 a session has slides for a lecture, they are linked below.</p>
 <table>
+<colgroup>
+<col width="25%" />
+<col width="56%" />
+<col width="18%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="center">Time</th>
@@ -224,7 +230,7 @@ a session has slides for a lecture, they are linked below.</p>
 </tr>
 <tr class="even">
 <td align="center">8:45–9:30</td>
-<td align="left">An introduction to genetic data and inheritance</td>
+<td align="left">An introduction to genetic data and inheritance (<a href="https://eriqande.github.io/tws-ckmr-2022/slides/eric-talk-1.html#/section">slides</a>)</td>
 <td align="right"><em>E. Anderson</em></td>
 </tr>
 <tr class="odd">
@@ -280,6 +286,7 @@ addresses. We might occasionally update them as well.</p>
 </div>
 <div id="setting-computer" class="section level2 unnumbered hasAnchor">
 <h2>Setting up your computer<a href="index.html#setting-computer" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><em>This is only really necessary if you are signed up for the full day course</em></p>
 <p>This course covers topics in close-kin mark recapture, and the second half of the course relies
 heavily on the R programming language. In order to follow
 along with the code and be successful in running all of the
@@ -361,22 +368,38 @@ tells you how to get all the packages you need. It should look something like th
 <li><p>To get all the packages, paste these lines into your R console in RStudio:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;rmarkdown&quot;</span>)</span>
 <span id="cb2-2"><a href="index.html#cb2-2"></a>renv<span class="op">::</span><span class="kw">restore</span>()</span></code></pre></div>
-<p>That should start what might be a fairly lengthy process of downloading, compiling
-(a few, at least) and installing all the R packages we need, and their dependencies.
-At the end of all that, ‘renv’ should give you a list of all the packages that will
+<p>That should start with ‘renv’ giving you a list of all the packages that will
 be installed or updated in the repository-local library tree (this should not change
 versions of packages in your own use-wide or system-wide collection of packages), and
 it will ask something like:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="index.html#cb3-1"></a><span class="ex">Do</span> you want to proceed? [y/N]: </span></code></pre></div>
-<p>Enter <code>y</code>.</p></li>
+<p>Enter <code>y</code>.<br />
+That should launch what could be a fairly lengthy process of downloading, compiling
+(a few, at least) and installing all the R packages we need, and their dependencies.</p></li>
 </ol>
 <p>That should do it, and if it works for most everyone in the course with relatively few
 hitches, then it is a testament to how well the ‘renv’ package is implemented. If there are
 some hiccups, we will try our best to help you deal with them.</p>
 </div>
+<div id="updating-the-project" class="section level3 hasAnchor">
+<h3><span class="header-section-number">0.0.1</span> Updating the project<a href="index.html#updating-the-project" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>It is possible that the course instructors may update the project repository
+with new information, code, or content after you have followed the steps
+above to do the initial installation.</p>
+<p>Fortunately, it is easy to get those updates from GitHub. Updating your
+project can be done in these two easy steps:</p>
+<ol style="list-style-type: decimal">
+<li><p>Pull the changes down from GitHub. In RStudio, this means hitting the
+“Pull” button in the Git panel:
+<img src="images/git-pull.png" /></p></li>
+<li><p>Then in the R console, execute the command.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="index.html#cb4-1"></a>renv<span class="op">::</span><span class="kw">restore</span>()</span></code></pre></div></li>
+</ol>
+<p>That’s it!</p>
 </div>
-<div id="a-word-about-the-renv-package" class="section level2 hasAnchor">
-<h2><span class="header-section-number">0.1</span> A word about the ‘renv’ package<a href="index.html#a-word-about-the-renv-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="a-word-about-the-renv-package" class="section level2 unnumbered hasAnchor">
+<h2>A word about the ‘renv’ package<a href="index.html#a-word-about-the-renv-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Our work will require a number of packages that can be found in binary
 form on CRAN. As well as several that require compilation from source
 on GitHub. This is why the compile/build chain (see above) is essential.</p>
@@ -389,8 +412,8 @@ with the workshop’s RStudio project. This means that installing all these
 new packages will not overwrite your current R library tree. So, nothing that
 we do should change the way your current R setup works in other projects (fingers crossed!).</p>
 </div>
-<div id="a-word-about-the-tmb-package" class="section level2 hasAnchor">
-<h2><span class="header-section-number">0.2</span> A word about the TMB package<a href="index.html#a-word-about-the-tmb-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="a-word-about-the-tmb-package" class="section level2 unnumbered hasAnchor">
+<h2>A word about the TMB package<a href="index.html#a-word-about-the-tmb-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In the full day workshop we will make some use of Template Model Builder (TMB); attendees might
 wish to familiarize themselves with how it works by reading some of its documentation,
 such as that at <a href="https://kaskr.github.io/adcomp/Introduction.html" class="uri">https://kaskr.github.io/adcomp/Introduction.html</a>).</p>
