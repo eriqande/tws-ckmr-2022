@@ -9,14 +9,14 @@ rmarkdown::render("slides/eli-example.Rmd", output_dir = "_book/slides")
 # file, but the self-contained html file alongside the qmd file works,
 # so we can move the result after rendering
 quarto::quarto_render(
-  "slides/quarto-eric-example.Rmd.qmd",
+  "slides/eric-talk-1.qmd",
   output_format = "revealjs"
 )
 quarto::quarto_render(
   "slides/paul-talk-1.Rmd.qmd",
   output_format = "revealjs"
 )
-file.rename(from = "slides/quarto-eric-example.Rmd.html", to = "_book/slides/quarto-eric-example.Rmd.html")
+file.rename(from = "slides/eric-talk-1.html", to = "_book/slides/slides/eric-talk-1.html")
 file.rename(from = "slides/paul-talk-1.Rmd.html", to = "_book/slides/paul-talk-1.Rmd.html")
 
 ```

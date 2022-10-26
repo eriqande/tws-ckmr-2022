@@ -39,7 +39,7 @@ a session has slides for a lecture, they are linked below.
 | Time      | Description | Instructor(s)     |
 | :--:        |    :--------   |          --: |
 8:00--8:45    |  Close-kin mark-recapture: An overview ([slides](https://eriqande.github.io/tws-ckmr-2022/slides/paul-talk-1.Rmd.html#/section)) | _P. Conn_  |
-8:45--9:30    | An introduction to genetic data and inheritance  | _E. Anderson_ |
+8:45--9:30    | An introduction to genetic data and inheritance ([slides](https://eriqande.github.io/tws-ckmr-2022/slides/eric-talk-1.html#/section))  | _E. Anderson_ |
 9:30--9:45    | Break |   |
 9:45--10:30   | Statistical inference for CKMR estimation | _P. Conn_ |  
 10:30--11:15  | Kin finding  |  _E. Anderson_   |  
@@ -194,7 +194,7 @@ some hiccups, we will try our best to help you deal with them.
 
 
 
-## A word about the 'renv' package
+## A word about the 'renv' package  {-}
 
 Our work will require a number of packages that can be found in binary
 form on CRAN.  As well as several that require compilation from source
@@ -209,7 +209,7 @@ with the workshop's RStudio project.  This means that installing all these
 new packages will not overwrite your current R library tree.  So, nothing that
 we do should change the way your current R setup works in other projects (fingers crossed!).
 
-## A word about the TMB package
+## A word about the TMB package {-}
 
 In the full day workshop we will make some use of Template Model Builder (TMB); attendees might
 wish to familiarize themselves with how it works by reading some of its documentation,

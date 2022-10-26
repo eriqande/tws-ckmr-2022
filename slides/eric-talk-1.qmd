@@ -31,9 +31,9 @@ The Wildlife Society CKMR Workshop, Sunday November 6, 2022
 5. Types of genetic markers
 
 
-## Motivation
+## Motivation {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
-## Starting from the beginning
+## Starting from the beginning {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 :::: {.columns}
 
@@ -56,7 +56,7 @@ _locus_.
 ::::
 
 
-## What the heck is a locus?
+## What the heck is a locus? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 - The word "locus" in genetics, much like the word "gene" has been applied to a lot
 of things.
@@ -70,7 +70,7 @@ by its position in the genome.
 
 - Two copies of the DNA at each locus.  One chromosome from mom. Another from dad.
 
-## Mendels Law of Segregation
+## Mendels Law of Segregation {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 When gametes are formed, the two copies of each locus _segregate_ so that each
 gamete carries exactly one copy of each locus.

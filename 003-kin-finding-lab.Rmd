@@ -1,79 +1,65 @@
----
-title: "USing CKMRsim on the bearded seal data"
-output: html_notebook
----
+# Kin-finding lab
 
-Paul sent me the data.  It is in the `private` directory which has been
-gitignored.
+In this session, we are going to get our hands dirty with a lovely data set
+of genetic data from 1,484 bearded seals and use those data to find kin pairs
+from amongst the ${1,484 \choose 2} = 1,100,386$ possible pairs that can be formed
+from all those samples.  
 
-It needs a little processing to get it into something that we can use in CKMRsim.
+This data set includes 2,569 genetic markers.  These markers were filtered down
+for quality and reliability from a much larger set.  We won't talk about that
+process, here, but keep in mind that a huge part of a successful CKMR project
+involves getting and curating a quality set of genetic markers.
 
-## Download the Mendel binary if necessary
+We will first estimate how much power we expect to have for identifying
+kin pairs with this marker set, and then we will actually do the kin-finding.
+Both of these steps will be done using the R package 'CKMRsim' that Eric wrote.
+It is available from GitHub at https://github.com/eriqande/CKMRsim and its
+online documentation can be read at: https://eriqande.github.io/CKMRsim/.
 
-```{r}
+If you want to use 'CKMRsim' yourself in a different project, you would need
+to install it like this:
+```{r, eval=FALSE}
+remotes::install_github("eriqande/CKMRsim")
+```
+However, we have already included it in the `tws-ckmr-2022` project using
+'renv', so you don't have to install it now.
+
+Before proceeding, we will load all of the libraries that we will be using
+for this session.  Additionally, we will download and install the
+binary of the `mendel` program so that we can simulate genetic markers with
+physical linkage.
+```{r inst-pkgs, message=FALSE}
 library(tidyverse)
 library(CKMRsim)
 
+# the next step tests to see if mendel was already installed.
+# if not, it installs it
 if(system.file("bin", package = "CKMRsim") == "") {
   install_mendel(Dir = system.file(package = "CKMRsim"))
 }
 ```
 
+## Looking at the genetic data and pivoting it 
 
-
-
-## Getting the genotypes
-
-```{r}
-library(tidyverse)
-
-load("../private/mvb-Cbeardo18-hsps.rda")
-
-# get a character matrix of genotypes
-x <- Cbeardo18
-storage.mode(x) <- "integer"
-geno_names <- attr(x, "diplos")
-d <- dim(x)
-g <- geno_names[t(x)]    # makes a vector of genotypes. First the 2569 of the first sample.
-                         # then the 2569 of the second, sample, etc.
-gc1 <- str_sub(g, 1, 1)  # allelic type of first gene copy
-gc2 <- str_sub(g, 2, 2)  # allelic type of second gene copy
-
-# now we make a big vector that is the the two gene copies at the first locus
-# in the first sample, then the two geno copies at the second locus in the first sample
-# and so forth
-big_vec <- rbind(gc1, gc2) %>% as.vector()
-
-# now we squash that back into a matrix that has two columns for every locus
-# and one row for each sample
-gmat <- matrix(big_vec, byrow = TRUE, ncol = 2 * d[2])
+We load the genetic data from an RDS file:
+```{r load-genos}
+beardo_genos <- read_rds("data/beardo-genos.rds")
 ```
 
-`gmat` is now a standard "two-column" genotype matrix.  
-
-Let's attach some locus names to that, and also the sample names,
-and turn it into a tibble.  
-```{r}
-locus_info <- attr(Cbeardo18, "locinfo") %>% 
-  as_tibble()
-loc_names <- rep(locus_info$Locus, each = 2) %>%
-  paste0(c(".1", ".2"))
-
-sample_tib <- attr(Cbeardo18, "info") %>%
-  as_tibble()
-
-colnames(gmat) <- loc_names
-
-genos <- bind_cols(
-  sample_tib %>% select(Our_sample),
-  as_tibble(gmat)
-)
+Here are the first 10 rows 9 columns of that data set:
+```{r cols11}
+beardo_genos[1:10, 1:9]
 ```
+The full data set has `r nrow(beardo_genos)` rows and `r ncol(beardo_genos)` columns.
 
-Ok! Now, `genos` is our basic genotype data set.  That is what we would use going forward
-to play around with CKMRsim.  But, in fact, we want it in long format:
-```{r}
-long_genos <- genos %>%
+This is a standard genotype format. The first column gives the sample name and
+every subsequent pair of columns gives the alleles found in the sample at a
+genetic marker or "locus".
+
+In order to manipulate these more easily and prepare them for CKMRsim we will
+pivot them into a longer format.
+```{r pvl}
+long_genos <- beardo_genos %>%
   rename(Indiv = Our_sample) %>%
   pivot_longer(
     cols = -Indiv, 
@@ -83,8 +69,17 @@ long_genos <- genos %>%
   )
 ```
 
+This looks like:
+```{r pvlview}
+long_genos
+```
 
-Let's get those allele freqs in the necessary format:
+
+## Kin finding power analysis assuming no physical linkage
+
+To assess the power of a set of markers for kin finding, CKMRsim requires
+the allele freqencies in a particular format.  These steps
+calculate the allele frequencies and format them as required:
 ```{r}
 afreqs_ready <- long_genos %>%
   count(Locus, Allele) %>%
@@ -101,9 +96,19 @@ afreqs_ready <- long_genos %>%
   reindex_markers()
 ```
 
-Now make a CKMRsim object. This takes a little while because it is a fairly large
-data set.  But not more than a minute on my laptop.
+The allele freqs look like this:
 ```{r}
+afreqs_ready
+```
+
+These allele frequencies then get compiled into an R object
+that includes the results of a number of calculations that account for genotyping
+error and a number of matrices that allow rapid simulation of kin pairs from the
+data.
+
+This takes a little while because it is a fairly large
+data set.  But not more than a minute on my laptop.
+```{r create_ckmr, cache=TRUE}
 ckmr <- create_ckmr(
   D = afreqs_ready,
   kappa_matrix = kappas[c("PO", "FS", "HS", "HAN", "U"), ],
@@ -114,21 +119,55 @@ ckmr <- create_ckmr(
 )
 ```
 
+The `kappa_matrix` specifies the identify coefficients (the $\kappa$'s) for
+the different relationships we want.  The remaining options tell it to
+use a fairly generic model for genotyping error with an error rate (`epsilon`) at
+which we expect about 1% of the genotypes to have a genotyping error.
+
+The variable `kappas` is a piece
+of package data that looks like this:
+```{r kappaview}
+kappas
+```
+So, the line 
+```r
+kappas[c("PO", "FS", "HS", "HAN", "U"), ]
+```
+is merely picking out the rows from that matrix that we want to focus on: we
+want to be prepared to do calculations concerning the relationships of:
+
+- `U`: unrelated
+- `HAN`: half aunt-niece (which includes half uncle-niece and half uncle-nephew, etc.)
+- `HS`: half sibling
+- `FS`: full sibling
+- `PO`: parent-offspring
+
 
 Now we can simulate some log likelihood ratios and plot them to see how they look.
-```{r}
+```{r simQs}
+# This simulated a large number of pairwise genotype probabilites
+# at each locus
 Qs <- simulate_Qij(
   ckmr, 
   calc_relats = c("PO", "FS", "HS", "HAN", "U"),
   sim_relats = c("PO", "FS", "HS", "HAN", "U") 
 )
 
+
+# this lets us extract those genotype probabilities in different
+# ways to calculate a variety of different log-likelihood ratios
+# for different relationships.  
+
+# in this particular case, we are looking at log likelihood ratios
+# for the hypothesis of Parent-Offspring vs Unrelated
 PO_U_logls <- extract_logls(
   Qs,
   numer = c(PO = 1),
   denom = c(U = 1)
 )
 
+# And we can plot the distribution of those logl ratios for each
+# of the different true relationships.
 ggplot(
   PO_U_logls,
   aes(x = logl_ratio, fill = true_relat)
@@ -149,20 +188,22 @@ mc_sample_simple(
 Yep! No chance, whatsoever, of an unrelated pair being mistaken as a PO pair.
 
 For all other relationship types, the fact of physical linkage is important.
-In particular, physical linkage really become important when we start to consider
+In particular, physical linkage really becomes important when we start to consider
 kin pairs that are less related than half-siblings, but not a lot less.  The
 super relevant category here is half-aunt neice.  
+
+## Power for kin-finding while accounting for physical linkage
 
 With CKMRsim, we can simulate likelihood ratios (which are calculated without
 reference to the physical linkage) under the influence of physical linkage,
 **BUT** In order to do that formally, we need to know where in the genome all these
 markers are.  We don't know that, in this case, but we can still get a very good sense for the effect of
 linkage by imagining that all these markers are spread throughout an appropriately sized
-genome.  Since we are simultating lots of pairs in this way, the exact details of the physical
+genome.  Since we are simulating lots of pairs in this way, the exact details of the physical
 linkage are not quite as important as if we were trying to calculate likelihoods given the
 linkage.
 
-### Make a pseudo genome for these
+### Make a pseudo genome for these critters
 
 A quick search for the bearded seal shows they have a Karyotype of 2N=34. 
 That means they have, 16 pairs of autosomes and one pair of sex chromosomes.
@@ -485,4 +526,5 @@ square with that.  Keeping in mind that the HS categories could be
 grandparent-grandchild, or, much less likely, full-aunt-niece.
 
 The 18 half-siblings seem pretty solid to me.
+
 

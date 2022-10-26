@@ -2,6 +2,7 @@ book_filename: "tws-ckmr-2022"
 clean: [packages.bib, bookdown.bbl]
 delete_merged_file: true
 output_dir: "_book"
+rmd_files: ["index.Rmd", "001-CKMR-lab-intro.Rmd", "010-great-white-example.Rmd", "015-design.Rmd", "999-references.Rmd"]
 language:
   label:
     fig: "FIGURE "
