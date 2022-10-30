@@ -3,7 +3,6 @@
 
 ```{r slides, include=FALSE}
 options(knitr.duplicate.label = "allow")  # because our slides might have code blocks named setup
-rmarkdown::render("slides/eli-example.Rmd", output_dir = "_book/slides")
 
 # quarto does not seem to render properly if you give it a different output
 # file, but the self-contained html file alongside the qmd file works,
@@ -16,7 +15,7 @@ quarto::quarto_render(
   "slides/paul-talk-1.Rmd.qmd",
   output_format = "revealjs"
 )
-file.rename(from = "slides/eric-talk-1.html", to = "_book/slides/slides/eric-talk-1.html")
+file.rename(from = "slides/eric-talk-1.html", to = "_book/slides/eric-talk-1.html")
 file.rename(from = "slides/paul-talk-1.Rmd.html", to = "_book/slides/paul-talk-1.Rmd.html")
 
 ```

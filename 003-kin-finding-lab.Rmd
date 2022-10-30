@@ -1,8 +1,12 @@
 # Kin-finding lab
 
+```{r libraries.etc, echo=FALSE, results='hide', message=FALSE}
+cache_chunks = TRUE
+```
+
 In this session, we are going to get our hands dirty with a lovely data set
 of genetic data from 1,484 bearded seals and use those data to find kin pairs
-from amongst the ${1,484 \choose 2} = 1,100,386$ possible pairs that can be formed
+from amongst the ${1,484 \choose 2} = 1,100,386$ pairs that can be formed
 from all those samples.  
 
 This data set includes 2,569 genetic markers.  These markers were filtered down
@@ -46,7 +50,7 @@ We load the genetic data from an RDS file:
 beardo_genos <- read_rds("data/beardo-genos.rds")
 ```
 
-Here are the first 10 rows 9 columns of that data set:
+Here are the first 10 rows and 9 columns of that data set:
 ```{r cols11}
 beardo_genos[1:10, 1:9]
 ```
@@ -56,7 +60,18 @@ This is a standard genotype format. The first column gives the sample name and
 every subsequent pair of columns gives the alleles found in the sample at a
 genetic marker or "locus".
 
-In order to manipulate these more easily and prepare them for CKMRsim we will
+These markers are single nucleotide polymorphism (SNP) markers.  These markers
+are typically biallelic, and in this data set, the two alleles are named
+`A` and `B`.  Some of these markers have a third allele that is a _null allele_.
+The _null allele_ does not appear in any reads from the sequencing machine (it is
+associated with variation that interferes with the enzyme cut-site used to prepare
+the DNA libraries).  Typically these null alleles are a big problem; however, this
+data set is based on high enough read depth, that the presence of a null allele can
+be ascertained in both homozygous and heterozygous form, so they can be used as
+a third allele at markers where they exist.  These null alleles are denoted by
+`O` in this dataset.  There are no missing genotypes in the data.
+
+In order to manipulate these data more easily and prepare them for CKMRsim we will
 pivot them into a longer format.
 ```{r pvl}
 long_genos <- beardo_genos %>%
@@ -81,12 +96,15 @@ To assess the power of a set of markers for kin finding, CKMRsim requires
 the allele freqencies in a particular format.  These steps
 calculate the allele frequencies and format them as required:
 ```{r}
+locus_names <- unique(long_genos$Locus)
 afreqs_ready <- long_genos %>%
-  count(Locus, Allele) %>%
+  count(Locus, Allele) %>%  
   group_by(Locus) %>%
-  mutate(Freq = n / sum(n),
-         Chrom = "Unk",
-         Pos = as.integer(factor(Locus, levels = locus_info$Locus))) %>%
+  mutate(
+    Freq = n / sum(n),
+    Chrom = "Unk",
+    Pos = as.integer(factor(Locus, levels = locus_names))
+  ) %>%
   ungroup() %>%
   select(Chrom, Pos, Locus, Allele, Freq) %>%
   arrange(Pos, desc(Freq)) %>%
@@ -96,7 +114,7 @@ afreqs_ready <- long_genos %>%
   reindex_markers()
 ```
 
-The allele freqs look like this:
+The allele frequencies look like this:
 ```{r}
 afreqs_ready
 ```
@@ -108,7 +126,7 @@ data.
 
 This takes a little while because it is a fairly large
 data set.  But not more than a minute on my laptop.
-```{r create_ckmr, cache=TRUE}
+```{r create_ckmr, cache=cache_chunks}
 ckmr <- create_ckmr(
   D = afreqs_ready,
   kappa_matrix = kappas[c("PO", "FS", "HS", "HAN", "U"), ],
@@ -129,6 +147,7 @@ of package data that looks like this:
 ```{r kappaview}
 kappas
 ```
+
 So, the line 
 ```r
 kappas[c("PO", "FS", "HS", "HAN", "U"), ]
@@ -144,8 +163,8 @@ want to be prepared to do calculations concerning the relationships of:
 
 
 Now we can simulate some log likelihood ratios and plot them to see how they look.
-```{r simQs}
-# This simulated a large number of pairwise genotype probabilites
+```{r simQs, cache=cache_chunks, message=FALSE}
+# This simulates a large number of pairwise genotype probabilites
 # at each locus
 Qs <- simulate_Qij(
   ckmr, 
@@ -154,7 +173,7 @@ Qs <- simulate_Qij(
 )
 
 
-# this lets us extract those genotype probabilities in different
+# In the following, we extract those genotype probabilities in different
 # ways to calculate a variety of different log-likelihood ratios
 # for different relationships.  
 
@@ -167,17 +186,20 @@ PO_U_logls <- extract_logls(
 )
 
 # And we can plot the distribution of those logl ratios for each
-# of the different true relationships.
+# of the different true relationships. 
 ggplot(
   PO_U_logls,
   aes(x = logl_ratio, fill = true_relat)
 ) +
   geom_density(alpha = 0.25)
+
 ```
 
 Clearly, PO and U should be easily resolved.  And it turns out that physical linkage does 
-not affect the distribution of log-likelihood ratios when the truth relationship is
-either U or PO.  And we can use importance sampling to estimate false positive rates.
+not affect the distribution of log-likelihood ratios when the true relationship is
+either U or PO (so long as the markers are not in linkage disequilibrium).
+
+And we can use importance sampling to estimate false positive rates.
 ```{r}
 mc_sample_simple(
   Qs,
@@ -185,12 +207,13 @@ mc_sample_simple(
 )
 ```
 
-Yep! No chance, whatsoever, of an unrelated pair being mistaken as a PO pair.
+The FPR gives that probability of falsely declaring an unrelated pair a parent-offspring
+pair, for a few different values of the false negative rate.  Clearly, there is no chance, whatsoever, of an unrelated pair being mistaken as a PO pair.
 
 For all other relationship types, the fact of physical linkage is important.
 In particular, physical linkage really becomes important when we start to consider
-kin pairs that are less related than half-siblings, but not a lot less.  The
-super relevant category here is half-aunt neice.  
+kin pairs that are less related than half-siblings, but not a lot less, for example,
+the HAN, or "half-aunt-niece" category. 
 
 ## Power for kin-finding while accounting for physical linkage
 
@@ -205,23 +228,44 @@ linkage.
 
 ### Make a pseudo genome for these critters
 
-A quick search for the bearded seal shows they have a Karyotype of 2n=34. 
-That means they have, 16 pairs of autosomes and one pair of sex chromosomes.
+A quick search for "bearded seal cytogenetics" leads us to a paper written in
+1967 [@fay1967cytogenetic] which tells us that they have a karyotype of 2n=34. 
+That means they have 16 pairs of autosomes and one pair of sex chromosomes.
 That is not a huge abundance of chromosomes, but it is not as bad as fruit flies,
 which have $2n = 8$---only four pairs of chromosomes.
 If you look at pictures of the karyotype, the smallest chromosomes are about 1/4
-the size of the largest.
+the size of the largest. Here is a screen grab from the the paper:
 
-There is a draft genome out there that has it at about 2.4 gigabases.  Cool.  We
-can use that to create a pseudo-genome and then sprinkle our markers into it
+![](images/beardo-karyotype.png)
+
+On top of that, a quick web search finds an announcement, not long ago, of [completion
+of a draft genome for bearded seals](https://www.dnazoo.org/assemblies/Erignathus_barbatus).
+From this we find that the genome length is about 2.4 gigabases.  
+
+Cool.  We
+can use those pieces of information ($2n = 34$, smallest chromosome about 1/4 the size
+of the largest, and genome length = 2.4 gigabases)
+to create a pseudo-genome and then sprinkle our markers into it
 in order to get a sense for how much physical linkage will affect the distribution
-of the log likelihood ratios.
+of the log likelihood ratios.  In this process, we will assume a recombination
+rate of 1 cm per megabase (about a 1 in 100 chance of a recombination occurring
+within 1 megabase during any meiosis). 
 
-```{r, fig.height=1}
+```{r}
+# this function is part of the CKMRsim package
+
 # make fake chromosome lengths
-fake_chromo_lengths <- geometric_chromo_lengths(15, 2.4, 0.25)
+fake_chromo_lengths <- geometric_chromo_lengths(
+  n = 15,
+  L = 2.4,
+  sl = 0.25
+)
+```
 
-# here is a plot of what they look like
+Here is a plot of those simulated chromosome lengths
+scaled, roughly, to correspond to the sizes of the chromosomes
+in the figure above, on your screen:
+```{r, fig.height=1}
 fake_chromo_lengths$chrom_length_plot
 ```
 
@@ -232,10 +276,13 @@ set.seed(5)
 afreqs_link <- sprinkle_markers_into_genome(afreqs_ready, fake_chromo_lengths$chrom_lengths)
 ```
 
+Have a look at the output.  The original Locus names are there,
+but each is placed on a chromosome (the `fc` in `fc01` stands for "fake chromosome").
 
-Now we can make a new CKMR object that has this (fake) physical location data for
+
+Now we can make a new CKMR object that has these (fake) physical-location data for
 the markers.
-```{r}
+```{r ckmr_link, cache=cache_chunks}
 ckmr_link <- create_ckmr(
   D = afreqs_link,
   kappa_matrix = kappas[c("PO", "FS", "HS", "HAN", "U"), ],
@@ -246,10 +293,14 @@ ckmr_link <- create_ckmr(
 )
 ```
 
-And, now, to simulate with physical linkage, we need to include the pedigree information.
+And, now, to simulate with physical linkage, we use the `simulate_Qij()` function
+with the `unlinked = FALSE` option,
+but we also need to include information about the pedigrees corresponding
+to each relationship.  That information is in the package data object
+`pedigrees`.
 
 
-```{r}
+```{r Qs_link_BIG, cache=cache_chunks, results='hide', warning=FALSE, message=FALSE, echo=TRUE}
 Qs_link_BIG <- simulate_Qij(
   ckmr_link, 
   calc_relats = c("PO", "FS", "HS", "HAN", "U"),
@@ -259,58 +310,87 @@ Qs_link_BIG <- simulate_Qij(
 )
 ```
 
-In fact. let's look at the PO/U and the FS/U logl ratios here:
+Here we plot the densities of the PO/U log likelihood ratio for the 
+different true relationships:
 ```{r}
-Qs_link_BIG %>%
+# We save the plot so that we can use it
+# later to compare to our observed values
+PO_U_gg <- Qs_link_BIG %>%
   extract_logls(numer = c(PO = 1), denom = c(U = 1)) %>%
   ggplot(aes(x = logl_ratio, fill = true_relat)) +
   geom_density(alpha = 0.25) +
   ggtitle("PO/U Logl Ratio")
+
+PO_U_gg
 ```
 
 
 Aha!  When we simulate those likelihood ratios whilst taking account of
 physical linkage, we see that there is a lot more spread in the distributions,
+(except for the PO relationship, as we mentioned before)
 and, consequently, a whole lot more overlap.
 
-Now, let us look at things when we use other likelihood ratios:
-
+Now, let us look at things when we use other likelihood ratios.
+For example to distinguish between Full Sibs and
+Unrelated individuals, we would use the FS/U log-likelihood ratio:
 ```{r}
-Qs_link_BIG %>%
+FS_U_gg <- Qs_link_BIG %>%
   extract_logls(numer = c(FS = 1), denom = c(U = 1)) %>%
   ggplot(aes(x = logl_ratio, fill = true_relat)) +
   geom_density(alpha = 0.25) +
   ggtitle("FS/U Logl Ratio")
+
+FS_U_gg
 ```
 
+Looking at the FS and U curves there, it is pretty clear that they are
+very well separated, but, it is also clear that if only this FS/U log-likelihood
+ratio were used, then POs would be put into the FS category.  
 
-
+But don't despair! If you want to distinguish PO from FS, you should use the
+PO/FS logl ratio! Here it is for distinguishing between PO and FS:
 ```{r}
-Qs_link_BIG %>%
+PO_FS_gg <- Qs_link_BIG %>%
   extract_logls(numer = c(PO = 1), denom = c(FS = 1)) %>%
   ggplot(aes(x = logl_ratio, fill = true_relat)) +
   geom_density(alpha = 0.25) +
   ggtitle("PO/FS Logl Ratio")
+
+PO_FS_gg
 ```
 
+Here for the hypothesis of FS versus HS:
 ```{r}
-Qs_link_BIG %>%
+FS_HS_gg <- Qs_link_BIG %>%
   extract_logls(numer = c(FS = 1), denom = c(HS = 1)) %>%
   ggplot(aes(x = logl_ratio, fill = true_relat)) +
   geom_density(alpha = 0.25) +
   ggtitle("FS/HS Logl Ratio")
+
+FS_HS_gg
 ```
 
+
+And finally for HS versus HAN:
 ```{r}
-Qs_link_BIG %>%
+HS_HAN_gg <- Qs_link_BIG %>%
   extract_logls(numer = c(HS = 1), denom = c(HAN = 1)) %>%
   ggplot(aes(x = logl_ratio, fill = true_relat)) +
   geom_density(alpha = 0.25) +
   ggtitle("HS/HAN Logl Ratio")
+
+HS_HAN_gg
 ```
 
-For this last one, let's see how many Unrelated might conceivably
-get in there:
+Aha! There is some overlap between HAN and HS, so we will need to keep that in
+mind, since we don't want to mistake any HANs for HSs.
+
+
+When using the HS/HAN log-likelihood ratio, we can see how many Unrelated pairs might conceivably
+get in there.  We can use importance sampling when the truth is U, and we can use the distribution
+of unlinked markers for that (because linkage does not affect the distribution of the log likelihoods
+in unrelated pairs), and we can use the linked simulations for calculating the False Negative 
+Rates of the half-siblings:
 ```{r}
 mc_sample_simple(
   Q = Qs,
@@ -321,20 +401,39 @@ mc_sample_simple(
 )
 ```
 
-Yep.  Clearly no unrelateds will get in there.
+Good.  There is clearly no chance that an unrelated individual would be incorrectly
+called an HS based on the HS/HAN log-likelihood ratio.
 
+But, what about the chance that a HAN will be mistaken for an HS?  We can use
+`mc_sample_simple()` for this, and we don't have to do any importance sampling,
+because there just aren't that many HAN pairs (relative to the number of U pairs):
+```{r}
+mc_sample_simple(
+  Q = Qs_link_BIG,
+  nu = "HS",
+  de = "HAN",
+  tr = "HAN",
+  method = "vanilla"
+)
+```
+
+This suggests that if we set a threshold $\Lambda^*_\mathrm{HS/HAN} = 6.3$ then we would expect
+to be missing only about 10% of the true HS pairs, and any HAN pairs would only have a 1.7% chance
+of having a $\Lambda_\mathrm{HS/HAN} > \Lambda^*_\mathrm{HS/HAN}$.  (Keeping in mind that
+these are approximations made by sprinkling loci into a pseudo-genome.) 
 
 Looking at all of these is quite informative.  It suggests that the order that
-we will want to do this in is:
+we will want to pursue our kin-finding in is:
 
 1. Find all PO pairs by high PO/U and also PO/FS > 0.
-2. Once we have those, we will look at FS/HS and look at the
-distribution there for things above -20 or so.  Obviously no
-unrelateds will be anywhere near that, but we should still check with
+2. Once we have the PO pairs, we remove them from futher consideration
+and identify the FS pairs.  For that we will look for pairs with FS/HS above -20 or so.
+Obviously no
+unrelateds will be anywhere near that, but we could still check that with
 the importance sampling.
 3. Once we have the PO and FS individuals we will compute the HS/HAN
-logl_ratios and then set the cutoff at what we calculated before, with
-an FNR of about 20%.  But we will want to investigate the empirical
+logl_ratios for the remaining pairs and then set the cutoff at what we calculated above, with
+an FNR of about 10% or 20%.  But we will want to investigate the empirical
 distribution of all those values, too, to see if we can see a HAN bump.
 
 
@@ -345,16 +444,19 @@ Because of the ages of these individuals it is probably likely that many of them
 not be PO are FS.  Many probably would be more likely to be GP than HS, all things
 being equal, too.  Some of these might be AN instead of HS.  
 
-But, regardless, we can tackle these things in a few different steps.
+All those considerations should be taken into account in CKMR. But,
+for today, since we don't have the metadata necessary to make those
+considerations, we will just look for kin pairs amongst all the pairs
+in the data set.
 
-### Make sure we don't have duplicate sample in here
+### Make sure we don't have duplicate samples in here
 
-Unless there is a lot of wonky inbreeding going on, it is unlikely that samples
+Unless there is _a lot_ of wonky inbreeding going on, it is unlikely that samples
 that are not _the same individual_ will have close to 100% matching genotypes.
 
-Here we find all the pairs that mismatch at no 500 or fewer loci out of the 2500
+Here we find all the pairs that mismatch at 500 or fewer loci out of the 2500
 that are in the data set:
-```{r}
+```{r find_close_matchers, cache=cache_chunks}
 matchers <- find_close_matching_genotypes(
   LG = long_genos,
   CK = ckmr,
@@ -363,19 +465,39 @@ matchers <- find_close_matching_genotypes(
 matchers
 ```
 
-There are none.  Cool.
+There are none.  Cool.  This might be because Mark Bravington and Paul worked these
+data over pretty hard before they fell into our hands, and they did this important
+step already---either that, or these data were sampled and processed
+by incredibly fastidious people,
+and/or it is not likely that the same individual is sampled twice.
 
 
-### I need a section here showing the syntax of the pairwise_kin_logl_ratios() function
+### Using the pairwise_kin_logl_ratios() function
 
-Boing!
+To compare each individual's genotype to every other individual's genotype to compute
+the log-likelihood ratios to find
+kin pairs, we use CKMRsim's `pairwise_kin_logl_ratios()` function.  The syntax
+is pretty simple: you pass it two long-format tibbles of genotypes (like `long_genos`).
+If the data set passed in each time is the same, the function knows to order the
+observations and keep only one set of the two comparisons that are made between
+each unique sample ID in the dataset.
+
+You can specify the numerator and the denominator for the log likelihood ratios
+to be computed. (Also, the function is parallelized, but we don't use
+that feature here, because our GitHub actions workflow that renders this
+document might not use multiple cores.)
+
+Below, we wrap the whole thing into an `lapply` so that we can run the
+`pairwise_kin_logl_ratios()` function four times, to get the different
+logl ratios: PO/U, PO/FS, FS/HS, and HS/HAN, and then present the results
+in a tidy tibble.
 
 ### Doing pairwise comparisons somewhat systematically
 
 So, we only really have four columns to make: PO/U, PO/FS, FS/HS, and HS/HAN.
 I am going to make them all and then put them into a big data frame. The
 number of markers is the same every time.
-```{r}
+```{r pairwise-comps-4way, cache=cache_chunks, message=FALSE}
 pw_4_LRTs <- lapply(
   X = list(
     POU = c("PO", "U"),
@@ -399,10 +521,13 @@ pw_4_LRTs <- lapply(
 ) %>%
   pivot_wider(names_from = lr_type, values_from = logl_ratio)
 
-
 ```
 
-And now we can see how things compare to our simulations:
+And now we can see how things compare to our simulations.
+
+### Finding the PO pairs 
+
+First, let's look at all the pairs that had a PO/U logl > 0.
 ```{r}
 topPO <- pw_4_LRTs %>%
   arrange(desc(POU)) %>%
@@ -410,30 +535,78 @@ topPO <- pw_4_LRTs %>%
 
 topPO
 ```
-And from that we see the first 5 look like solid PO pairs, and the 8th row
-has some wonky thing going on. I thought at first that maybe it was inbred
-full siblings, but then it would have a higher FSHS.  Weird.  I guess I
-will call all 6 of those PO, but seeing this gives me some doubts about
-how consistent the genotype data are.
+
+We can plot those pairs against the simulated PO/U logls that
+we made previously.
+```{r}
+set.seed(54) # for the jittering
+PO_U_gg +
+  geom_jitter(
+    data = topPO,
+    mapping = aes(x = POU, y = -0.002, colour = POFS > 0),
+    width = 0, 
+    height = 0.001, 
+    fill = NA,
+    shape = 21
+  )
+```
+
+The points below the $y=0$ line are the PO/U logls for those 11 pairs.
+They are colored green if their PO/FS logl is greater than 0.
+
+From this we see 5 pairs that look like solid PO pairs.  Those 5, on average
+have lower PO/U logls than we would have expected from the simulations, which is
+possibly due to the genotyping error rate in the data being higher than the values
+that we specified.  
+
+There is something wonky thing going on with the 6th green point.
+I thought at first that maybe it was inbred
+full siblings, but then it would have a higher FSHS.  Weird.  But, for now,
+we will call all 6 of those PO pairs, but I would be pretty skeptical about
+that 6th one.
+
+Here we create a table of likely PO pairs:
 ```{r}
 likelyPO <- topPO %>%
   filter(POFS > 20)
 ```
 
-And then we go on to the FSHS and we want to first look at the distribution
-for values > -20:
+### Finding full sibling pairs
+
+To do this, we take the remaining pairs and look at their FS/HS logl values, let's start
+by taking anything with an FS/HS logl > -20.
 ```{r}
 topFS <- pw_4_LRTs %>%
-  anti_join(likelyPO, by = c("D2_indiv", "D1_indiv")) %>%
+  anti_join(likelyPO, by = c("D2_indiv", "D1_indiv")) %>%  # remove the PO pairs 
   arrange(desc(FSHS)) %>%
   filter(FSHS > -20)
 topFS
 ```
 
-So, that is two individuals that look like solid full siblings  and two that
-are not super solid, but may be more likely than being HS, unless there
-are a boatload of HSs.  So, for now, we will call these the likely FS. But, again,
-there are intimations that the genetic data may not be super consistent.
+That is only four individuals.  Let's see where they fall out against the simulated
+distribution:
+```{r}
+set.seed(54) # for the jittering
+FS_HS_gg +
+  geom_jitter(
+    data = topFS,
+    mapping = aes(x = FSHS, y = -0.002),
+    width = 0, 
+    height = 0.001, 
+    fill = NA,
+    shape = 21
+  )
+```
+
+
+So, that is four individuals that look like full siblings (since PO has
+already been removed). Once again, their FS/HS logl values are trending
+a little lower than what we expect, which might intimate that our model
+for the genetic data (genotyping error rates) might not be spot on.
+
+But those four individuals still look like full-siblings.
+
+### Looking for half-siblings
 
 So, finally let's start looking for half-siblings.
 ```{r}
@@ -444,88 +617,72 @@ remaining <- pw_4_LRTs %>%
 We can have a look at the bumps we might see on the extreme right end of the
 unrelated distribution and then the others.
 ```{r}
-gHSHAN <- ggplot(remaining, aes(x = HSHAN)) + 
-  geom_histogram()
+all_HSHAN_logsl <- ggplot(remaining, aes(x = HSHAN)) + 
+  geom_histogram(bins = 30)
 ```
 
 Plot all of them:
 ```{r}
-gHSHAN +
+all_HSHAN_logsl +
   ggtitle("All Remaining Pairs")
 ```
 
-Now, have a look at the extreme right edge there:
+So, the HSHAN logls of almost all of the remaining pairs are quite low.
+But, let us have a look at the extreme right edge there:
 ```{r}
-gHSHAN +
-  xlim(-55, NA) +
-  ggtitle("Pairs with HSHAN > -55")
+all_HSHAN_logsl +
+  xlim(-45, NA) +
+  ggtitle("Pairs with HSHAN > -45")
 ```
 
-That makes sense, but we still can't see the other bumps.  Let's
-go for everything above -25:
+Aha! There are probably some half-sibling pairs.
+There are also probably some half-aunt-niece pairs
+in there.  Let's look at all of those as points.
 
 ```{r}
-gHSHAN +
-  xlim(-25, NA) +
-  ggtitle("Pairs with HSHAN > -25")
+set.seed(52)
+HS_HAN_gg + 
+  geom_jitter(
+    data = remaining %>% filter(HSHAN > -65),
+    mapping = aes(x = HSHAN, y = -0.02),
+    width = 0, 
+    height = 0.01, 
+    fill = NA,
+    shape = 21
+  ) +
+  coord_cartesian(xlim = c(-65, 125), ylim = c(NA, 0.04))
 ```
 
-OK, let's also look at this another way:
+Ooh! That is a pretty neat way to look at it.  With over roughly a million unrelated pairs,
+in total, we see that quite a few of them are on the far right edge of the distribution
+for the unrelated pairs.  Then a smattering of individuals in the HAN region, and then
+a sizable break after $x=0$ till a cluster of points that are right in the middle
+of what is expected for half siblings. Finally there is one individual way to
+the right, that is not really where you would expect a half-sibling to sit.
+
+We can look at all of those, and we find 18 likely half-sibs, and one
+that is probably a PO pair, but may involve some inbreeding:
 ```{r}
-set.seed(5)
-ggplot(
-  remaining %>% filter(HSHAN > -55) %>% mutate(y = 1),
-  aes(x = HSHAN, y = y)
-) +
-  geom_jitter(width = 0, height = 0.2, colour = "blue") +
-  ylim(0,2)
-
+remaining %>% 
+  filter(HSHAN > 0) %>% 
+  arrange(HSHAN) %>%
+  as_data_frame()
 ```
 
-That is pretty telling.  We have all the unrelateds, then a cluster of
-likely HAN, and then an impressive break before the likely HS, and then
-one pair that is clearly not a half-sib pair. Let's look at estimated
-FNRs and FPR here:
-```{r}
-mc_sample_simple(
-  Qs_link_BIG,
-  nu = "HS",
-  de = "HAN",
-  tr = "HAN",
-  method = "vanilla",
-  lambda_stars = c(-2:20))
-```
-So the false positive rate here when the truth is HAN and HSHAN > 9 is only .0109: about
-1 out of 100.  And there aren't anywhere near that many HAN's (just not that many blue dots).
-So, if we set our cutoff at 9, we can be pretty confident that there will be no
-HANs in there.  
-
-On the other side, the highest one in the lower (HAN) cluster is about -2.  That would
-give us a FNR of .03.  Since there are only about 19 HS's we probably don't have any
-false negatives.  But we can still use a FNR or .03 or .04.
-
-The one dot that is out at 87 or something is likely a wonky full sib.
-
-So we can form our final assignments:
-```{r}
-hs_part <- remaining %>%
-  filter(HSHAN > 0) %>%
-  mutate(assigned = ifelse(HSHAN < 50, "HS", "FS*"))  # it gets a star cuz it is super wonky
-
-final_pairs <- bind_rows(
-  likelyPO %>% mutate(assigned = ifelse(POU>385, "PO", "PO*")),
-  topFS %>% mutate(assigned = ifelse(FSHS > 10, "FS", "FS*")),
-  hs_part
-) %>%
-  arrange(POU, POFS, FSHS, HSHAN)
-
-final_pairs
-```
-
-And now we should go and check this with the meta data to see how these
-square with that.  Keeping in mind that the HS categories could be
+Once we have done this initial round of kin-finding, we would typically go back and check it with
+the meta data.  Keeping in mind that individuals in the HS categories could be
 grandparent-grandchild, or, much less likely, full-aunt-niece.
 
-The 18 half-siblings seem pretty solid to me.
+## Conclusion
+
+One big take-home message here is that it takes a lot of good genetic
+markers to be able to reliably distinguish half-siblings from 
+half-aunt niece relationships.  This is a tremendously robust data
+set, and the distinction between those groups seems reasonably clear,
+but with fewer markers it would be a lot harder.
+
+Don't sell yourself short on the genetic markers!!
+
+
 
 

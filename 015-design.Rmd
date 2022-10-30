@@ -305,7 +305,7 @@ from the 'CKMRpop' as shown below:
 ```{r CKMRpop-setup}
 library(CKMRpop)
 library(dplyr)
-install_spip(Dir = system.file(package = "CKMRpop"))
+if(!spip_exists()) {install_spip(Dir = system.file(package = "CKMRpop"))}
 ```
 
 Now, let's set up simulations with our bearded seal life history values.  Note the quotation list structure is required by CKMRpop, and that the package is set up to work with a post-breeding census (good for us!). For definitions of the *pars* list, please use *spip_help()* or *spip_help_full()*.  
