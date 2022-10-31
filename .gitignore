@@ -1,0 +1,11 @@
+.DS_Store
+.Rhistory
+.Rproj.user
+TMB
+_book
+_bookdown_files
+data
+development
+private
+renv
+slides
