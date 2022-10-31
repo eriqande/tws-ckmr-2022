@@ -2,9 +2,9 @@
 
 
 ```{r slides, include=FALSE}
-# Now that things are being cached on Github Actions. It might be that
-# we have to change something in this file if we want these actions to be run.
-# So, to propagate changes to the slides.  Make a change in here, maybe?
+dir.create("_book/slides", showWarnings = FALSE, recursive = TRUE)  # make this here in case the
+                                          # output directory has not yet been made
+
 options(knitr.duplicate.label = "allow")  # because our slides might have code blocks named setup
 
 # quarto does not seem to render properly if you give it a different output
