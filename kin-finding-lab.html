@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Session 2 Kin-finding lab | Close-kin mark-recapture: theory and practice — Spokane, Washington, USA</title>
+  <meta name="description" content="A book example for a Chapman &amp; Hall book." />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Session 2 Kin-finding lab | Close-kin mark-recapture: theory and practice — Spokane, Washington, USA" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="A book example for a Chapman &amp; Hall book." />
+  <meta name="github-repo" content="yihui/bookdown-crc" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Session 2 Kin-finding lab | Close-kin mark-recapture: theory and practice — Spokane, Washington, USA" />
+  
+  <meta name="twitter:description" content="A book example for a Chapman &amp; Hall book." />
+  
+
+<meta name="author" content="Paul B. Conn and Eric C. Anderson" />
+
+
+<meta name="date" content="2022-10-31" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ckmr-thought-experiments-and-labs.html"/>
+<link rel="next" href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"/>
+<script src="libs/jquery/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">TWS-CKMR-2022</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Overview</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#workshop-schedule"><i class="fa fa-check"></i>Workshop schedule</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#resources"><i class="fa fa-check"></i>Resources</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#setting-computer"><i class="fa fa-check"></i>Setting up your computer</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#step-1.-install-recent-versions-of-r-and-rstudio"><i class="fa fa-check"></i>Step 1. Install recent versions of R and RStudio</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#step-2.-make-sure-that-you-have-git-installed-on-your-system"><i class="fa fa-check"></i>Step 2. Make sure that you have <code>git</code> installed on your system</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#step-3.-get-the-workshop-materials-from-github-with-rstudio"><i class="fa fa-check"></i>Step 3. Get the workshop materials from GitHub with RStudio</a></li>
+<li class="chapter" data-level="0.0.1" data-path="index.html"><a href="index.html#updating-the-project"><i class="fa fa-check"></i><b>0.0.1</b> Updating the project</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#a-word-about-the-renv-package"><i class="fa fa-check"></i>A word about the ‘renv’ package</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#a-word-about-the-tmb-package"><i class="fa fa-check"></i>A word about the TMB package</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html"><i class="fa fa-check"></i><b>1</b> CKMR thought experiments and labs</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#afternoon-schedule"><i class="fa fa-check"></i><b>1.1</b> Afternoon schedule</a></li>
+<li class="chapter" data-level="1.2" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#thought-experiments"><i class="fa fa-check"></i><b>1.2</b> Thought experiments</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#thought-experiment-1"><i class="fa fa-check"></i><b>1.2.1</b> Thought experiment 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html"><i class="fa fa-check"></i><b>2</b> Kin-finding lab</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#looking-at-the-genetic-data-and-pivoting-it"><i class="fa fa-check"></i><b>2.1</b> Looking at the genetic data and pivoting it</a></li>
+<li class="chapter" data-level="2.2" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#kin-finding-power-analysis-assuming-no-physical-linkage"><i class="fa fa-check"></i><b>2.2</b> Kin finding power analysis assuming no physical linkage</a></li>
+<li class="chapter" data-level="2.3" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#power-for-kin-finding-while-accounting-for-physical-linkage"><i class="fa fa-check"></i><b>2.3</b> Power for kin-finding while accounting for physical linkage</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#make-a-pseudo-genome-for-these-critters"><i class="fa fa-check"></i><b>2.3.1</b> Make a pseudo genome for these critters</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#doing-the-pairwise-comparisons"><i class="fa fa-check"></i><b>2.4</b> Doing the pairwise comparisons</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#make-sure-we-dont-have-duplicate-samples-in-here"><i class="fa fa-check"></i><b>2.4.1</b> Make sure we don’t have duplicate samples in here</a></li>
+<li class="chapter" data-level="2.4.2" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#using-the-pairwise_kin_logl_ratios-function"><i class="fa fa-check"></i><b>2.4.2</b> Using the pairwise_kin_logl_ratios() function</a></li>
+<li class="chapter" data-level="2.4.3" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#doing-pairwise-comparisons-somewhat-systematically"><i class="fa fa-check"></i><b>2.4.3</b> Doing pairwise comparisons somewhat systematically</a></li>
+<li class="chapter" data-level="2.4.4" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#finding-the-po-pairs"><i class="fa fa-check"></i><b>2.4.4</b> Finding the PO pairs</a></li>
+<li class="chapter" data-level="2.4.5" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#finding-full-sibling-pairs"><i class="fa fa-check"></i><b>2.4.5</b> Finding full sibling pairs</a></li>
+<li class="chapter" data-level="2.4.6" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#looking-for-half-siblings"><i class="fa fa-check"></i><b>2.4.6</b> Looking for half-siblings</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#conclusion"><i class="fa fa-check"></i><b>2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><i class="fa fa-check"></i><b>3</b> Simulation and Inference Play with Hillary et al.’s White Shark CKMR example</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#simulating-from-their-inferential-model"><i class="fa fa-check"></i><b>3.1</b> Simulating from their inferential model</a></li>
+<li class="chapter" data-level="3.2" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#an-r-function-to-compute-the-negative-log-likelihood"><i class="fa fa-check"></i><b>3.2</b> An R function to compute the negative log-likelihood</a></li>
+<li class="chapter" data-level="3.3" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#evaluate-the-likelihood-with-tmb"><i class="fa fa-check"></i><b>3.3</b> Evaluate the likelihood with TMB</a></li>
+<li class="chapter" data-level="3.4" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#visualize-those-log-likelihood-values"><i class="fa fa-check"></i><b>3.4</b> Visualize those log likelihood values</a></li>
+<li class="chapter" data-level="3.5" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#omg-lets-investigate-the-tmbstan-package"><i class="fa fa-check"></i><b>3.5</b> OMG! Let’s investigate the tmbstan package!</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html"><i class="fa fa-check"></i><b>4</b> Design of CKMR Experiments</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#white-shark-design-example"><i class="fa fa-check"></i><b>4.1</b> White shark design example</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#fisher-information-ideas"><i class="fa fa-check"></i><b>4.1.1</b> Fisher information ideas</a></li>
+<li class="chapter" data-level="4.1.2" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#calculating-expected-data-under-different-design-scenarios"><i class="fa fa-check"></i><b>4.1.2</b> Calculating expected data under different design scenarios</a></li>
+<li class="chapter" data-level="4.1.3" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#calculating-expected-variance-under-different-design-scenarios"><i class="fa fa-check"></i><b>4.1.3</b> Calculating expected variance under different design scenarios</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#bearded-seal-simulation-study"><i class="fa fa-check"></i><b>4.2</b> Bearded seal simulation study</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#setting-up-simulations-population-dynamics"><i class="fa fa-check"></i><b>4.2.1</b> Setting up simulations: Population dynamics</a></li>
+<li class="chapter" data-level="4.2.2" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#setting-up-simulations-ckmrpop"><i class="fa fa-check"></i><b>4.2.2</b> Setting up simulations: CKMRpop</a></li>
+<li class="chapter" data-level="4.2.3" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#formatting-data-for-estimation"><i class="fa fa-check"></i><b>4.2.3</b> Formatting data for estimation</a></li>
+<li class="chapter" data-level="4.2.4" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#fitting-the-ckmr-model"><i class="fa fa-check"></i><b>4.2.4</b> Fitting the CKMR model</a></li>
+<li class="chapter" data-level="4.2.5" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#thought-experiment"><i class="fa fa-check"></i><b>4.2.5</b> Thought experiment</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Close-kin mark-recapture: theory and practice — Spokane, Washington, USA</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="kin-finding-lab" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Session 2</span> Kin-finding lab<a href="kin-finding-lab.html#kin-finding-lab" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this session, we are going to get our hands dirty with a lovely data set
+of genetic data from 1,484 bearded seals and use those data to find kin pairs
+from amongst the <span class="math inline">\({1,484 \choose 2} = 1,100,386\)</span> pairs that can be formed
+from all those samples.</p>
+<p>This data set includes 2,569 genetic markers. These markers were filtered down
+for quality and reliability from a much larger set. We won’t talk about that
+process, here, but keep in mind that a huge part of a successful CKMR project
+involves getting and curating a quality set of genetic markers.</p>
+<p>We will first estimate how much power we expect to have for identifying
+kin pairs with this marker set, and then we will actually do the kin-finding.
+Both of these steps will be done using the R package ‘CKMRsim’ that Eric wrote.
+It is available from GitHub at <a href="https://github.com/eriqande/CKMRsim" class="uri">https://github.com/eriqande/CKMRsim</a> and its
+online documentation can be read at: <a href="https://eriqande.github.io/CKMRsim/" class="uri">https://eriqande.github.io/CKMRsim/</a>.</p>
+<p>If you want to use ‘CKMRsim’ yourself in a different project, you would need
+to install it like this:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="kin-finding-lab.html#cb5-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;eriqande/CKMRsim&quot;</span>)</span></code></pre></div>
+<p>However, we have already included it in the <code>tws-ckmr-2022</code> project using
+‘renv’, so you don’t have to install it now.</p>
+<p>Before proceeding, we will load all of the libraries that we will be using
+for this session. Additionally, we will download and install the
+binary of the <code>mendel</code> program so that we can simulate genetic markers with
+physical linkage.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="kin-finding-lab.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb6-2"><a href="kin-finding-lab.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(CKMRsim)</span>
+<span id="cb6-3"><a href="kin-finding-lab.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="kin-finding-lab.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># the next step tests to see if mendel was already installed.</span></span>
+<span id="cb6-5"><a href="kin-finding-lab.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># if not, it installs it</span></span>
+<span id="cb6-6"><a href="kin-finding-lab.html#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">system.file</span>(<span class="st">&quot;bin&quot;</span>, <span class="at">package =</span> <span class="st">&quot;CKMRsim&quot;</span>) <span class="sc">==</span> <span class="st">&quot;&quot;</span>) {</span>
+<span id="cb6-7"><a href="kin-finding-lab.html#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install_mendel</span>(<span class="at">Dir =</span> <span class="fu">system.file</span>(<span class="at">package =</span> <span class="st">&quot;CKMRsim&quot;</span>))</span>
+<span id="cb6-8"><a href="kin-finding-lab.html#cb6-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div id="looking-at-the-genetic-data-and-pivoting-it" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Looking at the genetic data and pivoting it<a href="kin-finding-lab.html#looking-at-the-genetic-data-and-pivoting-it" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We load the genetic data from an RDS file:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="kin-finding-lab.html#cb8-1" aria-hidden="true" tabindex="-1"></a>beardo_genos <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">&quot;data/beardo-genos.rds&quot;</span>)</span></code></pre></div>
+<p>Here are the first 10 rows and 9 columns of that data set:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="kin-finding-lab.html#cb9-1" aria-hidden="true" tabindex="-1"></a>beardo_genos[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>]</span></code></pre></div>
+<pre><code>## # A tibble: 10 × 9
+##    Our_sample L252.1 L252.2 L253.1 L253.2 L472.1 L472.2
+##    &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; 
+##  1 2010BS40   B      B      A      O      A      B     
+##  2 EB20GAM002 A      A      A      O      A      B     
+##  3 EB16GAM070 A      A      B      B      B      B     
+##  4 SH-G18-04  A      A      A      A      B      B     
+##  5 SH-S04-05  A      B      A      A      A      A     
+##  6 09BS8      B      B      A      B      A      A     
+##  7 EB17GAM073 A      A      A      A      A      B     
+##  8 EB13GAM022 A      A      B      O      A      B     
+##  9 EB17GAM059 A      A      A      A      B      O     
+## 10 EB05NOM003 A      A      A      B      A      B     
+## # … with 2 more variables: L567.1 &lt;chr&gt;, L567.2 &lt;chr&gt;
+## # ℹ Use `colnames()` to see all variable names</code></pre>
+<p>The full data set has 1484 rows and 5139 columns.</p>
+<p>This is a standard genotype format. The first column gives the sample name and
+every subsequent pair of columns gives the alleles found in the sample at a
+genetic marker or “locus”.</p>
+<p>These markers are single nucleotide polymorphism (SNP) markers. These markers
+are typically biallelic, and in this data set, the two alleles are named
+<code>A</code> and <code>B</code>. Some of these markers have a third allele that is a <em>null allele</em>.
+The <em>null allele</em> does not appear in any reads from the sequencing machine (it is
+associated with variation that interferes with the enzyme cut-site used to prepare
+the DNA libraries). Typically these null alleles are a big problem; however, this
+data set is based on high enough read depth, that the presence of a null allele can
+be ascertained in both homozygous and heterozygous form, so they can be used as
+a third allele at markers where they exist. These null alleles are denoted by
+<code>O</code> in this dataset. There are no missing genotypes in the data.</p>
+<p>In order to manipulate these data more easily and prepare them for CKMRsim we will
+pivot them into a longer format.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="kin-finding-lab.html#cb11-1" aria-hidden="true" tabindex="-1"></a>long_genos <span class="ot">&lt;-</span> beardo_genos <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="kin-finding-lab.html#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Indiv =</span> Our_sample) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="kin-finding-lab.html#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb11-4"><a href="kin-finding-lab.html#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span>Indiv, </span>
+<span id="cb11-5"><a href="kin-finding-lab.html#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">&quot;Locus&quot;</span>, <span class="st">&quot;gene_copy&quot;</span>), </span>
+<span id="cb11-6"><a href="kin-finding-lab.html#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_sep =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>, </span>
+<span id="cb11-7"><a href="kin-finding-lab.html#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;Allele&quot;</span></span>
+<span id="cb11-8"><a href="kin-finding-lab.html#cb11-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p>This looks like:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="kin-finding-lab.html#cb12-1" aria-hidden="true" tabindex="-1"></a>long_genos</span></code></pre></div>
+<pre><code>## # A tibble: 7,624,792 × 4
+##    Indiv    Locus gene_copy Allele
+##    &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt; 
+##  1 2010BS40 L252  1         B     
+##  2 2010BS40 L252  2         B     
+##  3 2010BS40 L253  1         A     
+##  4 2010BS40 L253  2         O     
+##  5 2010BS40 L472  1         A     
+##  6 2010BS40 L472  2         B     
+##  7 2010BS40 L567  1         A     
+##  8 2010BS40 L567  2         A     
+##  9 2010BS40 L1007 1         A     
+## 10 2010BS40 L1007 2         B     
+## # … with 7,624,782 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+</div>
+<div id="kin-finding-power-analysis-assuming-no-physical-linkage" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Kin finding power analysis assuming no physical linkage<a href="kin-finding-lab.html#kin-finding-power-analysis-assuming-no-physical-linkage" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To assess the power of a set of markers for kin finding, CKMRsim requires
+the allele freqencies in a particular format. These steps
+calculate the allele frequencies and format them as required:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="kin-finding-lab.html#cb14-1" aria-hidden="true" tabindex="-1"></a>locus_names <span class="ot">&lt;-</span> <span class="fu">unique</span>(long_genos<span class="sc">$</span>Locus)</span>
+<span id="cb14-2"><a href="kin-finding-lab.html#cb14-2" aria-hidden="true" tabindex="-1"></a>afreqs_ready <span class="ot">&lt;-</span> long_genos <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="kin-finding-lab.html#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Locus, Allele) <span class="sc">%&gt;%</span>  </span>
+<span id="cb14-4"><a href="kin-finding-lab.html#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Locus) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="kin-finding-lab.html#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-6"><a href="kin-finding-lab.html#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Freq =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n),</span>
+<span id="cb14-7"><a href="kin-finding-lab.html#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Chrom =</span> <span class="st">&quot;Unk&quot;</span>,</span>
+<span id="cb14-8"><a href="kin-finding-lab.html#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pos =</span> <span class="fu">as.integer</span>(<span class="fu">factor</span>(Locus, <span class="at">levels =</span> locus_names))</span>
+<span id="cb14-9"><a href="kin-finding-lab.html#cb14-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb14-10"><a href="kin-finding-lab.html#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb14-11"><a href="kin-finding-lab.html#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Chrom, Pos, Locus, Allele, Freq) <span class="sc">%&gt;%</span></span>
+<span id="cb14-12"><a href="kin-finding-lab.html#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Pos, <span class="fu">desc</span>(Freq)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-13"><a href="kin-finding-lab.html#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AlleIdx =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-14"><a href="kin-finding-lab.html#cb14-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">LocIdx =</span> <span class="cn">NA</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-15"><a href="kin-finding-lab.html#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Allele)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-16"><a href="kin-finding-lab.html#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reindex_markers</span>()</span></code></pre></div>
+<p>The allele frequencies look like this:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="kin-finding-lab.html#cb15-1" aria-hidden="true" tabindex="-1"></a>afreqs_ready</span></code></pre></div>
+<pre><code>## # A tibble: 7,423 × 7
+##    Chrom   Pos Locus Allele LocIdx AlleIdx    Freq
+##    &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;
+##  1 Unk       1 L252  A           1       1 0.724  
+##  2 Unk       1 L252  B           1       2 0.268  
+##  3 Unk       1 L252  O           1       3 0.00876
+##  4 Unk       2 L253  A           2       1 0.739  
+##  5 Unk       2 L253  B           2       2 0.196  
+##  6 Unk       2 L253  O           2       3 0.0654 
+##  7 Unk       3 L472  A           3       1 0.570  
+##  8 Unk       3 L472  B           3       2 0.422  
+##  9 Unk       3 L472  O           3       3 0.00741
+## 10 Unk       4 L567  A           4       1 0.860  
+## # … with 7,413 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<p>These allele frequencies then get compiled into an R object
+that includes the results of a number of calculations that account for genotyping
+error and a number of matrices that allow rapid simulation of kin pairs from the
+data.</p>
+<p>This takes a little while because it is a fairly large
+data set. But not more than a minute on my laptop.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="kin-finding-lab.html#cb17-1" aria-hidden="true" tabindex="-1"></a>ckmr <span class="ot">&lt;-</span> <span class="fu">create_ckmr</span>(</span>
+<span id="cb17-2"><a href="kin-finding-lab.html#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">D =</span> afreqs_ready,</span>
+<span id="cb17-3"><a href="kin-finding-lab.html#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">kappa_matrix =</span> kappas[<span class="fu">c</span>(<span class="st">&quot;PO&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;HS&quot;</span>, <span class="st">&quot;HAN&quot;</span>, <span class="st">&quot;U&quot;</span>), ],</span>
+<span id="cb17-4"><a href="kin-finding-lab.html#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ge_mod_assumed =</span> ge_model_TGIE,</span>
+<span id="cb17-5"><a href="kin-finding-lab.html#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ge_mod_true =</span> ge_model_TGIE,</span>
+<span id="cb17-6"><a href="kin-finding-lab.html#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ge_mod_assumed_pars_list =</span> <span class="fu">list</span>(<span class="at">epsilon =</span> <span class="fl">0.005</span>),</span>
+<span id="cb17-7"><a href="kin-finding-lab.html#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ge_mod_true_pars_list =</span> <span class="fu">list</span>(<span class="at">epsilon =</span> <span class="fl">0.005</span>)</span>
+<span id="cb17-8"><a href="kin-finding-lab.html#cb17-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>The <code>kappa_matrix</code> specifies the identify coefficients (the <span class="math inline">\(\kappa\)</span>’s) for
+the different relationships we want. The remaining options tell it to
+use a fairly generic model for genotyping error with an error rate (<code>epsilon</code>) at
+which we expect about 1% of the genotypes to have a genotyping error.</p>
+<p>The variable <code>kappas</code> is a piece
+of package data that looks like this:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="kin-finding-lab.html#cb18-1" aria-hidden="true" tabindex="-1"></a>kappas</span></code></pre></div>
+<pre><code>##      kappa0  kappa1  kappa2
+## MZ   0.0000 0.00000 1.00000
+## PO   0.0000 1.00000 0.00000
+## FS   0.2500 0.50000 0.25000
+## HS   0.5000 0.50000 0.00000
+## GP   0.5000 0.50000 0.00000
+## AN   0.5000 0.50000 0.00000
+## DFC  0.5625 0.37500 0.06250
+## HAN  0.7500 0.25000 0.00000
+## FC   0.7500 0.25000 0.00000
+## HFC  0.8750 0.12500 0.00000
+## DHFC 0.7656 0.21875 0.01562
+## SC   0.9375 0.06250 0.00000
+## HSC  0.9688 0.03125 0.00000
+## U    1.0000 0.00000 0.00000</code></pre>
+<p>So, the line</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="kin-finding-lab.html#cb20-1" aria-hidden="true" tabindex="-1"></a>kappas[<span class="fu">c</span>(<span class="st">&quot;PO&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;HS&quot;</span>, <span class="st">&quot;HAN&quot;</span>, <span class="st">&quot;U&quot;</span>), ]</span></code></pre></div>
+<p>is merely picking out the rows from that matrix that we want to focus on: we
+want to be prepared to do calculations concerning the relationships of:</p>
+<ul>
+<li><code>U</code>: unrelated</li>
+<li><code>HAN</code>: half aunt-niece (which includes half uncle-niece and half uncle-nephew, etc.)</li>
+<li><code>HS</code>: half sibling</li>
+<li><code>FS</code>: full sibling</li>
+<li><code>PO</code>: parent-offspring</li>
+</ul>
+<p>Now we can simulate some log likelihood ratios and plot them to see how they look.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="kin-finding-lab.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This simulates a large number of pairwise genotype probabilites</span></span>
+<span id="cb21-2"><a href="kin-finding-lab.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># at each locus</span></span>
+<span id="cb21-3"><a href="kin-finding-lab.html#cb21-3" aria-hidden="true" tabindex="-1"></a>Qs <span class="ot">&lt;-</span> <span class="fu">simulate_Qij</span>(</span>
+<span id="cb21-4"><a href="kin-finding-lab.html#cb21-4" aria-hidden="true" tabindex="-1"></a>  ckmr, </span>
+<span id="cb21-5"><a href="kin-finding-lab.html#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">calc_relats =</span> <span class="fu">c</span>(<span class="st">&quot;PO&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;HS&quot;</span>, <span class="st">&quot;HAN&quot;</span>, <span class="st">&quot;U&quot;</span>),</span>
+<span id="cb21-6"><a href="kin-finding-lab.html#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_relats =</span> <span class="fu">c</span>(<span class="st">&quot;PO&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;HS&quot;</span>, <span class="st">&quot;HAN&quot;</span>, <span class="st">&quot;U&quot;</span>) </span>
+<span id="cb21-7"><a href="kin-finding-lab.html#cb21-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-8"><a href="kin-finding-lab.html#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="kin-finding-lab.html#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="kin-finding-lab.html#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># In the following, we extract those genotype probabilities in different</span></span>
+<span id="cb21-11"><a href="kin-finding-lab.html#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ways to calculate a variety of different log-likelihood ratios</span></span>
+<span id="cb21-12"><a href="kin-finding-lab.html#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># for different relationships.  </span></span>
+<span id="cb21-13"><a href="kin-finding-lab.html#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-14"><a href="kin-finding-lab.html#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co"># in this particular case, we are looking at log likelihood ratios</span></span>
+<span id="cb21-15"><a href="kin-finding-lab.html#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># for the hypothesis of Parent-Offspring vs Unrelated</span></span>
+<span id="cb21-16"><a href="kin-finding-lab.html#cb21-16" aria-hidden="true" tabindex="-1"></a>PO_U_logls <span class="ot">&lt;-</span> <span class="fu">extract_logls</span>(</span>
+<span id="cb21-17"><a href="kin-finding-lab.html#cb21-17" aria-hidden="true" tabindex="-1"></a>  Qs,</span>
+<span id="cb21-18"><a href="kin-finding-lab.html#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">numer =</span> <span class="fu">c</span>(<span class="at">PO =</span> <span class="dv">1</span>),</span>
+<span id="cb21-19"><a href="kin-finding-lab.html#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">denom =</span> <span class="fu">c</span>(<span class="at">U =</span> <span class="dv">1</span>)</span>
+<span id="cb21-20"><a href="kin-finding-lab.html#cb21-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-21"><a href="kin-finding-lab.html#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="kin-finding-lab.html#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="co"># And we can plot the distribution of those logl ratios for each</span></span>
+<span id="cb21-23"><a href="kin-finding-lab.html#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co"># of the different true relationships. </span></span>
+<span id="cb21-24"><a href="kin-finding-lab.html#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb21-25"><a href="kin-finding-lab.html#cb21-25" aria-hidden="true" tabindex="-1"></a>  PO_U_logls,</span>
+<span id="cb21-26"><a href="kin-finding-lab.html#cb21-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> logl_ratio, <span class="at">fill =</span> true_relat)</span>
+<span id="cb21-27"><a href="kin-finding-lab.html#cb21-27" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb21-28"><a href="kin-finding-lab.html#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/simQs-1.png" width="672" /></p>
+<p>Clearly, PO and U should be easily resolved. And it turns out that physical linkage does
+not affect the distribution of log-likelihood ratios when the true relationship is
+either U or PO (so long as the markers are not in linkage disequilibrium).</p>
+<p>And we can use importance sampling to estimate false positive rates.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="kin-finding-lab.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mc_sample_simple</span>(</span>
+<span id="cb22-2"><a href="kin-finding-lab.html#cb22-2" aria-hidden="true" tabindex="-1"></a>  Qs,</span>
+<span id="cb22-3"><a href="kin-finding-lab.html#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">nu =</span> <span class="st">&quot;PO&quot;</span></span>
+<span id="cb22-4"><a href="kin-finding-lab.html#cb22-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 10
+##     FNR       FPR    se num_non…¹ Lambd…² pstar mc_me…³
+##   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  
+## 1  0.01 6.30e-193     0      9900    436. PO    IS     
+## 2  0.05 5.96e-200     0      9500    453. PO    IS     
+## 3  0.1  1.00e-203     0      9000    463. PO    IS     
+## 4  0.2  2.41e-208     0      8000    474. PO    IS     
+## 5  0.3  8.47e-212     0      7000    482. PO    IS     
+## # … with 3 more variables: numerator &lt;chr&gt;,
+## #   denominator &lt;chr&gt;, true_relat &lt;chr&gt;, and
+## #   abbreviated variable names ¹​num_nonzero_wts,
+## #   ²​Lambda_star, ³​mc_method
+## # ℹ Use `colnames()` to see all variable names</code></pre>
+<p>The FPR gives that probability of falsely declaring an unrelated pair a parent-offspring
+pair, for a few different values of the false negative rate. Clearly, there is no chance, whatsoever, of an unrelated pair being mistaken as a PO pair.</p>
+<p>For all other relationship types, the fact of physical linkage is important.
+In particular, physical linkage really becomes important when we start to consider
+kin pairs that are less related than half-siblings, but not a lot less, for example,
+the HAN, or “half-aunt-niece” category.</p>
+</div>
+<div id="power-for-kin-finding-while-accounting-for-physical-linkage" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Power for kin-finding while accounting for physical linkage<a href="kin-finding-lab.html#power-for-kin-finding-while-accounting-for-physical-linkage" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>With CKMRsim, we can simulate likelihood ratios (which are calculated without
+reference to the physical linkage) under the influence of physical linkage,
+<strong>BUT</strong> In order to do that formally, we need to know where in the genome all these
+markers are. We don’t know that, in this case, but we can still get a very good sense for the effect of
+linkage by imagining that all these markers are spread throughout an appropriately sized
+genome. Since we are simulating lots of pairs in this way, the exact details of the physical
+linkage are not quite as important as if we were trying to calculate likelihoods given the
+linkage.</p>
+<div id="make-a-pseudo-genome-for-these-critters" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Make a pseudo genome for these critters<a href="kin-finding-lab.html#make-a-pseudo-genome-for-these-critters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A quick search for “bearded seal cytogenetics” leads us to a paper written in
+1967 <span class="citation">(<a href="#ref-fay1967cytogenetic" role="doc-biblioref">Fay <em>et al.</em> 1967</a>)</span> which tells us that they have a karyotype of 2n=34.
+That means they have 16 pairs of autosomes and one pair of sex chromosomes.
+That is not a huge abundance of chromosomes, but it is not as bad as fruit flies,
+which have <span class="math inline">\(2n = 8\)</span>—only four pairs of chromosomes.
+If you look at pictures of the karyotype, the smallest chromosomes are about 1/4
+the size of the largest. Here is a screen grab from the the paper:</p>
+<p><img src="images/beardo-karyotype.png" /></p>
+<p>On top of that, a quick web search finds an announcement, not long ago, of <a href="https://www.dnazoo.org/assemblies/Erignathus_barbatus">completion
+of a draft genome for bearded seals</a>.
+From this we find that the genome length is about 2.4 gigabases.</p>
+<p>Cool. We
+can use those pieces of information (<span class="math inline">\(2n = 34\)</span>, smallest chromosome about 1/4 the size
+of the largest, and genome length = 2.4 gigabases)
+to create a pseudo-genome and then sprinkle our markers into it
+in order to get a sense for how much physical linkage will affect the distribution
+of the log likelihood ratios. In this process, we will assume a recombination
+rate of 1 cm per megabase (about a 1 in 100 chance of a recombination occurring
+within 1 megabase during any meiosis).</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="kin-finding-lab.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this function is part of the CKMRsim package</span></span>
+<span id="cb24-2"><a href="kin-finding-lab.html#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="kin-finding-lab.html#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># make fake chromosome lengths</span></span>
+<span id="cb24-4"><a href="kin-finding-lab.html#cb24-4" aria-hidden="true" tabindex="-1"></a>fake_chromo_lengths <span class="ot">&lt;-</span> <span class="fu">geometric_chromo_lengths</span>(</span>
+<span id="cb24-5"><a href="kin-finding-lab.html#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">15</span>,</span>
+<span id="cb24-6"><a href="kin-finding-lab.html#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">L =</span> <span class="fl">2.4</span>,</span>
+<span id="cb24-7"><a href="kin-finding-lab.html#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">sl =</span> <span class="fl">0.25</span></span>
+<span id="cb24-8"><a href="kin-finding-lab.html#cb24-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Here is a plot of those simulated chromosome lengths
+scaled, roughly, to correspond to the sizes of the chromosomes
+in the figure above, on your screen:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="kin-finding-lab.html#cb25-1" aria-hidden="true" tabindex="-1"></a>fake_chromo_lengths<span class="sc">$</span>chrom_length_plot</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Now that we have that approximate genome to play with, let’s go ahead and randomly
+place our variants into it.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="kin-finding-lab.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5</span>)</span>
+<span id="cb26-2"><a href="kin-finding-lab.html#cb26-2" aria-hidden="true" tabindex="-1"></a>afreqs_link <span class="ot">&lt;-</span> <span class="fu">sprinkle_markers_into_genome</span>(afreqs_ready, fake_chromo_lengths<span class="sc">$</span>chrom_lengths)</span></code></pre></div>
+<p>Have a look at the output. The original Locus names are there,
+but each is placed on a chromosome (the <code>fc</code> in <code>fc01</code> stands for “fake chromosome”).</p>
+<p>Now we can make a new CKMR object that has these (fake) physical-location data for
+the markers.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="kin-finding-lab.html#cb27-1" aria-hidden="true" tabindex="-1"></a>ckmr_link <span class="ot">&lt;-</span> <span class="fu">create_ckmr</span>(</span>
+<span id="cb27-2"><a href="kin-finding-lab.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">D =</span> afreqs_link,</span>
+<span id="cb27-3"><a href="kin-finding-lab.html#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">kappa_matrix =</span> kappas[<span class="fu">c</span>(<span class="st">&quot;PO&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;HS&quot;</span>, <span class="st">&quot;HAN&quot;</span>, <span class="st">&quot;U&quot;</span>), ],</span>
+<span id="cb27-4"><a href="kin-finding-lab.html#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ge_mod_assumed =</span> ge_model_TGIE,</span>
+<span id="cb27-5"><a href="kin-finding-lab.html#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ge_mod_true =</span> ge_model_TGIE,</span>
+<span id="cb27-6"><a href="kin-finding-lab.html#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ge_mod_assumed_pars_list =</span> <span class="fu">list</span>(<span class="at">epsilon =</span> <span class="fl">0.005</span>),</span>
+<span id="cb27-7"><a href="kin-finding-lab.html#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ge_mod_true_pars_list =</span> <span class="fu">list</span>(<span class="at">epsilon =</span> <span class="fl">0.005</span>)</span>
+<span id="cb27-8"><a href="kin-finding-lab.html#cb27-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>And, now, to simulate with physical linkage, we use the <code>simulate_Qij()</code> function
+with the <code>unlinked = FALSE</code> option,
+but we also need to include information about the pedigrees corresponding
+to each relationship. That information is in the package data object
+<code>pedigrees</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="kin-finding-lab.html#cb28-1" aria-hidden="true" tabindex="-1"></a>Qs_link_BIG <span class="ot">&lt;-</span> <span class="fu">simulate_Qij</span>(</span>
+<span id="cb28-2"><a href="kin-finding-lab.html#cb28-2" aria-hidden="true" tabindex="-1"></a>  ckmr_link, </span>
+<span id="cb28-3"><a href="kin-finding-lab.html#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">calc_relats =</span> <span class="fu">c</span>(<span class="st">&quot;PO&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;HS&quot;</span>, <span class="st">&quot;HAN&quot;</span>, <span class="st">&quot;U&quot;</span>),</span>
+<span id="cb28-4"><a href="kin-finding-lab.html#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_relats =</span> <span class="fu">c</span>(<span class="st">&quot;PO&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;HS&quot;</span>, <span class="st">&quot;HAN&quot;</span>, <span class="st">&quot;U&quot;</span>),</span>
+<span id="cb28-5"><a href="kin-finding-lab.html#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">unlinked =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb28-6"><a href="kin-finding-lab.html#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pedigree_list =</span> pedigrees</span>
+<span id="cb28-7"><a href="kin-finding-lab.html#cb28-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Here we plot the densities of the PO/U log likelihood ratio for the
+different true relationships:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="kin-finding-lab.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We save the plot so that we can use it</span></span>
+<span id="cb29-2"><a href="kin-finding-lab.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># later to compare to our observed values</span></span>
+<span id="cb29-3"><a href="kin-finding-lab.html#cb29-3" aria-hidden="true" tabindex="-1"></a>PO_U_gg <span class="ot">&lt;-</span> Qs_link_BIG <span class="sc">%&gt;%</span></span>
+<span id="cb29-4"><a href="kin-finding-lab.html#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_logls</span>(<span class="at">numer =</span> <span class="fu">c</span>(<span class="at">PO =</span> <span class="dv">1</span>), <span class="at">denom =</span> <span class="fu">c</span>(<span class="at">U =</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-5"><a href="kin-finding-lab.html#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> logl_ratio, <span class="at">fill =</span> true_relat)) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="kin-finding-lab.html#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb29-7"><a href="kin-finding-lab.html#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;PO/U Logl Ratio&quot;</span>)</span>
+<span id="cb29-8"><a href="kin-finding-lab.html#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="kin-finding-lab.html#cb29-9" aria-hidden="true" tabindex="-1"></a>PO_U_gg</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>Aha! When we simulate those likelihood ratios whilst taking account of
+physical linkage, we see that there is a lot more spread in the distributions,
+(except for the PO relationship, as we mentioned before)
+and, consequently, a whole lot more overlap.</p>
+<p>Now, let us look at things when we use other likelihood ratios.
+For example to distinguish between Full Sibs and
+Unrelated individuals, we would use the FS/U log-likelihood ratio:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="kin-finding-lab.html#cb30-1" aria-hidden="true" tabindex="-1"></a>FS_U_gg <span class="ot">&lt;-</span> Qs_link_BIG <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="kin-finding-lab.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_logls</span>(<span class="at">numer =</span> <span class="fu">c</span>(<span class="at">FS =</span> <span class="dv">1</span>), <span class="at">denom =</span> <span class="fu">c</span>(<span class="at">U =</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="kin-finding-lab.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> logl_ratio, <span class="at">fill =</span> true_relat)) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="kin-finding-lab.html#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb30-5"><a href="kin-finding-lab.html#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;FS/U Logl Ratio&quot;</span>)</span>
+<span id="cb30-6"><a href="kin-finding-lab.html#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="kin-finding-lab.html#cb30-7" aria-hidden="true" tabindex="-1"></a>FS_U_gg</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Looking at the FS and U curves there, it is pretty clear that they are
+very well separated, but, it is also clear that if only this FS/U log-likelihood
+ratio were used, then POs would be put into the FS category.</p>
+<p>But don’t despair! If you want to distinguish PO from FS, you should use the
+PO/FS logl ratio! Here it is for distinguishing between PO and FS:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="kin-finding-lab.html#cb31-1" aria-hidden="true" tabindex="-1"></a>PO_FS_gg <span class="ot">&lt;-</span> Qs_link_BIG <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="kin-finding-lab.html#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_logls</span>(<span class="at">numer =</span> <span class="fu">c</span>(<span class="at">PO =</span> <span class="dv">1</span>), <span class="at">denom =</span> <span class="fu">c</span>(<span class="at">FS =</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="kin-finding-lab.html#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> logl_ratio, <span class="at">fill =</span> true_relat)) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="kin-finding-lab.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb31-5"><a href="kin-finding-lab.html#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;PO/FS Logl Ratio&quot;</span>)</span>
+<span id="cb31-6"><a href="kin-finding-lab.html#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="kin-finding-lab.html#cb31-7" aria-hidden="true" tabindex="-1"></a>PO_FS_gg</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Here for the hypothesis of FS versus HS:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="kin-finding-lab.html#cb32-1" aria-hidden="true" tabindex="-1"></a>FS_HS_gg <span class="ot">&lt;-</span> Qs_link_BIG <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="kin-finding-lab.html#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_logls</span>(<span class="at">numer =</span> <span class="fu">c</span>(<span class="at">FS =</span> <span class="dv">1</span>), <span class="at">denom =</span> <span class="fu">c</span>(<span class="at">HS =</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb32-3"><a href="kin-finding-lab.html#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> logl_ratio, <span class="at">fill =</span> true_relat)) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="kin-finding-lab.html#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="kin-finding-lab.html#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;FS/HS Logl Ratio&quot;</span>)</span>
+<span id="cb32-6"><a href="kin-finding-lab.html#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="kin-finding-lab.html#cb32-7" aria-hidden="true" tabindex="-1"></a>FS_HS_gg</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>And finally for HS versus HAN:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="kin-finding-lab.html#cb33-1" aria-hidden="true" tabindex="-1"></a>HS_HAN_gg <span class="ot">&lt;-</span> Qs_link_BIG <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="kin-finding-lab.html#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_logls</span>(<span class="at">numer =</span> <span class="fu">c</span>(<span class="at">HS =</span> <span class="dv">1</span>), <span class="at">denom =</span> <span class="fu">c</span>(<span class="at">HAN =</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb33-3"><a href="kin-finding-lab.html#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> logl_ratio, <span class="at">fill =</span> true_relat)) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="kin-finding-lab.html#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb33-5"><a href="kin-finding-lab.html#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;HS/HAN Logl Ratio&quot;</span>)</span>
+<span id="cb33-6"><a href="kin-finding-lab.html#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="kin-finding-lab.html#cb33-7" aria-hidden="true" tabindex="-1"></a>HS_HAN_gg</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Aha! There is some overlap between HAN and HS, so we will need to keep that in
+mind, since we don’t want to mistake any HANs for HSs.</p>
+<p>When using the HS/HAN log-likelihood ratio, we can see how many Unrelated pairs might conceivably
+get in there. We can use importance sampling when the truth is U, and we can use the distribution
+of unlinked markers for that (because linkage does not affect the distribution of the log likelihoods
+in unrelated pairs), and we can use the linked simulations for calculating the False Negative
+Rates of the half-siblings:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="kin-finding-lab.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mc_sample_simple</span>(</span>
+<span id="cb34-2"><a href="kin-finding-lab.html#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Q =</span> Qs,</span>
+<span id="cb34-3"><a href="kin-finding-lab.html#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Q_for_fnrs =</span> Qs_link_BIG,</span>
+<span id="cb34-4"><a href="kin-finding-lab.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">nu =</span> <span class="st">&quot;HS&quot;</span>,</span>
+<span id="cb34-5"><a href="kin-finding-lab.html#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">de =</span> <span class="st">&quot;HAN&quot;</span>,</span>
+<span id="cb34-6"><a href="kin-finding-lab.html#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;IS&quot;</span></span>
+<span id="cb34-7"><a href="kin-finding-lab.html#cb34-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 10
+##     FNR      FPR       se num_n…¹ Lambd…² pstar mc_me…³
+##   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  
+## 1  0.01 1.46e-27 9.86e-28   10000  -10.2  HS    IS     
+## 2  0.05 1.04e-30 8.36e-31    9993    1.05 HS    IS     
+## 3  0.1  4.32e-33 3.55e-33    9962    6.82 HS    IS     
+## 4  0.2  1.57e-38 3.90e-39    9638   13.6  HS    IS     
+## 5  0.3  2.80e-42 8.33e-43    8659   18.6  HS    IS     
+## # … with 3 more variables: numerator &lt;chr&gt;,
+## #   denominator &lt;chr&gt;, true_relat &lt;chr&gt;, and
+## #   abbreviated variable names ¹​num_nonzero_wts,
+## #   ²​Lambda_star, ³​mc_method
+## # ℹ Use `colnames()` to see all variable names</code></pre>
+<p>Good. There is clearly no chance that an unrelated individual would be incorrectly
+called an HS based on the HS/HAN log-likelihood ratio.</p>
+<p>But, what about the chance that a HAN will be mistaken for an HS? We can use
+<code>mc_sample_simple()</code> for this, and we don’t have to do any importance sampling,
+because there just aren’t that many HAN pairs (relative to the number of U pairs):</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="kin-finding-lab.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mc_sample_simple</span>(</span>
+<span id="cb36-2"><a href="kin-finding-lab.html#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Q =</span> Qs_link_BIG,</span>
+<span id="cb36-3"><a href="kin-finding-lab.html#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">nu =</span> <span class="st">&quot;HS&quot;</span>,</span>
+<span id="cb36-4"><a href="kin-finding-lab.html#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">de =</span> <span class="st">&quot;HAN&quot;</span>,</span>
+<span id="cb36-5"><a href="kin-finding-lab.html#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">tr =</span> <span class="st">&quot;HAN&quot;</span>,</span>
+<span id="cb36-6"><a href="kin-finding-lab.html#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;vanilla&quot;</span></span>
+<span id="cb36-7"><a href="kin-finding-lab.html#cb36-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 8
+##     FNR    FPR Lambda_s…¹ pstar mc_me…² numer…³ denom…⁴
+##   &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
+## 1  0.01 0.131      -10.2  NA    vanilla HS      HAN    
+## 2  0.05 0.0355       1.05 NA    vanilla HS      HAN    
+## 3  0.1  0.016        6.82 NA    vanilla HS      HAN    
+## 4  0.2  0.0047      13.6  NA    vanilla HS      HAN    
+## 5  0.3  0.0013      18.6  NA    vanilla HS      HAN    
+## # … with 1 more variable: true_relat &lt;chr&gt;, and
+## #   abbreviated variable names ¹​Lambda_star,
+## #   ²​mc_method, ³​numerator, ⁴​denominator
+## # ℹ Use `colnames()` to see all variable names</code></pre>
+<p>This suggests that if we set a threshold <span class="math inline">\(\Lambda^*_\mathrm{HS/HAN} = 6.3\)</span> then we would expect
+to be missing only about 10% of the true HS pairs, and any HAN pairs would only have a 1.7% chance
+of having a <span class="math inline">\(\Lambda_\mathrm{HS/HAN} &gt; \Lambda^*_\mathrm{HS/HAN}\)</span>. (Keeping in mind that
+these are approximations made by sprinkling loci into a pseudo-genome.)</p>
+<p>Looking at all of these is quite informative. It suggests that the order that
+we will want to pursue our kin-finding in is:</p>
+<ol style="list-style-type: decimal">
+<li>Find all PO pairs by high PO/U and also PO/FS &gt; 0.</li>
+<li>Once we have the PO pairs, we remove them from futher consideration
+and identify the FS pairs. For that we will look for pairs with FS/HS above -20 or so.
+Obviously no
+unrelateds will be anywhere near that, but we could still check that with
+the importance sampling.</li>
+<li>Once we have the PO and FS individuals we will compute the HS/HAN
+logl_ratios for the remaining pairs and then set the cutoff at what we calculated above, with
+an FNR of about 10% or 20%. But we will want to investigate the empirical
+distribution of all those values, too, to see if we can see a HAN bump.</li>
+</ol>
+</div>
+</div>
+<div id="doing-the-pairwise-comparisons" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Doing the pairwise comparisons<a href="kin-finding-lab.html#doing-the-pairwise-comparisons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Because of the ages of these individuals it is probably likely that many of them could
+not be PO are FS. Many probably would be more likely to be GP than HS, all things
+being equal, too. Some of these might be AN instead of HS.</p>
+<p>All those considerations should be taken into account in CKMR. But,
+for today, since we don’t have the metadata necessary to make those
+considerations, we will just look for kin pairs amongst all the pairs
+in the data set.</p>
+<div id="make-sure-we-dont-have-duplicate-samples-in-here" class="section level3 hasAnchor" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Make sure we don’t have duplicate samples in here<a href="kin-finding-lab.html#make-sure-we-dont-have-duplicate-samples-in-here" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Unless there is <em>a lot</em> of wonky inbreeding going on, it is unlikely that samples
+that are not <em>the same individual</em> will have close to 100% matching genotypes.</p>
+<p>Here we find all the pairs that mismatch at 500 or fewer loci out of the 2500
+that are in the data set:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="kin-finding-lab.html#cb38-1" aria-hidden="true" tabindex="-1"></a>matchers <span class="ot">&lt;-</span> <span class="fu">find_close_matching_genotypes</span>(</span>
+<span id="cb38-2"><a href="kin-finding-lab.html#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">LG =</span> long_genos,</span>
+<span id="cb38-3"><a href="kin-finding-lab.html#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">CK =</span> ckmr,</span>
+<span id="cb38-4"><a href="kin-finding-lab.html#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_mismatch =</span> <span class="dv">500</span></span>
+<span id="cb38-5"><a href="kin-finding-lab.html#cb38-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-6"><a href="kin-finding-lab.html#cb38-6" aria-hidden="true" tabindex="-1"></a>matchers</span></code></pre></div>
+<pre><code>## [1] indiv_1      indiv_2      ind1         ind2        
+## [5] num_mismatch num_loc     
+## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<p>There are none. Cool. This might be because Mark Bravington and Paul worked these
+data over pretty hard before they fell into our hands, and they did this important
+step already—either that, or these data were sampled and processed
+by incredibly fastidious people,
+and/or it is not likely that the same individual is sampled twice.</p>
+</div>
+<div id="using-the-pairwise_kin_logl_ratios-function" class="section level3 hasAnchor" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> Using the pairwise_kin_logl_ratios() function<a href="kin-finding-lab.html#using-the-pairwise_kin_logl_ratios-function" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To compare each individual’s genotype to every other individual’s genotype to compute
+the log-likelihood ratios to find
+kin pairs, we use CKMRsim’s <code>pairwise_kin_logl_ratios()</code> function. The syntax
+is pretty simple: you pass it two long-format tibbles of genotypes (like <code>long_genos</code>).
+If the data set passed in each time is the same, the function knows to order the
+observations and keep only one set of the two comparisons that are made between
+each unique sample ID in the dataset.</p>
+<p>You can specify the numerator and the denominator for the log likelihood ratios
+to be computed. (Also, the function is parallelized, but we don’t use
+that feature here, because our GitHub actions workflow that renders this
+document might not use multiple cores.)</p>
+<p>Below, we wrap the whole thing into an <code>lapply</code> so that we can run the
+<code>pairwise_kin_logl_ratios()</code> function four times, to get the different
+logl ratios: PO/U, PO/FS, FS/HS, and HS/HAN, and then present the results
+in a tidy tibble.</p>
+</div>
+<div id="doing-pairwise-comparisons-somewhat-systematically" class="section level3 hasAnchor" number="2.4.3">
+<h3><span class="header-section-number">2.4.3</span> Doing pairwise comparisons somewhat systematically<a href="kin-finding-lab.html#doing-pairwise-comparisons-somewhat-systematically" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>So, we only really have four columns to make: PO/U, PO/FS, FS/HS, and HS/HAN.
+I am going to make them all and then put them into a big data frame. The
+number of markers is the same every time.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="kin-finding-lab.html#cb40-1" aria-hidden="true" tabindex="-1"></a>pw_4_LRTs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(</span>
+<span id="cb40-2"><a href="kin-finding-lab.html#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">X =</span> <span class="fu">list</span>(</span>
+<span id="cb40-3"><a href="kin-finding-lab.html#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">POU =</span> <span class="fu">c</span>(<span class="st">&quot;PO&quot;</span>, <span class="st">&quot;U&quot;</span>),</span>
+<span id="cb40-4"><a href="kin-finding-lab.html#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">POFS =</span> <span class="fu">c</span>(<span class="st">&quot;PO&quot;</span>, <span class="st">&quot;FS&quot;</span>),</span>
+<span id="cb40-5"><a href="kin-finding-lab.html#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">FSHS =</span> <span class="fu">c</span>(<span class="st">&quot;FS&quot;</span>, <span class="st">&quot;HS&quot;</span>),</span>
+<span id="cb40-6"><a href="kin-finding-lab.html#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">HSHAN =</span> <span class="fu">c</span>(<span class="st">&quot;HS&quot;</span>, <span class="st">&quot;HAN&quot;</span>)</span>
+<span id="cb40-7"><a href="kin-finding-lab.html#cb40-7" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb40-8"><a href="kin-finding-lab.html#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb40-9"><a href="kin-finding-lab.html#cb40-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pairwise_kin_logl_ratios</span>(</span>
+<span id="cb40-10"><a href="kin-finding-lab.html#cb40-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">D1 =</span> long_genos, </span>
+<span id="cb40-11"><a href="kin-finding-lab.html#cb40-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">D2 =</span> long_genos, </span>
+<span id="cb40-12"><a href="kin-finding-lab.html#cb40-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">CK =</span> ckmr,</span>
+<span id="cb40-13"><a href="kin-finding-lab.html#cb40-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">numer =</span> x[<span class="dv">1</span>],</span>
+<span id="cb40-14"><a href="kin-finding-lab.html#cb40-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">denom =</span> x[<span class="dv">2</span>],</span>
+<span id="cb40-15"><a href="kin-finding-lab.html#cb40-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">num_cores =</span> <span class="dv">8</span></span>
+<span id="cb40-16"><a href="kin-finding-lab.html#cb40-16" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb40-17"><a href="kin-finding-lab.html#cb40-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb40-18"><a href="kin-finding-lab.html#cb40-18" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-19"><a href="kin-finding-lab.html#cb40-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb40-20"><a href="kin-finding-lab.html#cb40-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">&quot;lr_type&quot;</span></span>
+<span id="cb40-21"><a href="kin-finding-lab.html#cb40-21" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-22"><a href="kin-finding-lab.html#cb40-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> lr_type, <span class="at">values_from =</span> logl_ratio)</span></code></pre></div>
+<p>And now we can see how things compare to our simulations.</p>
+</div>
+<div id="finding-the-po-pairs" class="section level3 hasAnchor" number="2.4.4">
+<h3><span class="header-section-number">2.4.4</span> Finding the PO pairs<a href="kin-finding-lab.html#finding-the-po-pairs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>First, let’s look at all the pairs that had a PO/U logl &gt; 0.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="kin-finding-lab.html#cb41-1" aria-hidden="true" tabindex="-1"></a>topPO <span class="ot">&lt;-</span> pw_4_LRTs <span class="sc">%&gt;%</span></span>
+<span id="cb41-2"><a href="kin-finding-lab.html#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(POU)) <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="kin-finding-lab.html#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(POU <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb41-4"><a href="kin-finding-lab.html#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="kin-finding-lab.html#cb41-5" aria-hidden="true" tabindex="-1"></a>topPO</span></code></pre></div>
+<pre><code>## # A tibble: 11 × 7
+##    D2_indiv  D1_in…¹ num_loc   POU   POFS    FSHS HSHAN
+##    &lt;chr&gt;     &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 EB19GAM0… EB19GA…    2569  472.  83.6   71.1   132. 
+##  2 EB19GAM0… EB19GA…    2569  468.  87.9   61.5   130. 
+##  3 EB15GAM0… EB15GA…    2569  452.  72.4   68.0   126. 
+##  4 EB15GAM0… EB15GA…    2569  396.  80.0   24.9   116. 
+##  5 EB12PH024 EB19PH…    2569  385.  42.0   33.1   127. 
+##  6 EB18GAM0… EB18GA…    2569  297. -38.3   35.2   119. 
+##  7 SAV-004-… SAV-00…    2569  293.  -2.02  22.0   105. 
+##  8 EB17GAM0… EB17GA…    2569  261.  27.8  -23.4    98.1
+##  9 EB13PH031 EB15PH…    2569  256. -11.6   -4.07  105. 
+## 10 EB12GAM0… EB12GA…    2569  201. -60.4    0.435 100. 
+## 11 EB15GAM0… EB15GA…    2569  177.  -5.98 -48.9    87.4
+## # … with abbreviated variable name ¹​D1_indiv</code></pre>
+<p>We can plot those pairs against the simulated PO/U logls that
+we made previously.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="kin-finding-lab.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">54</span>) <span class="co"># for the jittering</span></span>
+<span id="cb43-2"><a href="kin-finding-lab.html#cb43-2" aria-hidden="true" tabindex="-1"></a>PO_U_gg <span class="sc">+</span></span>
+<span id="cb43-3"><a href="kin-finding-lab.html#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(</span>
+<span id="cb43-4"><a href="kin-finding-lab.html#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> topPO,</span>
+<span id="cb43-5"><a href="kin-finding-lab.html#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> POU, <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.002</span>, <span class="at">colour =</span> POFS <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
+<span id="cb43-6"><a href="kin-finding-lab.html#cb43-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="dv">0</span>, </span>
+<span id="cb43-7"><a href="kin-finding-lab.html#cb43-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">height =</span> <span class="fl">0.001</span>, </span>
+<span id="cb43-8"><a href="kin-finding-lab.html#cb43-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">NA</span>,</span>
+<span id="cb43-9"><a href="kin-finding-lab.html#cb43-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">21</span></span>
+<span id="cb43-10"><a href="kin-finding-lab.html#cb43-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>The points below the <span class="math inline">\(y=0\)</span> line are the PO/U logls for those 11 pairs.
+They are colored green if their PO/FS logl is greater than 0.</p>
+<p>From this we see 5 pairs that look like solid PO pairs. Those 5, on average
+have lower PO/U logls than we would have expected from the simulations, which is
+possibly due to the genotyping error rate in the data being higher than the values
+that we specified.</p>
+<p>There is something wonky thing going on with the 6th green point.
+I thought at first that maybe it was inbred
+full siblings, but then it would have a higher FSHS. Weird. But, for now,
+we will call all 6 of those PO pairs, but I would be pretty skeptical about
+that 6th one.</p>
+<p>Here we create a table of likely PO pairs:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="kin-finding-lab.html#cb44-1" aria-hidden="true" tabindex="-1"></a>likelyPO <span class="ot">&lt;-</span> topPO <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="kin-finding-lab.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(POFS <span class="sc">&gt;</span> <span class="dv">20</span>)</span></code></pre></div>
+</div>
+<div id="finding-full-sibling-pairs" class="section level3 hasAnchor" number="2.4.5">
+<h3><span class="header-section-number">2.4.5</span> Finding full sibling pairs<a href="kin-finding-lab.html#finding-full-sibling-pairs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To do this, we take the remaining pairs and look at their FS/HS logl values, let’s start
+by taking anything with an FS/HS logl &gt; -20.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="kin-finding-lab.html#cb45-1" aria-hidden="true" tabindex="-1"></a>topFS <span class="ot">&lt;-</span> pw_4_LRTs <span class="sc">%&gt;%</span></span>
+<span id="cb45-2"><a href="kin-finding-lab.html#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(likelyPO, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;D2_indiv&quot;</span>, <span class="st">&quot;D1_indiv&quot;</span>)) <span class="sc">%&gt;%</span>  <span class="co"># remove the PO pairs </span></span>
+<span id="cb45-3"><a href="kin-finding-lab.html#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(FSHS)) <span class="sc">%&gt;%</span></span>
+<span id="cb45-4"><a href="kin-finding-lab.html#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(FSHS <span class="sc">&gt;</span> <span class="sc">-</span><span class="dv">20</span>)</span>
+<span id="cb45-5"><a href="kin-finding-lab.html#cb45-5" aria-hidden="true" tabindex="-1"></a>topFS</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 7
+##   D2_indiv   D1_indiv num_loc   POU   POFS   FSHS HSHAN
+##   &lt;chr&gt;      &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1 EB18GAM019 EB18GAM…    2569  297. -38.3  35.2    119.
+## 2 SAV-004-04 SAV-007…    2569  293.  -2.02 22.0    105.
+## 3 EB12GAM005 EB12GAM…    2569  201. -60.4   0.435  100.
+## 4 EB13PH031  EB15PH0…    2569  256. -11.6  -4.07   105.</code></pre>
+<p>That is only four individuals. Let’s see where they fall out against the simulated
+distribution:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="kin-finding-lab.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">54</span>) <span class="co"># for the jittering</span></span>
+<span id="cb47-2"><a href="kin-finding-lab.html#cb47-2" aria-hidden="true" tabindex="-1"></a>FS_HS_gg <span class="sc">+</span></span>
+<span id="cb47-3"><a href="kin-finding-lab.html#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(</span>
+<span id="cb47-4"><a href="kin-finding-lab.html#cb47-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> topFS,</span>
+<span id="cb47-5"><a href="kin-finding-lab.html#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> FSHS, <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.002</span>),</span>
+<span id="cb47-6"><a href="kin-finding-lab.html#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="dv">0</span>, </span>
+<span id="cb47-7"><a href="kin-finding-lab.html#cb47-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">height =</span> <span class="fl">0.001</span>, </span>
+<span id="cb47-8"><a href="kin-finding-lab.html#cb47-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">NA</span>,</span>
+<span id="cb47-9"><a href="kin-finding-lab.html#cb47-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">21</span></span>
+<span id="cb47-10"><a href="kin-finding-lab.html#cb47-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>So, that is four individuals that look like full siblings (since PO has
+already been removed). Once again, their FS/HS logl values are trending
+a little lower than what we expect, which might intimate that our model
+for the genetic data (genotyping error rates) might not be spot on.</p>
+<p>But those four individuals still look like full-siblings.</p>
+</div>
+<div id="looking-for-half-siblings" class="section level3 hasAnchor" number="2.4.6">
+<h3><span class="header-section-number">2.4.6</span> Looking for half-siblings<a href="kin-finding-lab.html#looking-for-half-siblings" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>So, finally let’s start looking for half-siblings.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="kin-finding-lab.html#cb48-1" aria-hidden="true" tabindex="-1"></a>remaining <span class="ot">&lt;-</span> pw_4_LRTs <span class="sc">%&gt;%</span></span>
+<span id="cb48-2"><a href="kin-finding-lab.html#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(<span class="fu">bind_rows</span>(likelyPO, topFS), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;D2_indiv&quot;</span>, <span class="st">&quot;D1_indiv&quot;</span>))</span></code></pre></div>
+<p>We can have a look at the bumps we might see on the extreme right end of the
+unrelated distribution and then the others.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="kin-finding-lab.html#cb49-1" aria-hidden="true" tabindex="-1"></a>all_HSHAN_logsl <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(remaining, <span class="fu">aes</span>(<span class="at">x =</span> HSHAN)) <span class="sc">+</span> </span>
+<span id="cb49-2"><a href="kin-finding-lab.html#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>)</span></code></pre></div>
+<p>Plot all of them:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="kin-finding-lab.html#cb50-1" aria-hidden="true" tabindex="-1"></a>all_HSHAN_logsl <span class="sc">+</span></span>
+<span id="cb50-2"><a href="kin-finding-lab.html#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;All Remaining Pairs&quot;</span>)</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>So, the HSHAN logls of almost all of the remaining pairs are quite low.
+But, let us have a look at the extreme right edge there:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="kin-finding-lab.html#cb51-1" aria-hidden="true" tabindex="-1"></a>all_HSHAN_logsl <span class="sc">+</span></span>
+<span id="cb51-2"><a href="kin-finding-lab.html#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">45</span>, <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb51-3"><a href="kin-finding-lab.html#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Pairs with HSHAN &gt; -45&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: Removed 1100179 rows containing non-finite values
+## (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values
+## (geom_bar).</code></pre>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>Aha! There are probably some half-sibling pairs.
+There are also probably some half-aunt-niece pairs
+in there. Let’s look at all of those as points.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="kin-finding-lab.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">52</span>)</span>
+<span id="cb54-2"><a href="kin-finding-lab.html#cb54-2" aria-hidden="true" tabindex="-1"></a>HS_HAN_gg <span class="sc">+</span> </span>
+<span id="cb54-3"><a href="kin-finding-lab.html#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(</span>
+<span id="cb54-4"><a href="kin-finding-lab.html#cb54-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> remaining <span class="sc">%&gt;%</span> <span class="fu">filter</span>(HSHAN <span class="sc">&gt;</span> <span class="sc">-</span><span class="dv">65</span>),</span>
+<span id="cb54-5"><a href="kin-finding-lab.html#cb54-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> HSHAN, <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.02</span>),</span>
+<span id="cb54-6"><a href="kin-finding-lab.html#cb54-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="dv">0</span>, </span>
+<span id="cb54-7"><a href="kin-finding-lab.html#cb54-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">height =</span> <span class="fl">0.01</span>, </span>
+<span id="cb54-8"><a href="kin-finding-lab.html#cb54-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">NA</span>,</span>
+<span id="cb54-9"><a href="kin-finding-lab.html#cb54-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">21</span></span>
+<span id="cb54-10"><a href="kin-finding-lab.html#cb54-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb54-11"><a href="kin-finding-lab.html#cb54-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">65</span>, <span class="dv">125</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="fl">0.04</span>))</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>Ooh! That is a pretty neat way to look at it. With over roughly a million unrelated pairs,
+in total, we see that quite a few of them are on the far right edge of the distribution
+for the unrelated pairs. Then a smattering of individuals in the HAN region, and then
+a sizable break after <span class="math inline">\(x=0\)</span> till a cluster of points that are right in the middle
+of what is expected for half siblings. Finally there is one individual way to
+the right, that is not really where you would expect a half-sibling to sit.</p>
+<p>We can look at all of those, and we find 18 likely half-sibs, and one
+that is probably a PO pair, but may involve some inbreeding:</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="kin-finding-lab.html#cb55-1" aria-hidden="true" tabindex="-1"></a>remaining <span class="sc">%&gt;%</span> </span>
+<span id="cb55-2"><a href="kin-finding-lab.html#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(HSHAN <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb55-3"><a href="kin-finding-lab.html#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(HSHAN) <span class="sc">%&gt;%</span></span>
+<span id="cb55-4"><a href="kin-finding-lab.html#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_data_frame</span>()</span></code></pre></div>
+<pre><code>## Warning: `as_data_frame()` was deprecated in tibble 2.0.0.
+## ℹ Please use `as_tibble()` instead.
+## ℹ The signature and semantics have changed, see
+##   `?as_tibble`.</code></pre>
+<pre><code>## # A tibble: 19 × 7
+##    D2_indiv  D1_in…¹ num_loc   POU    POFS   FSHS HSHAN
+##    &lt;chr&gt;     &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+##  1 EB12GAM0… EB14GA…    2569 -309. -221.   -161.   9.14
+##  2 EB16GAM0… EB17GA…    2569 -341. -253.   -172.  11.3 
+##  3 EB13GAM0… EB16PH…    2569 -395. -326.   -155.  13.2 
+##  4 EB15GAM0… EB15GA…    2569 -321. -251.   -155.  14.7 
+##  5 EB17PH043 SH-G19…    2569 -412. -346.   -160.  15.7 
+##  6 EB17PH037 SH-S26…    2569 -450. -393.   -151.  16.8 
+##  7 EB20GAM0… SH-055…    2569 -294. -241.   -139.  17.0 
+##  8 2011BS25  EB10PH…    2569 -351. -290.   -151.  17.1 
+##  9 DIO-036-… EB12SH…    2569 -301. -230.   -164.  18.7 
+## 10 EB10DIO0… UNK11G…    2569 -314. -251.   -156.  19.5 
+## 11 SH-S04-05 SH-S15…    2569 -286. -231.   -144.  19.5 
+## 12 EB09GAM0… EB17GA…    2569 -238. -196.   -132.  20.7 
+## 13 EB08NOM0… EB09SH…    2569 -311. -268.   -140.  21.4 
+## 14 EB05KVL0… EB11PH…    2569 -283. -238.   -142.  21.7 
+## 15 EB13GAM0… EB19GA…    2569 -325. -270.   -163.  24.1 
+## 16 2011BS7   EB06PH…    2569 -314. -281.   -141.  25.0 
+## 17 2012BS13  EB09SH…    2569 -212. -192.   -135.  30.8 
+## 18 EB12PH022 EB16PH…    2569 -324. -360.   -101.  36.9 
+## 19 EB15GAM0… EB15GA…    2569  177.   -5.98  -48.9 87.4 
+## # … with abbreviated variable name ¹​D1_indiv</code></pre>
+<p>Once we have done this initial round of kin-finding, we would typically go back and check it with
+the meta data. Keeping in mind that individuals in the HS categories could be
+grandparent-grandchild, or, much less likely, full-aunt-niece.</p>
+</div>
+</div>
+<div id="conclusion" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Conclusion<a href="kin-finding-lab.html#conclusion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>One big take-home message here is that it takes a lot of good genetic
+markers to be able to reliably distinguish half-siblings from
+half-aunt niece relationships. This is a tremendously robust data
+set, and the distinction between those groups seems reasonably clear,
+but with fewer markers it would be a lot harder.</p>
+<p>Don’t sell yourself short on the genetic markers!!</p>
+
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-fay1967cytogenetic" class="csl-entry">
+Fay FH, Rausch VR, Feltz ET (1967) Cytogenetic comparison of some pinnipeds (mammalia: eutheria). <em>Canadian Journal of Zoology</em>, <strong>45</strong>, 773–778.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ckmr-thought-experiments-and-labs.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook/js/app.min.js"></script>
+<script src="libs/gitbook/js/clipboard.min.js"></script>
+<script src="libs/gitbook/js/plugin-search.js"></script>
+<script src="libs/gitbook/js/plugin-sharing.js"></script>
+<script src="libs/gitbook/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook/js/jquery.highlight.js"></script>
+<script src="libs/gitbook/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/eriqande/tws-ckmr-2022/edit/master/003-kin-finding-lab.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": "https://github.com/eriqande/tws-ckmr-2022/commits/master/003-kin-finding-lab.Rmd",
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["tws-ckmr-2022.pdf", "tws-ckmr-2022.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

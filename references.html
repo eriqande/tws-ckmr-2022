@@ -23,7 +23,7 @@
 <meta name="author" content="Paul B. Conn and Eric C. Anderson" />
 
 
-<meta name="date" content="2022-10-26" />
+<meta name="date" content="2022-10-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -49,25 +49,24 @@
 
 
 
-<script src="libs/accessible-code-block/empty-anchor.js"></script>
 <link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -87,13 +86,13 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -106,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -120,6 +119,28 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
@@ -137,10 +158,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">TWS-CKMR-2022</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Overview</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Overview</a>
+<ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#workshop-schedule"><i class="fa fa-check"></i>Workshop schedule</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#resources"><i class="fa fa-check"></i>Resources</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#setting-computer"><i class="fa fa-check"></i>Setting up your computer</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#setting-computer"><i class="fa fa-check"></i>Setting up your computer</a>
+<ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#step-1.-install-recent-versions-of-r-and-rstudio"><i class="fa fa-check"></i>Step 1. Install recent versions of R and RStudio</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#step-2.-make-sure-that-you-have-git-installed-on-your-system"><i class="fa fa-check"></i>Step 2. Make sure that you have <code>git</code> installed on your system</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#step-3.-get-the-workshop-materials-from-github-with-rstudio"><i class="fa fa-check"></i>Step 3. Get the workshop materials from GitHub with RStudio</a></li>
@@ -149,31 +172,56 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#a-word-about-the-renv-package"><i class="fa fa-check"></i>A word about the ‘renv’ package</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#a-word-about-the-tmb-package"><i class="fa fa-check"></i>A word about the TMB package</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html"><i class="fa fa-check"></i><b>1</b> CKMR thought experiments and labs</a><ul>
+<li class="chapter" data-level="1" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html"><i class="fa fa-check"></i><b>1</b> CKMR thought experiments and labs</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#afternoon-schedule"><i class="fa fa-check"></i><b>1.1</b> Afternoon schedule</a></li>
-<li class="chapter" data-level="1.2" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#thought-experiments"><i class="fa fa-check"></i><b>1.2</b> Thought experiments</a><ul>
+<li class="chapter" data-level="1.2" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#thought-experiments"><i class="fa fa-check"></i><b>1.2</b> Thought experiments</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#thought-experiment-1"><i class="fa fa-check"></i><b>1.2.1</b> Thought experiment 1</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><i class="fa fa-check"></i><b>2</b> Simulation and Inference Play with Hillary et al.’s White Shark CKMR example</a><ul>
-<li class="chapter" data-level="2.1" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#simulating-from-their-inferential-model"><i class="fa fa-check"></i><b>2.1</b> Simulating from their inferential model</a></li>
-<li class="chapter" data-level="2.2" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#an-r-function-to-compute-the-negative-log-likelihood"><i class="fa fa-check"></i><b>2.2</b> An R function to compute the negative log-likelihood</a></li>
-<li class="chapter" data-level="2.3" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#evaluate-the-likelihood-with-tmb"><i class="fa fa-check"></i><b>2.3</b> Evaluate the likelihood with TMB</a></li>
-<li class="chapter" data-level="2.4" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#visualize-those-log-likelihood-values"><i class="fa fa-check"></i><b>2.4</b> Visualize those log likelihood values</a></li>
-<li class="chapter" data-level="2.5" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#omg-lets-investigate-the-tmbstan-package"><i class="fa fa-check"></i><b>2.5</b> OMG! Let’s investigate the tmbstan package!</a></li>
+<li class="chapter" data-level="2" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html"><i class="fa fa-check"></i><b>2</b> Kin-finding lab</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#looking-at-the-genetic-data-and-pivoting-it"><i class="fa fa-check"></i><b>2.1</b> Looking at the genetic data and pivoting it</a></li>
+<li class="chapter" data-level="2.2" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#kin-finding-power-analysis-assuming-no-physical-linkage"><i class="fa fa-check"></i><b>2.2</b> Kin finding power analysis assuming no physical linkage</a></li>
+<li class="chapter" data-level="2.3" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#power-for-kin-finding-while-accounting-for-physical-linkage"><i class="fa fa-check"></i><b>2.3</b> Power for kin-finding while accounting for physical linkage</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#make-a-pseudo-genome-for-these-critters"><i class="fa fa-check"></i><b>2.3.1</b> Make a pseudo genome for these critters</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html"><i class="fa fa-check"></i><b>3</b> Design of CKMR Experiments</a><ul>
-<li class="chapter" data-level="3.1" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#white-shark-design-example"><i class="fa fa-check"></i><b>3.1</b> White shark design example</a><ul>
-<li class="chapter" data-level="3.1.1" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#fisher-information-ideas"><i class="fa fa-check"></i><b>3.1.1</b> Fisher information ideas</a></li>
-<li class="chapter" data-level="3.1.2" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#calculating-expected-data-under-different-design-scenarios"><i class="fa fa-check"></i><b>3.1.2</b> Calculating expected data under different design scenarios</a></li>
-<li class="chapter" data-level="3.1.3" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#calculating-expected-variance-under-different-design-scenarios"><i class="fa fa-check"></i><b>3.1.3</b> Calculating expected variance under different design scenarios</a></li>
+<li class="chapter" data-level="2.4" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#doing-the-pairwise-comparisons"><i class="fa fa-check"></i><b>2.4</b> Doing the pairwise comparisons</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#make-sure-we-dont-have-duplicate-samples-in-here"><i class="fa fa-check"></i><b>2.4.1</b> Make sure we don’t have duplicate samples in here</a></li>
+<li class="chapter" data-level="2.4.2" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#using-the-pairwise_kin_logl_ratios-function"><i class="fa fa-check"></i><b>2.4.2</b> Using the pairwise_kin_logl_ratios() function</a></li>
+<li class="chapter" data-level="2.4.3" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#doing-pairwise-comparisons-somewhat-systematically"><i class="fa fa-check"></i><b>2.4.3</b> Doing pairwise comparisons somewhat systematically</a></li>
+<li class="chapter" data-level="2.4.4" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#finding-the-po-pairs"><i class="fa fa-check"></i><b>2.4.4</b> Finding the PO pairs</a></li>
+<li class="chapter" data-level="2.4.5" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#finding-full-sibling-pairs"><i class="fa fa-check"></i><b>2.4.5</b> Finding full sibling pairs</a></li>
+<li class="chapter" data-level="2.4.6" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#looking-for-half-siblings"><i class="fa fa-check"></i><b>2.4.6</b> Looking for half-siblings</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#bearded-seal-simulation-study"><i class="fa fa-check"></i><b>3.2</b> Bearded seal simulation study</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#setting-up-simulations-population-dynamics"><i class="fa fa-check"></i><b>3.2.1</b> Setting up simulations: Population dynamics</a></li>
-<li class="chapter" data-level="3.2.2" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#setting-up-simulations-ckmrpop"><i class="fa fa-check"></i><b>3.2.2</b> Setting up simulations: CKMRpop</a></li>
-<li class="chapter" data-level="3.2.3" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#formatting-data-for-estimation"><i class="fa fa-check"></i><b>3.2.3</b> Formatting data for estimation</a></li>
-<li class="chapter" data-level="3.2.4" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#fitting-the-ckmr-model"><i class="fa fa-check"></i><b>3.2.4</b> Fitting the CKMR model</a></li>
-<li class="chapter" data-level="3.2.5" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#thought-experiment"><i class="fa fa-check"></i><b>3.2.5</b> Thought experiment</a></li>
+<li class="chapter" data-level="2.5" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#conclusion"><i class="fa fa-check"></i><b>2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><i class="fa fa-check"></i><b>3</b> Simulation and Inference Play with Hillary et al.’s White Shark CKMR example</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#simulating-from-their-inferential-model"><i class="fa fa-check"></i><b>3.1</b> Simulating from their inferential model</a></li>
+<li class="chapter" data-level="3.2" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#an-r-function-to-compute-the-negative-log-likelihood"><i class="fa fa-check"></i><b>3.2</b> An R function to compute the negative log-likelihood</a></li>
+<li class="chapter" data-level="3.3" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#evaluate-the-likelihood-with-tmb"><i class="fa fa-check"></i><b>3.3</b> Evaluate the likelihood with TMB</a></li>
+<li class="chapter" data-level="3.4" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#visualize-those-log-likelihood-values"><i class="fa fa-check"></i><b>3.4</b> Visualize those log likelihood values</a></li>
+<li class="chapter" data-level="3.5" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#omg-lets-investigate-the-tmbstan-package"><i class="fa fa-check"></i><b>3.5</b> OMG! Let’s investigate the tmbstan package!</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html"><i class="fa fa-check"></i><b>4</b> Design of CKMR Experiments</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#white-shark-design-example"><i class="fa fa-check"></i><b>4.1</b> White shark design example</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#fisher-information-ideas"><i class="fa fa-check"></i><b>4.1.1</b> Fisher information ideas</a></li>
+<li class="chapter" data-level="4.1.2" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#calculating-expected-data-under-different-design-scenarios"><i class="fa fa-check"></i><b>4.1.2</b> Calculating expected data under different design scenarios</a></li>
+<li class="chapter" data-level="4.1.3" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#calculating-expected-variance-under-different-design-scenarios"><i class="fa fa-check"></i><b>4.1.3</b> Calculating expected variance under different design scenarios</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#bearded-seal-simulation-study"><i class="fa fa-check"></i><b>4.2</b> Bearded seal simulation study</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#setting-up-simulations-population-dynamics"><i class="fa fa-check"></i><b>4.2.1</b> Setting up simulations: Population dynamics</a></li>
+<li class="chapter" data-level="4.2.2" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#setting-up-simulations-ckmrpop"><i class="fa fa-check"></i><b>4.2.2</b> Setting up simulations: CKMRpop</a></li>
+<li class="chapter" data-level="4.2.3" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#formatting-data-for-estimation"><i class="fa fa-check"></i><b>4.2.3</b> Formatting data for estimation</a></li>
+<li class="chapter" data-level="4.2.4" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#fitting-the-ckmr-model"><i class="fa fa-check"></i><b>4.2.4</b> Fitting the CKMR model</a></li>
+<li class="chapter" data-level="4.2.5" data-path="design-of-ckmr-experiments.html"><a href="design-of-ckmr-experiments.html#thought-experiment"><i class="fa fa-check"></i><b>4.2.5</b> Thought experiment</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -200,15 +248,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="references" class="section level1 unnumbered hasAnchor">
 <h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 
-<div id="refs" class="references">
-<div>
-<p>Hillary R, Bravington M, Patterson T <em>et al.</em> (2018) Genetic relatedness reveals total population size of white sharks in eastern australia and new zealand. <em>Scientific reports</em>, <strong>8</strong>, 1–9.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div class="csl-entry">
+Fay FH, Rausch VR, Feltz ET (1967) Cytogenetic comparison of some pinnipeds (mammalia: eutheria). <em>Canadian Journal of Zoology</em>, <strong>45</strong>, 773–778.
 </div>
-<div>
-<p>Kendall BE, Fujiwara M, Diaz-Lopez J <em>et al.</em> (2019) Persistent problems in the construction of matrix population models. <em>Ecological modelling</em>, <strong>406</strong>, 33–43.</p>
+<div class="csl-entry">
+Hillary R, Bravington M, Patterson T <em>et al.</em> (2018) Genetic relatedness reveals total population size of white sharks in eastern australia and new zealand. <em>Scientific reports</em>, <strong>8</strong>, 1–9.
 </div>
-<div>
-<p>Trukhanova IS, Conn PB, Boveng PL (2018) Taxonomy-based hierarchical analysis of natural mortality: Polar and subpolar phocid seals. <em>Ecology and evolution</em>, <strong>8</strong>, 10530–10541.</p>
+<div class="csl-entry">
+Kendall BE, Fujiwara M, Diaz-Lopez J <em>et al.</em> (2019) Persistent problems in the construction of matrix population models. <em>Ecological modelling</em>, <strong>406</strong>, 33–43.
+</div>
+<div class="csl-entry">
+Trukhanova IS, Conn PB, Boveng PL (2018) Taxonomy-based hierarchical analysis of natural mortality: Polar and subpolar phocid seals. <em>Ecology and evolution</em>, <strong>8</strong>, 10530–10541.
 </div>
 </div>
 </div>
