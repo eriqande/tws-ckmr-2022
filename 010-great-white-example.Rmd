@@ -1,30 +1,55 @@
 # Simulation and Inference Play with Hillary et al.'s White Shark CKMR example
 
+```{r libraries_and_more, echo=FALSE, results='hide', message=FALSE}
+cache_chunks = TRUE
+```
+
 Here we explore the models used in @hillary2018genetic to estimate abundance of white
 sharks in Australia.  Looking through the paper, I didn't
 find any direct mention of a public repository of data that was used in the paper,
 nor any repository of code for their analyses. So, we are just going to simulate
-some data here from their model (first just from their inference model, and maybe later
-we will do so with a simple individual-based-model) so that we have something to work with.
+some data here to play with.
+
+While it would be customary to simulate data from a full, age-structured
+demographic model, we are, instead, going to simulate kin-pair data from
+the model that they use for inference.
 One nice thing about simulating from their inference model is that doing so offers a good
-way to gain a better understanding their inference model.
+way to gain a better understanding of that inference model.
 
+In a later session we will confront data simulated from a forward-in-time, age-structured
+population simulation.
 
+The main goal of this session is to explore the properties of a simple
+inference model for CKMR, and also to become familiar with the 'TMB'
+and 'tmbstan' R packages.
 
-## Simulating from their inferential model 
-
-They start with a demographic model of exponential growth:
-$$
-N_t^A = N_\mathrm{init}e^{\lambda t}
-$$
-where $N_t^A$ is the number of adults at time $t$ and $N_\mathrm{init}$ is the initial number
-of adults (at time $t = 0$). $\lambda$ is an exponential growth rate.  
-
-Here, we define a function to calculate $N_t^A$:
-```{r, message=FALSE, warning=FALSE}
+We will start off by loading the R packages that we need for this session.
+```{r, message=FALSE}
 library(tidyverse)
 library(microbenchmark)
 library(TMB)
+library(tmbstan)
+library(shinystan)
+```
+
+## Simulating from the inferential model 
+
+### Exponential growth model
+
+The authors start with an exponential growth (or decline) model
+for the number of adults:
+$$
+N_t^A = N_0^Ae^{\lambda t}
+$$
+where $N_t^A$ is the number of adults at time $t$ and $N_0^A$ is the initial number
+of adults (at time $t = 0$). $\lambda$ is an exponential growth rate.  
+
+In practice, time is often translated
+so that $t = 0$ corresponds to the birth year of the oldest second-born
+member of a pair in the data set.
+
+Here, we define a function to calculate $N_t^A$:
+```{r, message=FALSE, warning=FALSE}
 
 #' calculate the number of adults at time t, given exponential growth or decline
 #' @param N0 number of adults at time 0
@@ -37,7 +62,7 @@ N_adults <- function(N0, t, lambda) {
 
 Let's see what that would look like over 60 years, starting from a few different $N_\mathrm{init}$
 values and growing/shrinking at a range of values.
-```{r simN,cache=TRUE}
+```{r simN}
 A_traj <- expand_grid(
   Ninit = c(600, 800, 1000, 1200, 1500, 2000), 
   lambda = seq(-0.03, 0.03, by = 0.01)
@@ -55,9 +80,102 @@ ggplot(A_traj, aes(x = year, y = num_adults, colour = factor(lambda))) +
 
 ```
 
+
+### Model for kin pairs
+
+We imagine that $n$ young (ages 3 to 8) sharks get sampled each year, and we will assume that 
+they can be accurately aged.  So, for each sampled individual, we know its age. 
+
+To make CKMR inference we will investigate the kin-pair relationship (if any) of
+each pair of samples, focusing on half-sibling pairs. In order to minimize the effect of 
+correlated survival of individuals
+in shared environments, we will restrict out attention only to pairs of individuals that
+were born in different years.
+
+In doing CKMR it is helpful to order each pair of samples
+by age, so that each pair includes a _first-born member_ and a
+_second-born member_.  We will be using the terms "first-born" and 
+"second-born" a lot to describe these to members of each pair. 
+
+For the purposes of CKMR, here, the most important feature/covariate of
+each individual is the year that it was born.  We will denote this
+by $c_1$ and $c_2$ (think $c$ for cohort) for the first-born and second-born
+of each pair, respectively.
+
+We further assume that there is an equal sex ratio amongst the adults,
+so that, if there are $N^A_t$ adults at time $t$, that means there are
+$N^A_t/2$ adult males and $N^A_t/2$ adult females at time $t$.
+
+To formulate a CKMR pseudo-likelihood using half-sibling pairs (as was done by
+@hillary2018genetic) requires that we derive the probability that a pair of samples
+with birth years $c_1$ and $c_2$ are half-siblings.  A pair can be half-siblings
+either through their mother (maternal half siblings) or through their
+father (paternal half siblings).  These events are disjoint (though not
+necessarily independent---in strictly monogamous species every paternal half sibling
+is a maternal half sibling, because sibling is a full sibling), so they can
+be thought of as separate "chances" to be a half sibling.  
+
+In order for a pair to be maternal half siblings here is what must happen:
+
+1. A particular female must give birth to the first-born at time $c_1$. This
+happens with probability 1, because every individual has a mother.
+2. That particular female must survive from year $c_1$ to year $c_2$ so that it could
+be a part of the $N_{c_2}^A/2$ females that were available to give birth to
+the second-born.
+3. Given that the female survived, the probability that she is the one female
+amongst the $N_{c_2}^A/2$ females available to produce offspring born in year
+$c_2$ is $\frac{1}{N_{c_2}^A/2} = 2/N_{c_2}^A$.
+
+It is worth noting that in the @hillary2018genetic formulation, (3) has the
+probability that it does because it is assumed that every adult female shark has the
+same expected relative reproductive output.  This is reasonable for sharks whose
+fecundity does not depend greatly on body size.  It becomes more challenging in
+cases where fecundity varies with size or age of the fish, because, in that case,
+if the first-born was born to a large, old female that survives to year $c_2$, then,
+since that large female will produce proportionally more offspring at $c_2$, the
+probability of the pair being half-siblings is higher than if they were born to
+a young/small female.  (This is further complicated by the fact that the age
+of the parent of each sample is not typically knowable.)
+
+Also apparent from the above formulation in (2) is that we have to be able to
+calculate the probability that a female survives from year $c_1$ to $c_2$.  This
+requires that we include in our model an annual adult survival rate.  In the case of
+@hillary2018genetic, this applies to both adult males and adult females and we will
+denote it by $\phi_A$.  So the probability that an adult survives from year $c_1$ to
+year $c_2$ is $\phi_A^{c_2 - c_1}$.  
+
+From the foregoing, we can derive that the probability that a pair of samples
+are maternal half-siblings, given the model in @hillary2018genetic is:
+$$
+\phi_A^{c_2 - c_1}\frac{2}{N^A_{c_2}}.
+$$
+
+It is worth looking at that and keeping in mind that the part that depends on the
+population size always depends on the number of adults _at time of the
+second-born's birth_, and not at the time of the first-born's birth.
+
+The foregoing were the calculations for being a maternal half sibling, but
+each pair also has a separate chance of being a paternal half sibling, which
+is the same in this model used by @hillary2018genetic.  Since the events
+of being a maternal half sibling and paternal half sibling are disjoint, and
+because we assume that we don't find any full-siblings born in different years,
+we can add the maternal and paternal half-sibling probabilities together to
+get the overal probability that a pair is a half-sibling pair:
+$$
+P(\mathrm{HSP} | c_1, c_2) = \phi_A^{c_2 - c_1}\frac{4}{N^A_{c_2}}.
+$$
+
+### Simulating from the model for kin pairs
+
 Now we are going to write a function to simulate sampled pairs from
 such a population, and then we will simulate some of them to be half-siblings
 according to the probabilities in their inferential model.
+
+We simulate `npy` samples from years `Slo` to `Shi` inclusive.  We simulate
+the age of each sample by randomly drawing from a vector of weights for each age,
+and then we form all pairs of samples and, for each pair, calculate the probability
+that it is an HSP or not.  Then, from that probability, we simulate whether
+or not it is an HSP.
 
 ```{r}
 #' simulate sampling n sharks a year from year Slo to Shi and return all the sample pairs
@@ -86,6 +204,7 @@ simulate_pairs <- function(
   phiA = 0.94
 ) {
   
+  # get the number of adults each year
   A_traj <- tibble(
     year = 0:Thi
   ) %>%
@@ -93,6 +212,11 @@ simulate_pairs <- function(
       num_adults = N_adults(N0, year, lambda)
     )
   
+  
+  # sample npy individuals each year from Slo to Shi, and assign an age
+  # to each. From that age and the sampling year, calculate the year it
+  # was born in.  Then join on for each sample, the number of adults present
+  # at the time it was born.
   samples <- tibble(
     samp_year = rep(Slo:Shi, each=npy)
   ) %>%
@@ -103,30 +227,42 @@ simulate_pairs <- function(
     left_join(A_traj, by = c("born_year" = "year"))
   
     
+  # now we form all the possible pairs of those samples
   n <- nrow(samples)
   s1 <- samples[rep(1:n, each = n),]
   s2 <- samples[rep(1:n, times = n),]
   names(s2) <- paste0(names(s2), ".old")
   
+  # and we keep only the pairs that were born in different years, and we
+  # enforce an ordering such that the first-born is the "old" one that
+  # was born in born_year.old (i.e. c1) and the younger one was born in 
+  # born_year (i.e. c2)
   pairs <- bind_cols(s1, s2) %>%
     filter(born_year.old < born_year) %>%
-    mutate(
+    mutate( # here we simulate whether each pair is an HSP or not by simulating
+            # a Bernoulli random variable for each pair with success probability
+            # of P(HSP | c1, c2).
       age_diff = born_year - born_year.old,
       HSP_prob = (4/num_adults) * (phiA ^ (born_year - born_year.old)),
       isHSP = rbernoulli(n(), p = HSP_prob)
     )
   
+  
+  # As is often done in CKMR, we can summarize the kin pair data by
+  # counting up the number of kin pairs and non-kin pairs in each category
+  # defined by different sets of covariates.  In this case different c1 and
+  # c2, though it is defined here in terms of c2 and the age difference.
   pair_counts <- pairs %>%
     count(born_year, age_diff, HSP_prob, isHSP) %>%
     pivot_wider(names_from = isHSP, values_from = n, values_fill = 0L) %>%
     rename(n_UP = `FALSE`, n_HSP = `TRUE`)
   
   list(
+    N = A_traj,
+    samples = samples,
     pairs = pairs,
     pair_counts = pair_counts,
-    pair_data = pair_counts %>% select(-HSP_prob),
-    samples = samples,
-    N = A_traj
+    pair_data = pair_counts %>% select(-HSP_prob)
   )
 }
 ```
@@ -136,19 +272,28 @@ Now that we have done that, let's simulate some pairs.  We will assume that 20 s
 were sampled per year---that is more than @hillary2018genetic had, I think, but it
 makes the likelihood surface a little cleaner, so, since we can simulate whatever we want,
 we will simulate an abundance of data:
-```{r sim_pair,cache=TRUE}
+```{r sim_pair}
 set.seed(5)
 
 sim_vals <- simulate_pairs(npy = 20, age_wts = 8:3)
 ```
 
-At this juncture, it is worth stopping for a moment and looking at two of the elements of the
-list `sim_vals`.  The `pair_counts` show the number of half-sibling pairs of different types, and also shows the half-sibling pair probability that was used to simulate them:
+Take a moment to look at the output.  See that it is a list of tibbles.  The first
+three are:
+
+- `N`: the population sizes over time,
+- `samples`: the ages and sampling years of the samples (also it has the number of adults
+present at the birth year of each sample)
+- `pairs`: a tibble with one row for each pair, with the HSP probs calculated, and the
+simulated Bernoulli random variable in `isHSP` saying whether it is a kin pair or not.
+
+The remaining two elements of the
+list, `sim_vals`, are the `pair_counts` which show the number of half-sibling pairs of different types, and also shows the half-sibling pair probability that was used to simulate them:
 ```{r}
 sim_vals$pair_counts
 ```
-In this tibble, `n_HSP` is the number of half-sibling pairs found in which the younger member was
-born in `born_year` and the older member was born `age_diff` years before.  As you can see, there
+In this tibble, `n_HSP` is the number of half-sibling pairs found in which the second-born was
+born in `born_year` (i.e. `born_year` = $c_2$ ) and the older member was born `age_diff` years before (i.e. $c_1$ is $c_2$ - `age_diff`.  As you can see, there
 are a lot of categories for which no HSPs are found.  That is to be expected---they are pretty rare, and, of course, you expect to see fewer of them if the population is large...that is how CKMR works... The `HSP_prob` column gives the probability of seeing an HSP of a certain category given
 the values of the parameters that were used to simulate the data.
 
@@ -159,41 +304,79 @@ sim_vals$pair_data
 ```
 And the goal from those data would be to estimate the parameters that might have produced these data.
 
-It is, however, worthwhile to plot the half-sibling pair probabilities, just to look at those.
-```{r hsp_prob,cache=TRUE}
+That is what we will be doing shortly, but before that, it is worthwhile to plot the half-sibling pair probabilities, just to look at those.
+```{r hsp_prob}
 sim_vals$pairs %>%
   group_by(born_year, age_diff) %>%
   summarise(HSP_prob = mean(HSP_prob)) %>% 
 ggplot(aes(x = born_year, y = HSP_prob, fill = factor(age_diff))) +
   geom_point(shape = 21) +
-  xlab("Year the younger member of pair was born") +
-  ylab("Half-sibling probability")
+  xlab("c_2: the birth year of the second-born") +
+  ylab("Half-sibling probability") + 
+  guides(fill=guide_legend(title="age difference,\n   c2 - c1"))
 ```
+
+**Questions:**
+
+1. Why do the half-sibling probabilities decline with $c_2$ for any given age difference
+between the members of the pair?
+2. For a given value of $c_2$, why do the half-sibling probabilities decline with
+increasing age difference?
+
+---
 
 ## An R function to compute the negative log-likelihood
 
-To estimate that parameters that gave rise to the simulated data, we can start with an R function to compute the negative log-likelihood---in other words, the probability of our observed data given
-values of the parameters, which are the initial population size $N_\mathrm{init}$, the
-population growth rate $\lambda$, and the probability that an adult survives for a year, $\phi_A$.
-The following R function computes that CKMR pseudolikelihood:
+To estimate the parameters that gave rise to the simulated data, we can start with an R function
+to compute the negative log-likelihood---in other words, the probability of our observed data 
+given values of the parameters, which are: 
+
+- the initial number of adults $N^A_0$,
+- the adult population growth rate $\lambda$,
+- the probability that an adult survives for a year, $\phi_A$.
+
+
+The following R function computes that CKMR pseudolikelihood from the `pair_counts`
+tibble in the output from `simulate_pairs`.  Basically, for each category, defined
+by `born_year` ($c_2$) and an `age_diff` (such that $c_1 = c_2 - \mathrm{age\_diff}$),
+the number of half-sibling pairs is a Binomial random variable with number of trials
+equal to the total number of pairs in that category, and success probability equal to
+$P(\mathrm{HSP}|c_1, c_2)$.
+
+Just for a little review, a Binomial variable with $n$ trials and success probability
+$p$ has probability mass function:
+$$
+P(x|n,p) = {n \choose x} p^x (1-p)^{n-x}.
+$$
+The binomial coefficient is a constant with respect to $p$, so is not relevant
+to the likelihood for $p$, so we can write:
+$$
+P(x|n,p) \propto p^x (1-p)^{n-x}.
+$$
+And if we wanted to write that as a log likelihood, we would have
+$$
+\mathcal{L}(p) =  x\log p + (n-x)\log(1 - p)
+$$
+You will see that in the `logl = ` line in the function below.
+
+
 ```{r}
 #' Return the negative log likelihood of the parameter values given the data
-#' @param pars a  vector (Ninit, lambda, phiA)
+#' @param pars a  vector (N0, lambda, phiA)
 #' @param X a tibble like the pair_counts component of the output list from
 #' `simulate_pairs()`.
 hsp_nll <- function(pars, X) {
   N0 <- pars[1]
-  L <- pars[2]
-  P <- pars[3]
+  L <- pars[2]  # lambda
+  P <- pars[3]  # phi
 
   LL <- X %>%
     mutate(
-      N = N0 * exp(L * born_year),
-      hspp = (4 / N) * P ^ age_diff,
-      logl = log(hspp) * n_HSP + log(1 - hspp) * n_UP
+      N = N0 * exp(L * born_year),  # number of adults at time of second-born's birth
+      hspp = (4 / N) * P ^ age_diff, # P(HSP | c_1, c_2)
+      logl = log(hspp) * n_HSP + log(1 - hspp) * n_UP  # log Binomial probability
     )
-
-  -sum(LL$logl)
+  -sum(LL$logl)  # negative log likelihood
 }
 
 ```
@@ -218,13 +401,13 @@ hsp_nll(
 
 It is a fun exercise to visualize this log-likelihood surface.  But we are not going to do that
 with this `hsp_nll` function, because it is quite slow.  Observe how many milliseconds it takes to evaluate the likelihood using the `hsp_nll()` function:
-```{r logl, cache=TRUE}
+```{r logl}
 mb <- microbenchmark::microbenchmark(
   R_version = hsp_nll(
     pars = c(1800, 0.05, 0.94),
     X = sim_vals$pair_data
   ),
-  times = 100
+  times = 1000
 )
 
 # on average, typically more than 2 milliseconds:
@@ -232,45 +415,163 @@ mb
 ```
 
 In general, straight-up R is a little underpowered for computing these sorts of
-likelihoods, and there are some serious advantages to calculating them in compiled code
-using the package TMB.  We will do that next.
+likelihoods (because when doing inference from them, you may need to calculate
+the likelihood many times) and there are some serious advantages to calculating
+them in compiled code using the package TMB.  We will do that next.
 
 
 ## Evaluate the likelihood with TMB
 
-You need the following code in a file `TMB/hsp_nll.cpp`, relative to the
-current working directory. (That file is already in this repository).
-```sh
+'TMB' is a package that allows you to write a negative log-likelihood in
+compiled C++ code.  Compiled code can be orders of magnitude faster than
+interpreted R code.  Additionally, 'TMB' is designed so that if you define
+a negative log likelihood in compiled code for it, it will also write and compile
+the code to compute the first and second derivatives of this negative log likelihood.
+
+This is called "automatic differentiation" and is quite useful.  It relies on the
+fact that differentiation is fairly straightforward.  For example, if you had a little
+bit of C++ code that defined a function `f` of `x` like:
+```c
+f = pow(x, 3) + 3 * pow(x, 2) + 8 * x
+```
+where `pow(x, n)` is $x^n$, then it is pretty easy to see that the code for
+the first derivative of that, with respect to `x`, would be:
+```c
+df_dx = 3 * pow(2, 2) + 6 * x + 8
+```
+And, the second derivative would be something like:
+```c
+d2f_dx2 = 6 * x + 6
+```
+
+'TMB' uses a library called CppAD to be able to take derivatives of very complex
+functions written in C++, even if those functions are defined with `for` loops,
+or even if they, themselves, call other functions.  As a consequence it has some
+pecularities that must be respected.  The most notable is that any variable that
+might be involved in the derivative of the function must be defined as a `Type`
+variable.  We will see what this means as we go through the code.
+
+The following code is stored in a file `TMB/hsp_nll.cpp`, relative to the
+current working directory, that is already in this repository.
+```c
 `r paste(readLines("TMB/hsp_nll.cpp"), collapse = "\n")`
 ```
-That file first must be compiled.
-```{r compile}
 
+### The general form of a TMB C++ file
+
+Any time that you define a negative log likelihood function in compiled code
+for 'TMB', it will look something like this.
+
+- There is always some boilerplate that loads libraries and tells 'TMB'
+that you are compiling an objective function (that you typically will wish
+to minimize):
+    ```{c, eval=FALSE}
+#include <TMB.hpp>
+template<class Type>
+Type objective_function<Type>::operator() ()
+{...
+    ```
+- Then you tell 'TMB' that there will be some _data_ passed to it from R. In
+our case we are passing in some vectors of data that are defined with these
+_macros_.  The data are considered "fixed"---i.e. they are the what you have
+observed.
+    ```{c, eval=FALSE}
+DATA_VECTOR(n_UP);
+DATA_VECTOR(n_HSP);
+DATA_VECTOR(born_year);
+DATA_VECTOR(age_diff);  
+    ```
+- After that we define some variables that are _parameters_. These are the things
+that we will wish to estimate, and these are also the variables with respect to
+which 'TMB' will calculate the derivatives using automatic differentiation.
+    ```{c, eval=FALSE}
+PARAMETER(N_init);
+PARAMETER(lambda);
+PARAMETER(phiA); 
+    ```
+Each one of those is a scalar.  `N_init` here is `N0`. 
+That file first must be compiled.
+- After that we tell 'TMB' which of the parameters we want 'TMB' to send information
+back to R about, including information about its derivatives.
+    ```{c, eval=FALSE}
+ADREPORT(N_init);
+ADREPORT(lambda);
+ADREPORT(phiA); 
+    ```
+This is typically used
+to obtain point estimate and standard deviations of these parameters via the R function `sdreport()`.
+- Then we start getting into the code itself.  Here, when we define
+intermediate variables that are part of the function that we want to
+auto-differentiate, we cannot simply define them as standard types like
+`double` or `integer`, but we must define them as type `Type`:
+    ```{c, eval=FALSE}
+Type N;    // for storing the pop size at the time of the birth of the second-born
+Type hsp;  // for storing the half-sibling pair prob
+
+Type nll = 0; 
+    ```
+- All that remains then is calculating and returning the objective function.  In our case
+it is a negative log likelihood that we store in a variable called `nll`:
+    ```{c, eval=FALSE}
+for(int i=0;i<n_UP.size(); i++) {
+  N = N_init * exp(lambda * born_year[i]);
+  hsp = (4 / N) * pow(phiA, age_diff[i]);
+  nll -= log(hsp) * n_HSP[i] + log(1 - hsp) * n_UP[i];
+}
+
+return nll;
+    ```
+
+
+That's it!
+    
+
+### Compiling and linking TMB C++ code   
+
+In order to use the code in the C++ file, we have to compile it:
+```{r compile}
 compile("TMB/hsp_nll.cpp")
 ```
 
-After that we will make some data and parameter lists:
+And then, in order to get our data into it that function we defined
+using 'TMB', we need to make a list
+with names that are like those in the `DATA_VECTOR()` parts of the
+C++ code:
 ```{r}
 # then get our data in a list of vectors
 data <- sim_vals$pair_data %>%
   select(n_UP, n_HSP, born_year, age_diff) %>%
   as.list()
+```
 
+Finally, we can make a list of starting parameter values with
+names like those in the `PARAMETER()` macros of the C++ code:
+```{r}
 # and then our starting parameters
 parameters <- list(N_init = 1000, lambda = 0.001, phiA = 0.9)
 ```
 
 
 
-Now, to make an AD function with TMB, we need to link to the library
-created when we compiled the file above.  For unknown reasons,on a Mac, TMB seems
+Finally, in order to make an AD function (this is a function that can evaluate
+the objective function and also return its derivatives) with TMB, we need to link to the library
+created when we compiled the file above.
+
+For unknown reasons,on a Mac, 'TMB' seems
 unable to deal with having the compiled object files in a subdirectory, so, in the
-following code chunk we test to see if we are on a Mac, and if we are we momentarily
+following code chunk we test to see if we are on a Mac, and, if we are, we momentarily
 switch to the TMB directory.  Otherwise we just run the functions the way we should
 be able to.
-```{r makeAD, warning=FALSE}
+
+Additionally, at least on a Mac, 'TMB' seems to do a poor job of realizing whether
+the compiled library has changed since it last loaded it, so that if you are editing
+and recompiling your C++ code, then you need to unload it before loading it again.
+So, I tend to always structure my 'TMB' code on a Mac like what you seen in the
+first part of the `if` block, below:
+```{r makeAD, warning=FALSE, error=FALSE, message=FALSE}
 if(Sys.info()["sysname"] == "Darwin") {
   setwd("TMB")
+  try(dyn.unload(dynlib('hsp_nll')), silent = TRUE)
   dyn.load(dynlib('hsp_nll'))
   obj <- TMB::MakeADFun(data = data, parameters = parameters, DLL="hsp_nll")
   setwd("..")
@@ -280,25 +581,30 @@ if(Sys.info()["sysname"] == "Darwin") {
 }
 ```
 
-Now, we might want to see how long it takes for this compiled version
+Now, the AD function/object from TMB is called `obj`. We might want to see how long
+it takes for this compiled version
 of the HSP negative log likelihood to be computed:
-```{r benchmark, cache=TRUE}
+```{r benchmark}
 mb2 <- microbenchmark(
   TMB_version = obj$fn(x = parameters), times = 1000
 )
-
-# this is in microseconds, so it is effectively 100 times faster
-# to evalaute this using TMB.
 mb2
 ```
+
+**Question:** How many times faster, on average, is it to evaluate the
+negative log likelihood in compiled code than when using the version we
+wrote in R?
+
+---
+
 
 ## Visualize those log likelihood values 
 
 
-Now that we have a fast way to evaluate those, using TMB, let's
-evaluate a lot of log likelihoods so we can make some contour plots. We will
+Now that we have a fast way to evaluate the negative log likelihood using TMB, let's
+evaluate a lot of them so we can make some contour plots. We will
 evaluate the log likelihood over a range of values of the three parameters:
-```{r profile,cache=TRUE}
+```{r profile, cache=cache_chunks}
 LL_tib <- expand_grid(
   N_init = seq(200, 2000, by = 20),
   lambda = seq(-0.04, 0.04, by = 0.01),
@@ -317,10 +623,14 @@ LL_tib <- expand_grid(
 
 ```
 
+The output looks like this:
+```{r}
+LL_tib
+```
 
 With all those results, we can make a contour plot, faceted over lambda values
-to visualize:
-```{r contour, fig.width=6, out.width='100%',cache=TRUE}
+to visualize the negative log-likelihood surface:
+```{r contour, fig.width=6, out.width='100%',cache=cache_chunks}
 LL_tib %>%
   group_by(lambda) %>%
   mutate(nll = ifelse(nll > min(nll) + 20, NA, nll)) %>%
@@ -335,8 +645,11 @@ ggplot(aes(x = N_init, y = phiA, z = nll)) +
 ```
 
 
-I am sure there is a cleaner way of dropping all the contour lines smaller than a certain value, but
-I am not going to bother with it here.    The blue and red lines show where the actual "true" simulated values of $N_\mathrm{init}$ and $\phi_A$ are, respectively.
+I am sure there is a cleaner way of dropping all the contour lines
+smaller than a certain value, that doesn't give us the blocky edge, but
+I am not going to bother with it here.    
+
+The blue and red lines show where the actual "true" simulated values of $N_\mathrm{init}$ and $\phi_A$ are, respectively.
 Recall that the true value of $\lambda$ is 0.01. And see on that facet that the true
 values of $N_\mathrm{init}$ and $\phi_A$ are near the top of the likelihood (or the
 bottom of the negative log likelihood, if you prefer to think of it that way).
@@ -347,12 +660,119 @@ and the adult survival are estimated quite accurately.
 The question remains, however, of how much information there is about $\lambda$.  Can we
 estimate that well? 
 
+## Minimizing the negative log likelihood
 
-## OMG! Let's investigate the tmbstan package!
+The standard way to minimize the negative log likelihood is to
+hand of the objective function to one of R's standard optimizers.
 
-One very nice feature of using TMB is that we can plug our TMB object directly into Stan
-for doing Bayesian inference via No-U-turn MCMC sampling. We do this with
-the 'tmbstan' package.  Awesome!
+The `nlminb()` function seems to work well.  We give it some starting
+values, the objective function, and its first and second derivates (the
+gradient and Hessian, respectively).  We will try it with the starting
+values in `parameters`:
+```{r}
+nlm_min <- nlminb(
+  start = parameters, 
+  objective = obj$fn, 
+  gradient = obj$gr, 
+  hessian = obj$he
+)
+```
+
+And here is the result:
+```{r}
+nlm_min
+```
+That is pretty close to the true values that we simulated the data at: $N_0 = 800$, $\lambda = 0.01$, $\phi_A = 0.94$.  
+
+**Exercise:**
+
+Repeat the optimization starting from different values of the parameters
+and ensure that you get the same maximum likelihood values.
+
+---
+
+Just for fun, let's look at those points on the likelihood surface.
+```{r}
+# evaluate at a lot of points to get the surface
+LL_tib2 <- expand_grid(
+  N_init = seq(200, 2000, by = 20),
+  lambda = 0.007829,
+  phiA = seq(0.85, 1, by = 0.01)
+) %>%
+  mutate(parameters = pmap(
+    .l = list(a = N_init, b = lambda, c= phiA),
+    .f = function(a,b,c) list(N_init = a, lambda = b, phiA = c)
+  )) %>%
+  mutate(
+    nll = map_dbl(
+      .x = parameters,
+      .f = function(y) obj$fn(x = y)
+    )
+  )
+
+
+ggplot(LL_tib2, aes(x = N_init, y = phiA, z = nll)) +
+  geom_contour(binwidth = 1, colour = "gray") +
+  theme(legend.position = "none") +
+  facet_wrap(~lambda) +
+  theme_bw() +
+  geom_vline(xintercept = 800, colour = "blue") +
+  geom_hline(yintercept = 0.94, colour = "red") +
+  annotate("point", x = nlm_min$par["N_init"], y = nlm_min$par["phiA"], shape = 4, colour = "gold", size = 5)
+```
+The gold "x" marks the MLE.
+
+
+From these estimates, we can calculate the MLEs of the population sizes
+each year, and compare them to the true, simulated values:
+```{r}
+mleNs <- tibble(
+  year = 0:60,
+  num_adults = N_adults(
+    N0 = nlm_min$par["N_init"], 
+    t = 0:60,
+    lambda = nlm_min$par["lambda"]
+  )
+)
+
+ggplot(mapping = aes(x = year, y = num_adults)) +
+  geom_line(data = sim_vals$N) +
+  geom_point(data = sim_vals$N) +
+  geom_point(data = mleNs, shape = 4, colour = "gold")
+```
+
+OK, that is not a perfect fit.  We could put confidence intervals around those figures, and
+in the next session with Paul, we will see how to get a standard deviation report out of
+the TMB. However, I lean toward the Bayesian side of things so, we will use our remaining time
+here to show how easy it is to sample from the posterior distribution given a model written
+in C++ and compiled by TMB.
+
+Before we proceed to that, let's also mention one thing: often when formulating
+models of this sort, it will be advantageous to transform the variables so that
+they respect their bounds.  For example, given the formulation above, it is entirely
+possible that the maximum likelihood could be found at a value of $\phi_A > 1$.  
+So, it is sometimes helpful to parameterize the model differently.  We didn't do that
+here because it makes it a bit harder to visualize and interpret the likelihood surfaces.
+
+
+
+
+## Sampling from the Posterior with 'tmbstan'
+
+One very nice feature of using the 'TMB' package is that we can plug our
+compiled TMB object directly into the 'rstan' package
+for doing Bayesian inference by sampling from the posterior distribution
+implied by the negative log likelihood using No-U-turn MCMC sampling. We do this with
+the 'tmbstan' package, which lets the compiled TMB object interface directory with
+the 'rstan' package.  The result is simply awesome!
+
+For those who haven't run across No-U-turn MCMC sampling, it is a special case
+of _Hamiltonian Monte Carlo_.  This is a type of Monte Carlo sampling that grew
+out of complex notions from differential geometry.  The idea is that one can use
+the gradient and Hessian of a posterior surface to design an MCMC sampler that more
+efficiently samples from that posterior. An outstanding introduction is
+available on arXiv: [Betancourt: A Conceptual Introduction to Hamiltonian
+Monte Carlo](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjvw8iwto37AhV-ATQIHXDZCMUQFnoECCMQAQ&url=https%3A%2F%2Farxiv.org%2Fpdf%2F1701.02434&usg=AOvVaw2qtxGkdm18VhFtrCVopq8G).
 
 Note that we sort of need to impose some bounds on the parameters.  Otherwise,
 as one might expect seeing the contour plots of the likelihood surfaces, we can
@@ -361,10 +781,11 @@ This is one particularly nice feature of using the TMB object in a Bayesian cont
 seems easier to impose these sorts of parameter bounds, than when using the TMB
 object to maximize the likelihood.
 
-For some reason that I don't full understand, we have to remake the TMB AD function before
+For some reason that I don't fully understand, we have to remake the TMB AD function before
 we run the following.  Something about having used `obj$fn` to compute the values
 of the Neg Log Likelihood, in order to make our pretty contour plots, has gummed things
-up.  But no worries, we just define it again:
+up.  But no worries, we just define it again. Here we have all the extra stuff for
+dealing with the Mac's issues with linking to things in subdirectories.
 ```{r, warning=FALSE}
 setwd("TMB")
 dyn.load(dynlib('hsp_nll'))
@@ -374,7 +795,7 @@ setwd("..")
 
 Now we can hand that to tmbstan and do a short MCMC run:
 
-```{r tmbstan,cache=TRUE}
+```{r tmbstan,cache=cache_chunks}
 library(tmbstan)
 set.seed(10)
 fit <- tmbstan(
@@ -400,7 +821,9 @@ MCMC, you can do:
 ```{r, eval=FALSE}
 library(shinystan)
 
-launch_shinystan(fit)
+if(interactive) {
+  launch_shinystan(fit)
+}
 ```
 
 We don't do that in this Rmarkown document, because you need to be in a

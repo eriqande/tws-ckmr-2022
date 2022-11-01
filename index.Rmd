@@ -111,6 +111,13 @@ Note that this requires admin privileges, so, if your computer is administered b
 * For Windows, you must download and install the Rtools as available [here](https://cran.r-project.org/bin/windows/Rtools/).
 
 
+**Also very important:** The slides for our lectures are rendered using RStudio's
+new Quarto engine, which is a successor to RMarkdown/knitr.  This must be enabled
+on your system.  The best way is probably to install the command line interface for
+Quarto by following the instructions here:  
+https://quarto.org/docs/get-started/
+
+Once you have installed that, you should close and then reopen your RStudio project.
 
 We have tested the workshop materials on several platforms:
 
@@ -194,7 +201,7 @@ hitches, then it is a testament to how well the 'renv' package is implemented. I
 some hiccups, we will try our best to help you deal with them.
 
 
-### Updating the project
+### Updating the project {-}
 
 It is possible that the course instructors may update the project repository
 with new information, code, or content after you have followed the steps

@@ -14,7 +14,7 @@ Type objective_function<Type>::operator() ()
   ADREPORT(lambda);
   ADREPORT(phiA);
 
-  Type N;    // for storing the pop size at time of younger kids birth
+  Type N;    // for storing the pop size at the time of the birth of the second-born
   Type hsp;  // for storing the half-sibling pair prob
 
   Type nll = 0;
