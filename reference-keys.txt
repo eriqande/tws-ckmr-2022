@@ -1,4 +1,3 @@
-updating-the-project
 ckmr-thought-experiments-and-labs
 afternoon-schedule
 thought-experiments
@@ -17,11 +16,17 @@ finding-full-sibling-pairs
 looking-for-half-siblings
 conclusion
 simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example
-simulating-from-their-inferential-model
+simulating-from-the-inferential-model
+exponential-growth-model
+model-for-kin-pairs
+simulating-from-the-model-for-kin-pairs
 an-r-function-to-compute-the-negative-log-likelihood
 evaluate-the-likelihood-with-tmb
+the-general-form-of-a-tmb-c-file
+compiling-and-linking-tmb-c-code
 visualize-those-log-likelihood-values
-omg-lets-investigate-the-tmbstan-package
+minimizing-the-negative-log-likelihood
+sampling-from-the-posterior-with-tmbstan
 design-of-ckmr-experiments
 white-shark-design-example
 fisher-information-ideas
