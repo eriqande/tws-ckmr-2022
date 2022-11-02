@@ -6,6 +6,8 @@ format:
 editor: source
 ---
 
+\newcommand{\bkappa}{\boldsymbol{\kappa}}
+
 #  {background-image="quarto-static/slideteal.png" background-size="contain"}
 
 ::: {style="margin-left: 260px; margin-top: 100px; margin-right: 10px; font-size: 3.2em;"}
@@ -32,6 +34,24 @@ The Wildlife Society CKMR Workshop, Sunday November 6, 2022
 
 
 ## Motivation {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- Close-kin mark-recapture depends on identifying pairs of related individuals
+- Genetic data are used to identify these relatives
+- Relatives can be identified because they "share" more of their genome than
+unrelated (or less related) individuals.
+- A rigorous definition of what is meant by "genome sharing" is required.
+
+:::: {.columns}
+::: {.column width="37%"}
+![](eric-images/turning-into-mom.png)
+:::
+::: {.column width="63%"}
+- We look like our relatives due both to shared genetics and shared environment
+- Quantitative genetics: what fraction of phenotypic resemblance is due to genetics
+- Kin-finding: using the fraction of shared genetic markers to infer relationship
+:::
+::::
+
 
 ## Starting from the beginning {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
@@ -70,10 +90,187 @@ by its position in the genome.
 
 - Two copies of the DNA at each locus.  One chromosome from mom. Another from dad.
 
-## Mendels Law of Segregation {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## Mendel's First Law of Segregation (in sexual _diploids_){background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 When gametes are formed, the two copies of each locus _segregate_ so that each
 gamete carries exactly one copy of each locus.
 
 Since individuals are formed by the union of gametes, this dictates the segregation
-of DNA to offspring.
+of DNA to offspring:
+
+- Each child receives exactly one copy of a locus from its mother and one from its father.
+- The copy of the locus received from the parent is chosen randomly (with probability $\frac{1}{2}$ for each) from amongst the two copies in the parent.
+
+:::: {.columns}
+::: {.column width="40%"}
+Consider the case of the maternal allele segregated
+to an offspring, in the pedigree to the right.
+
+- Circles are females.
+- Males are squares.
+:::
+::: {.column width="30%" align="center"}
+![](../figure-creation/eric/po-ped-colored-1.svg){width="50%"}    
+$\mathrm{Probability} = \frac{1}{2}$
+:::
+::: {.column width="30%" align="center"}
+![](../figure-creation/eric/po-ped-colored-2.svg){width="50%"}  
+$\mathrm{Probability} = \frac{1}{2}$
+:::
+::::
+
+
+
+## Mendel's Second Law {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+"The gene copy that gets segregated to a gamete/offspring at one locus is
+independent of the gene copy that gets segregated at another locus."
+
+- This is not universally true.
+- It is only true for loci that are on different chromosomes.
+
+When two loci are on the same chromosome they are referred to as
+"physically linked" 
+
+AND, they do _not_ segregate independently. 
+
+
+## Chromosomes, Crossovers, and Recombination {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+:::: {.columns}
+::: {.column width="40%"}
+- Chromosomes are inherited in big chunks
+- Crossovers occur between the maternal and paternal chromosomes
+of an individual.
+- An odd number of crossovers between two loci = recombination
+- Crossover modeled as a Poisson process along chromosomes.
+- Loci close together are less likely to have a recombination
+:::
+::: {.column width="60%"}
+![](eric-images/chromo-recombs.png)
+:::
+::::
+- We will come back to linked loci later today.  
+- For now, we focus on a single locus...
+
+
+## Genetic Identity by Descent {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- When the DNA at a locus is a direct copy of the DNA in an ancestor...
+- Or when the stretches of DNA in two different individuals at a locus are _both_ copies of the same piece of DNA in a recent ancestor...
+- These pieces of DNA are termed **identical by descent**, (IBD).
+
+
+:::: {.columns}
+::: {.column width="30%"}
+![](../figure-creation/eric/po-ibd.svg){width="80%"}    
+
+- Ma and Kid are IBD at one gene copy (fuschia)
+- Pa and Kid are IBD at one gene copy (blue)
+:::
+::: {.column width="35%" align="center"}
+![](../figure-creation/eric/hs-ibd-1.svg){width="80%" fig-align="center"}    
+
+- Kid-1 and Kid-2 share 1 gene copy IBD (blue)
+:::
+::: {.column width="35%" align="center"}
+![](../figure-creation/eric/hs-ibd-2.svg){width="80%" fig-align="center"}  
+
+- Kid-1 and Kid-2 share **no** gene copies IBD (blue)
+:::
+::::
+
+
+
+## The number of gene copies IBD{background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+- A pair of _non-inbred_ diploid individuals can share 0, 1, or 2 gene copies
+IBD at a locus.
+
+- Each possible relationship between two non-inbred individuals can be characterized
+by the expected fraction of the genome at which the two individuals share 0, 1, or 2
+gene copies IBD.
+$$
+\bkappa = (\kappa_0, \kappa_1, \kappa_2)
+$$
+    - $\kappa_0$: expected fraction of genome with 0 gene copies IBD
+    - $\kappa_1$: expected fraction of genome with 1 gene copy IBD
+    - $\kappa_2$: expected fraction of genome with 2 gene copies IBD
+- These are also the _marginal_ probabilities that a pair of individuals share
+0, 1, or 2, gene copies at a single locus.
+- Sometimes called "Cotterman coefficients", we will call them "kappas"
+
+- These are not the coefficient of relationship or coefficient of consanguinity. (Those are
+not sufficient).
+
+
+## $\bkappa$ for Parent-Offspring Pairs {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: {.incremental}
+- We start with an easy one
+- What is $\bkappa$ for the parent offspring relationship?
+- Well, a parent and offspring always share exactly one gene copy IBD.
+- 
+$$
+\begin{aligned}
+\kappa_0 &= 0 \\
+\kappa_1 &= 1 \\
+\kappa_2 &= 0 \\
+\end{aligned}
+$$
+- or
+$$
+\bkappa = (0, 1, 0)
+$$
+:::
+
+
+## $\bkappa$ for Half-Sibling Pairs {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: {.incremental fig-align="center"}
+
+- A slightly harder one: ![](../figure-creation/eric/hs-plain.svg){width="33%" fig-align="center"} 
+- We know that, with probability 1, Pa segregates a copy of a single gene to Kid-1
+- With probability $\frac{1}{2}$ Pa segregates of a copy of the same gene to Kid-2
+- With probability $\frac{1}{2}$ Pa segregates a copy of the other gene to Kid-2
+-
+$$
+\begin{aligned}
+\kappa_0 &= 1/2\\
+\kappa_1 &= 1/2 \\
+\kappa_2 &= 0 \\
+\end{aligned}
+$$
+
+:::
+
+
+
+
+## $\bkappa$ for Full-Sibling Pairs {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::: {.incremental fig-align="center"}
+
+- Like two independent half-sib relationships... ![](../figure-creation/eric/full-sib-plain.svg){width="20%" fig-align="center"} 
+- With probability $\frac{1}{2}$, Kid-1 and Kid-2 share 1 gene copy (or 0 gene copies) IBD from Ma
+- _Independently_, with probability $\frac{1}{2}$, Kid-1 and Kid-2 share 1 gene copy (or 0 gene copies) IBD from Pa.
+- So, no gene copies IBD = none from Ma and none from Pa = $\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$.
+- Two gene copies IBD = one from Ma and one from Pa = $\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$
+- One gene copy IBD = one from Ma and zero from Pa, or zero from Ma and one from Pa = 
+$\frac{1}{2} \times \frac{1}{2} + \frac{1}{2} \times \frac{1}{2} = \frac{1}{2}$.
+- So, $\kappa_0 = \frac{1}{4}~~~~~~\kappa_1 = \frac{1}{2}~~~~~~\kappa_1 = \frac{1}{4}$
+
+:::
+
+
+
+## Some relationships and their $\bkappa$ values {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+![](eric-images/kappas-table.png){fig-align="center"}
+
+
+
+## Must we worry about all these relationships for CKMR? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+![](eric-images/kappas-table-highlighted.png){fig-align="center"}
