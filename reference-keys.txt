@@ -27,6 +27,7 @@ compiling-and-linking-tmb-c-code
 visualize-those-log-likelihood-values
 minimizing-the-negative-log-likelihood
 sampling-from-the-posterior-with-tmbstan
+summary
 design-of-ckmr-experiments
 white-shark-design-example
 fisher-information-ideas
