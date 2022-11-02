@@ -650,7 +650,7 @@ with this <code>hsp_nll</code> function, because it is quite slow. Observe how m
 <span id="cb73-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb73-10" aria-hidden="true" tabindex="-1"></a>mb</span></code></pre></div>
 <pre><code>## Unit: milliseconds
 ##       expr   min    lq  mean median    uq   max neval
-##  R_version 2.344 2.551 3.566  2.602 2.764 149.2  1000</code></pre>
+##  R_version 2.731 3.055 6.185  3.418 10.28 30.53  1000</code></pre>
 <p>In general, straight-up R is a little underpowered for computing these sorts of
 likelihoods (because when doing inference from them, you may need to calculate
 the likelihood many times) and there are some serious advantages to calculating
@@ -816,8 +816,8 @@ of the HSP negative log likelihood to be computed:</p>
 <span id="cb90-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb90-3" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb90-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb90-4" aria-hidden="true" tabindex="-1"></a>mb2</span></code></pre></div>
 <pre><code>## Unit: microseconds
-##         expr   min    lq mean median    uq   max neval
-##  TMB_version 30.43 32.46 35.3  32.79 33.32 192.3  1000</code></pre>
+##         expr   min   lq  mean median    uq  max neval
+##  TMB_version 34.05 35.1 71.78  35.47 36.08 9412  1000</code></pre>
 <p><strong>Question:</strong> How many times faster, on average, is it to evaluate the
 negative log likelihood in compiled code than when using the version we
 wrote in R?</p>
