@@ -178,6 +178,9 @@ div.csl-indent {
 <li class="chapter" data-level="1.2" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#thought-experiments"><i class="fa fa-check"></i><b>1.2</b> Thought experiments</a>
 <ul>
 <li class="chapter" data-level="1.2.1" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#thought-experiment-1"><i class="fa fa-check"></i><b>1.2.1</b> Thought experiment 1</a></li>
+<li class="chapter" data-level="1.2.2" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#thought-experiment-2"><i class="fa fa-check"></i><b>1.2.2</b> Thought experiment 2</a></li>
+<li class="chapter" data-level="1.2.3" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#thought-experiment-3"><i class="fa fa-check"></i><b>1.2.3</b> Thought experiment 3</a></li>
+<li class="chapter" data-level="1.2.4" data-path="ckmr-thought-experiments-and-labs.html"><a href="ckmr-thought-experiments-and-labs.html#thought-experiment-4"><i class="fa fa-check"></i><b>1.2.4</b> Thought experiment 4</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html"><i class="fa fa-check"></i><b>2</b> Kin-finding lab</a>
@@ -650,7 +653,7 @@ with this <code>hsp_nll</code> function, because it is quite slow. Observe how m
 <span id="cb73-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb73-10" aria-hidden="true" tabindex="-1"></a>mb</span></code></pre></div>
 <pre><code>## Unit: milliseconds
 ##       expr   min    lq  mean median    uq   max neval
-##  R_version 2.731 3.055 6.185  3.418 10.28 30.53  1000</code></pre>
+##  R_version 2.533 2.882 3.249  3.088 3.327 15.54  1000</code></pre>
 <p>In general, straight-up R is a little underpowered for computing these sorts of
 likelihoods (because when doing inference from them, you may need to calculate
 the likelihood many times) and there are some serious advantages to calculating
@@ -816,8 +819,10 @@ of the HSP negative log likelihood to be computed:</p>
 <span id="cb90-3"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb90-3" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb90-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb90-4" aria-hidden="true" tabindex="-1"></a>mb2</span></code></pre></div>
 <pre><code>## Unit: microseconds
-##         expr   min   lq  mean median    uq  max neval
-##  TMB_version 34.05 35.1 71.78  35.47 36.08 9412  1000</code></pre>
+##         expr   min    lq  mean median    uq   max
+##  TMB_version 33.16 34.39 71.91  34.72 35.48 18112
+##  neval
+##   1000</code></pre>
 <p><strong>Question:</strong> How many times faster, on average, is it to evaluate the
 negative log likelihood in compiled code than when using the version we
 wrote in R?</p>

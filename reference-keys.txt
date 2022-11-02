@@ -2,6 +2,9 @@ ckmr-thought-experiments-and-labs
 afternoon-schedule
 thought-experiments
 thought-experiment-1
+thought-experiment-2
+thought-experiment-3
+thought-experiment-4
 kin-finding-lab
 looking-at-the-genetic-data-and-pivoting-it
 kin-finding-power-analysis-assuming-no-physical-linkage
