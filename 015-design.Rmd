@@ -545,5 +545,5 @@ How about survival?  Recall that CKMR can inform estimation of *adult* survival,
 ### Thought experiment
 
 <div class="alert alert-info">
-  <strong>Info!</strong> What else about the bearded seal example would make sense to examine using simulation??
+  What else about the bearded seal example would make sense to examine using simulation??
 </div>
