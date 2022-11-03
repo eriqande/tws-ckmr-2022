@@ -503,10 +503,70 @@ Finding where in the reference sequence each read belongs
 
 
 
-## The Awesome Wonder of Whole Genome Sequencing Data---3 megabases of Chromosome 28 in 124 Steelhead {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## The Awesome Wonder of Whole Genome Sequencing Data---3 megabases of Chr28 in 124 Steelhead {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 
 ![](eric-images/wgs-wonder.png)
 
 - Amazing for many applications.
 - A bit too many variants for CKMR.  And too expensive.
+
+
+## RAD-Seq and ddRAD-Seq {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+![](eric-images/rad.png)
+
+
+
+
+## What RAD gets you {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- 15,000 to 250,000 loci / SNPs
+- Costs can be as low as around $30 sample
+- A somewhat tedious library prep
+- There can be a lot of missing genotypes
+- Even the non-missing genotypes are not always super reliable (and are sometimes highly error prone). 
+
+
+RAD for CKMR?
+
+- RAD/ddRAD not always ready for CKMR prime-time
+    - Cost, Missing data, Het-miscall rates
+- Might be useful for confirming kin pairs discovered using less expensive methods
+
+
+
+## Capture arrays {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Enrich sequences by sticking them to probes / "baits"
+
+![](eric-images/capture.png)
+
+
+By itself, probably not cost effective. However, in combination with RAD...
+
+
+
+## Combination RAD + Capture  {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- A promising combination. 
+- Initial RAD library prep to attach bar codes and select for DNA around cut sites.
+- Use capture probes to enrich for specific RAD loci that you have selected.
+- Great for targeting 500 to 5,000 genomic regions/loci.
+- 100s to 1,000s of individuals at $1 to $5 / sample genotyping cost
+- RAD + capture = RAPTURE;  ddRAD + capture = DArTcap
+- Read depths potentially in the 100s per locus per individual
+- In the afternoon workshop we will be using some of these data.
+- Commercial enterprise (Diversity Arrays Technology) that does this for a fee. 
+
+
+## Amplicon Sequencing  {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Use PCR primers to amplify (in multiplex) target regions of the genome.
+
+![](eric-images/gtseq.png)
+- Suitable for 100 - 400 Markers
+- Great for PO and FS relationships 
+- HS in high-diversity species focusing on microhaplotypes.
+    - Confirm with RAD afterward.
