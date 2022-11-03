@@ -22,7 +22,24 @@ quarto::quarto_render(
   "slides/paul-talk-1.Rmd.qmd",
   output_format = "revealjs"
 )
-
 file.rename(from = "slides/paul-talk-1.Rmd.html", to = "_book/slides/paul-talk-1.Rmd.html")
+
+
+
+
+quarto::quarto_render(
+  "slides/paul-talk-2.Rmd.qmd",
+  output_format = "revealjs"
+)
+file.rename(from = "slides/paul-talk-2.Rmd.html", to = "_book/slides/paul-talk-2.Rmd.html")
+
+
+
+quarto::quarto_render(
+  "slides/paul-talk-3.Rmd.qmd",
+  output_format = "revealjs"
+)
+file.rename(from = "slides/paul-talk-3.Rmd.html", to = "_book/slides/paul-talk-3.Rmd.html")
+
 
 ```
