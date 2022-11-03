@@ -566,7 +566,50 @@ By itself, probably not cost effective. However, in combination with RAD...
 Use PCR primers to amplify (in multiplex) target regions of the genome.
 
 ![](eric-images/gtseq.png)
+
 - Suitable for 100 - 400 Markers
 - Great for PO and FS relationships 
 - HS in high-diversity species focusing on microhaplotypes.
     - Confirm with RAD afterward.
+
+
+
+
+## Microsatellites from Next Generation Sequencing  {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+This is also based on Amplicon Sequencing.
+
+![](eric-images/microsats.png)
+
+- Getting to play around with these data blew my mind.
+- Still awaiting further studies of the genotyping accuracy of these.
+- Could be quite useful, but still requires a lot of them.
+
+
+
+## Wrap Up
+
+- Mendel's principles lead to simple expressions for joint genotype probabilities.
+
+  
+  
+- Likelihood of different relationships, given genetic data, can be compared.
+
+  
+  
+
+- Genetic data can take many forms, but most likely it will involve next-generation sequencing.
+
+  
+  
+  
+  
+- Next session: kin-finding.
+
+
+
+
+
+
+
+
