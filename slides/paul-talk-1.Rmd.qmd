@@ -45,7 +45,7 @@ The Wildlife Society CKMR Workshop, Sunday November 6, 2022
 ::: {.column width="60%"}
 **Paul Conn**-- Research statistician with the Marine Mammal Laboratory at NOAA Alaska Fisheries Science Center.  
 
-$$\\[1in]$$
+
 **Eric Anderson**-- Research geneticist at NOAA's Southwest Fisheries Science Center.
 :::
 
@@ -646,7 +646,7 @@ Paper in prep (Taras, Conn, Quakenbush, Bravington, Baylis). Annual sampling of 
 
 
 
-## A CKMR case study: Bearded {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## A CKMR case study: Bearded seals {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 Our paper isn't published yet so I can't make all data public yet. But we can still use life history information, approximate sample sizes, and kin finding data to help motivate ideas and conduct some modeling exercises.
 
