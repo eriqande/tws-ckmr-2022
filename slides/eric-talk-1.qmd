@@ -274,3 +274,239 @@ $\frac{1}{2} \times \frac{1}{2} + \frac{1}{2} \times \frac{1}{2} = \frac{1}{2}$.
 ## Must we worry about all these relationships for CKMR? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 ![](eric-images/kappas-table-highlighted.png){fig-align="center"}
+
+## Inferring relationships from genetic data{background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Aha! Can we use genetic data to estimate the fraction of genome IBD, and
+from that estimate the pairwise relationship?
+
+Yes! But there are some complications:
+
+- Genetic data do not let us observe IBD _directly_.
+- Genetic data at a locus give you the _genotype_, $G$, of an individual.
+- Genotype = the unordered combination of the _allelic types_ of the two
+gene copies in a diploid.  
+- More colloquially, Genotype = the two alleles at an individual.
+
+**Denoting alleles:**
+
+- When we need to, we will denote alleles by $A_i$ or $A_j$.
+- Different subscripts mean different alleles.
+- So, the genotype of individual $i$ at a single locus
+could be $G_i = A_k A_\ell$ or $G_i = A_iA_j$ or $G_i = A_jA_j$.
+
+## What are alleles?{background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+What we end up calling alleles depends entirely on the type of
+genetic marker that we end up using.
+
+- Microsatellites: Alleles are lengths of repeat regions between conserved primers.
+- SNPs: Alleles are different DNA bases at a single position in the genome.
+- etc...(More on this later)
+
+
+**Identity in state (IIS) vs Identity by descent (IBD)**
+
+- If the alleles carried by different individuals are the same allelic type
+they are called identical in state (IIS).
+- Two alleles can be IIS even though they are not IBD.  
+- But two gene copies that are IBD will be IIS unless there was 
+a recent mutation (very unlikely) or a genotyping error (somewhat more likely)
+
+
+## Evidence for a pairwise relationship{background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+We base our inference of the pairwise relationship between individuals
+$i$ and $j$ on the likelihood of the relationship, $R$.
+$$
+L(R) = P(G_i, G_j | \bkappa(R))
+$$
+where $\bkappa(R)$ denotes the $\kappa$ coefficients for relationship $R$.
+
+_The likelihood of relationship $R$ is the joint probability of the
+genotypes of $i$ and $j$ at the locus, given the $\kappa$ coefficients
+of relationship $R$_
+
+- This is for a single locus, but we will add multiple loci later.
+- Likelihoods are only relevant when compared against one another
+- So we will use these in the context of likelihood ratios, like:
+$$
+\frac{L(\mathrm{PO})}{L(\mathrm{U})}   
+~~~~~~~~\mathrm{or}
+~~~~~~~~\frac{L(\mathrm{PO})}{L(\mathrm{FS})}
+~~~~~~~~\mathrm{or}
+~~~~~~~~\frac{L(\mathrm{FS})}{L(\mathrm{HS})}
+$$
+
+The likelihood is useful for comparing the evidence for different relationships.
+
+
+## Calculating $P(G_i, G_j|\bkappa)$ {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- $\bkappa$ gives you the marginal probability that a pair shares 0, 1, or 2, gene copies IBD at a locus.
+- So,
+$$
+P(G_i, G_j|\bkappa) = \kappa_0P_0(G_i, G_j) + \kappa_1P_1(G_i, G_j) + \kappa_2P_2(G_i, G_j)
+$$
+where $P_x(G_i,G_j)$ is the joint probability of the genotypes of the pair, given that
+they share $x$ gene copies IBD.
+
+Which is:
+$$
+\begin{aligned}
+P(G_i, G_j|\bkappa) &= \kappa_0 P(G_i)P(G_j) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{\tiny\mathrm{no~gene~copies~IBD}} \\
+&+  \kappa_1 P(G_i)P(G_j | G_i=\mathrm{ma}, G_j=\mathrm{kid}) ~~~~~~~~~{\tiny\mathrm{1~gene~copy~IBD}} \\
+&+  \kappa_2 P(G_i)\mathcal{I}\{P(G_j)=P(G_i)\}  ~~~~~~~~~~~~~~~~~~~~~~~~~~{\tiny\mathrm{2~gene~copies~IBD}} \\
+\end{aligned}
+$$
+where $\mathcal{I}\{\cdot\}$ is an indicator function returning 1 when what
+is inside it is true, and 0 otherwise.
+
+- Trivial, except for $P(G_j | G_i=\mathrm{ma}, G_j=\mathrm{kid})$ which is still
+pretty easy.
+
+## $P(G_i,G_j | G_i=\mathrm{ma}, G_j=\mathrm{kid})$ {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+With $p_i$ equal to the relative frequency of allele $A_i$ in the population, we
+can enumerate the possibilities:
+$$
+\begin{aligned}
+~~~~~~G_\mathrm{kid}\downarrow ~ /~ G_\mathrm{ma}\rightarrow & ~~~~~~~~~ & A_iA_i & ~~~~~~~~~  & A_iA_j \\ \hline
+A_iA_i~~~~~~~~| &  & p_i &  &   p_i / 2 \\
+A_jA_j~~~~~~~~| &  & 0 &  &   p_j / 2 \\
+A_iA_j~~~~~~~~| &  & p_j &  &   (p_i + p_j)/2  \\
+A_iA_k~~~~~~~~| &  & p_k &  &   p_k/2  \\
+A_jA_k~~~~~~~~| &  & 0 &  &   p_k/2  \\
+A_kA_\ell~~~~~~~~| &  & 0 &  &   0  \\
+\end{aligned}
+$$
+
+So, we know how to calculate $P(G_i, G_j|\bkappa(R))$.
+
+
+## Switch Gears: Genotyping Technology and Genotyping Errors {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Overview:
+
+- Next generation sequencing: basic background on Illumina sequencing and a little bioinformatics.
+- HOW do you target certain parts of the genome?
+- WHAT variation do you use at these parts of the genome?
+- Genotyping errors, biases, and their consequences.
+
+
+
+## Next Generation Sequencing (NGS) {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- Many genotyping technologies today do not use NGS:
+    - Traditional Microsatellites
+    - SNP chips
+    - Fluidigm assays
+- Nonetheless, CKMR is feasible today because of high-throughput sequencing.
+- You (or someone on your team) needs some background/understanding of the genotyping technology you use.
+- We'll discuss Illumina sequencing today.  (most common and cost effective)
+
+
+## Basic Illumina Sequencing --- Library Prep {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+![](eric-images/illumina-templates.png)
+
+
+
+## Inside the Illumina Sequencer {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+::::{.columns}
+:::{.column width=0.33}
+- The “lawn”
+- Bridge PCR / Cluster Generation
+- Sequencing by Synthesis
+- If "paired-end" then sequence is read from both ends of the fragment.
+:::
+:::{.column width=0.67}
+
+![](eric-images/illumina-vid.png)
+
+An informative [video from Illumina](https://www.youtube.com/watch?v=fCd6B5HRaZ8) for the ultra-interested.
+:::
+::::
+
+
+## The Raw Data: {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Paired end sequences, sample-specific FASTQ files
+
+![](eric-images/fastq.png)
+
+These data are not useful unless you have a _reference_ to map them to.
+
+
+
+## Alignment or "Mapping" to a Reference {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Finding where in the reference sequence each read belongs
+
+- In "production genotyping" by NGS, this is where the bioinformatics typically starts (after some quality control).
+- You get:
+    - Where in the reference each read aligns
+    - Info about gaps, mismatches and misaligning bits
+    - A measure of confidence that the location is correct
+
+
+
+## A Picture of Aligned Reads, Zoomed In {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+![](eric-images/align-zoom-in.png)
+
+
+
+## A Picture of Aligned Reads, Zoomed Out a Bit {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+![](eric-images/align-zoom-out.png)x
+
+## Variant Detection and Genotype Calling {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- Variant Detection: 
+    - Using aligned reads to find positions in the genome that are polymorphic (SNPs, Indels, etc.) 
+- Genotype Calling:
+    - Using the aligned reads of an individual at a specific position to identify the genotype of that individual at that locus/variant.
+    - Each read is a copy of the DNA on one chromosome
+    - Reads from both copies of the chromosome align in the same position.
+    - Allelic type from each chromosome is more accurately inferred if there are many reads from it.
+
+
+
+
+## The Fundamental Tradeoff in NGS {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+- Number of reads is "fixed"
+    - NovaSeq 6000 S4 flow cell
+        - 2.5 Billion reads per lane
+        - Each lane $\approx$ $5,000.
+        
+- Higher read depth at a locus = more accurate genotype calls.
+
+- Reads must be apportioned to:
+    - Different individuals
+    - Different loci / parts of the genome
+
+- If you target less of the genome, you can genotype more individuals, accurately.
+
+
+
+## HOW do you target certain parts of the genome? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- Not at all (Whole-genome, shotgun sequencing)
+- Around specific enzyme cut sites (RAD and friends)
+- Probe hybridization / capture (MyBaits, etc.)
+- Enzyme cutsite + Capture (Rapture, DArTcap)
+- Amplicon Sequencing (GT-seq)
+
+
+
+## The Awesome Wonder of Whole Genome Sequencing Data---3 megabases of Chromosome 28 in 124 Steelhead {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+![](eric-images/wgs-wonder.png)
+
+- Amazing for many applications.
+- A bit too many variants for CKMR.  And too expensive.
