@@ -652,8 +652,8 @@ with this <code>hsp_nll</code> function, because it is quite slow. Observe how m
 <span id="cb73-9"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb73-9" aria-hidden="true" tabindex="-1"></a><span class="co"># on average, typically more than 2 milliseconds:</span></span>
 <span id="cb73-10"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb73-10" aria-hidden="true" tabindex="-1"></a>mb</span></code></pre></div>
 <pre><code>## Unit: milliseconds
-##       expr   min    lq  mean median    uq   max neval
-##  R_version 2.533 2.882 3.249  3.088 3.327 15.54  1000</code></pre>
+##       expr  min    lq  mean median    uq   max neval
+##  R_version 2.61 3.073 5.437  3.319 5.565 94.81  1000</code></pre>
 <p>In general, straight-up R is a little underpowered for computing these sorts of
 likelihoods (because when doing inference from them, you may need to calculate
 the likelihood many times) and there are some serious advantages to calculating
@@ -820,7 +820,7 @@ of the HSP negative log likelihood to be computed:</p>
 <span id="cb90-4"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html#cb90-4" aria-hidden="true" tabindex="-1"></a>mb2</span></code></pre></div>
 <pre><code>## Unit: microseconds
 ##         expr   min    lq  mean median    uq   max
-##  TMB_version 33.16 34.39 71.91  34.72 35.48 18112
+##  TMB_version 33.98 34.64 36.21  34.92 35.26 250.7
 ##  neval
 ##   1000</code></pre>
 <p><strong>Question:</strong> How many times faster, on average, is it to evaluate the
