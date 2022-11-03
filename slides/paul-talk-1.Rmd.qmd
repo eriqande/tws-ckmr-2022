@@ -49,8 +49,10 @@ The Wildlife Society CKMR Workshop, Sunday November 6, 2022
 **Eric Anderson**-- Research geneticist at NOAA's Southwest Fisheries Science Center.
 :::
 
-Other acknowledgments: Mark Bravington (CSIRO); Brian Taras, Lori Quakenbush (ADF&G)
 ::::
+
+Other acknowledgments: Mark Bravington (CSIRO); Brian Taras, Lori Quakenbush (ADF&G)
+
 
 ## Preliminaries: Schedule {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
