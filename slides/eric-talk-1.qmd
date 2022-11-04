@@ -6,6 +6,7 @@ format:
 editor: source
 ---
 
+
 \newcommand{\bkappa}{\boldsymbol{\kappa}}
 
 #  {background-image="quarto-static/slideteal.png" background-size="contain"}

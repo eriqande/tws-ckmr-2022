@@ -19,6 +19,16 @@ file.rename(from = "slides/eric-talk-1.html", to = "_book/slides/eric-talk-1.htm
 
 
 quarto::quarto_render(
+  "slides/eric-talk-2.qmd",
+  output_format = "revealjs"
+)
+file.rename(from = "slides/eric-talk-2.html", to = "_book/slides/eric-talk-2.html")
+
+
+
+
+
+quarto::quarto_render(
   "slides/paul-talk-1.Rmd.qmd",
   output_format = "revealjs"
 )

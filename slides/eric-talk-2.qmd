@@ -1,0 +1,415 @@
+---
+format: 
+  revealjs:
+    theme: [default, ./quarto-static/eric-noaa.scss]
+    self-contained: true
+editor: source
+---
+
+```{r libraries.etc, echo=FALSE, results='hide', message=FALSE}
+cache_chunks = TRUE
+library(CKMRsim)
+library(tidyverse)
+```
+
+\newcommand{\bm}[1]{\boldsymbol{#1}}
+\usepackage{\mathrsfs}
+\newcommand{\thh}{^\mathrm{th}}
+\newcommand{\bkappa}{\bm{\kappa}}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\bG}{\boldsymbol{G}}
+
+
+
+#  {background-image="quarto-static/slideteal.png" background-size="contain"}
+
+::: {style="margin-left: 260px; margin-top: 100px; margin-right: 10px; font-size: 3.2em;"}
+Finding Kin-Pairs with Genetic Data
+:::
+
+::: {style="margin-left: 260px; font-size: 2em;"}
+Eric C. Anderson
+:::
+
+::: {style="margin-left: 260px;"}
+The Wildlife Society CKMR Workshop, Sunday November 6, 2022
+:::
+
+
+
+## Basic Overview of the Problem {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+:::: {.columns}
+::: {.column width="40%"}
+![](figures/are_you_my_mother.jpg)
+:::
+::: {.column width="60%"}
+* Finding kin pairs involves _repeatedly_ asking the question, "Are you my mother (or brother, or half-sibling, etc.)?"
+* You ask that question for every pair of individuals in your data set.
+* How many times is that?
+* Lots of chances to answer the question incorrectly
+:::
+::::
+
+## Why are we doing this pairwise?  {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Why not do full, joint pedigree reconstruction?
+
+![](figures/salmon-full-ped.png)
+
+After all, doing so let's you use all the available data
+
+## {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}  
+
+::: {fig-align="center"}
+![](figures/pedfactory.png){width="70%"}
+::: 
+
+### Because:
+
+1. CKMR works best in _sparse_ situations
+1. Little advantage to "joint", multi-individual inference (Colony, MasterBayes, Pedfactory) when
+true relationships are few and far between.
+1. (Joint inference just takes a lot longer...)
+2. Much harder to assess False Positive Rates in joint-inference,  
+full-pedigree reconstruction methods than in pairwise inference.
+
+
+## Getting Statistical about "Are you my mother?" {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Cast the question as a statistical test applied to pairs:
+
+* $H_0$ the pair is Unrelated
+* $H_A$ the pair is Parent-offspring (or full-sib, etc.)
+
+Then, _if it were the case that all pairs were either Unrelated or Parent-offspring_
+
+And, if we fixed our false positive rate (FPR) to be $\alpha$...
+
+Then, amongst all possible statistical tests, the one with the 
+highest power (lowest false negative rate) will be based on 
+the likelihood ratio.
+$$
+\frac{P(G_i, G_j~|~i~\mbox{and}~j~\mbox{are}~\mathrm{PO})}
+{P(G_1, G_2~|~i~\mbox{and}~j~\mbox{are}~\mathrm{Unrelated})}
+$$
+Where $G_1$ and $G_2$ denote the observed genotypes in the two
+individuals of the pair.
+
+This holds for any two relationships:
+$$
+\frac{P(G_i, G_j~|~i~\mbox{and}~j~\mbox{are}~R_1)}
+{P(G_1, G_2~|~i~\mbox{and}~j~\mbox{are}~R_2)}
+$$
+is a most powerful test (Neyman-Pearson Lemma).
+
+
+
+## Review {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+We previously showed we can use $\bkappa(R)$ (the $\kappa$ coefficients for
+relationship $R$) to calculate the joint probability $P(G_1, G_2~|~i~\mbox{and}~j~\mbox{are}~R)$:
+
+$$
+\begin{aligned}
+P(G_i, G_j|\bkappa) &= \kappa_0 P(G_i)P(G_j) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{\tiny\mathrm{no~gene~copies~IBD}} \\
+&+  \kappa_1 P(G_i)P(G_j | G_i=\mathrm{ma}, G_j=\mathrm{kid}) ~~~~~~~~~{\tiny\mathrm{1~gene~copy~IBD}} \\
+&+  \kappa_2 P(G_i)\mathcal{I}\{P(G_j)=P(G_i)\}  ~~~~~~~~~~~~~~~~~~~~~~~~~~{\tiny\mathrm{2~gene~copies~IBD}} \\
+\end{aligned}
+$$
+where $\mathcal{I}\{\cdot\}$ is an indicator function returning 1 when what
+is inside it is true, and 0 otherwise.
+
+
+## What about at multiple loci? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+With $L$ different loci, writing the genotype at the $\ell\thh$ locus as $G^{(\ell)}$ we can use:
+$$
+P(\bG_1, \bG_2~|~\bkappa(R)) = \prod_{\ell = 1}^L P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa(R))
+$$
+This is actually the correct probability so long as:
+
+1. The markers are not in linkage disequilibrium
+2. The markers are not physically linked to one another 
+
+- It is pretty easy to verify that (1) is the case---merely
+test for LD.
+
+- Assessing (2) is more difficult.  
+    - We might not have any idea where the markers are.
+    - Even if we did, the calculation accounting for physical linkage is much more complicated. 
+    
+So, assumption (2) often gets made for this calculation, even when it is known to be wrong. (We come back to this later.)
+
+## Back to likelihood ratios {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+Using that (approximate) joint probability of the genotypes we can compute the
+(approximate) likelihood ratio suggested by the NP-lemma:
+$$
+\mathrm{For~PO~vs~Unrelated~pairs:}~~~~~~~~~~~~~~~~~~~\frac{P(\bG_i, \bG_j~|~\bkappa = (0, 1,0))}
+{P(\bG_i, \bG_j~|~\bkappa = (1, 0,0))}
+$$
+
+### Let's give the log of that a name: $\Lambda$:
+$$
+\Lambda_{PO/U} = \log\biggl(\frac{P(\bG_1, \bG_2~|~\bkappa = (0, 1,0))}
+{P(\bG_1, \bG_2~|~\bkappa = (1, 0,0))} \biggr)
+$$
+
+### It will be convenient later to recognize this as a sum:
+$$
+\begin{aligned}
+\Lambda_{PO/U} &  =  & \log\biggl(  
+\prod_{\ell = 1}^L \frac{P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa = (0, 1, 0))}
+{P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa = (1, 0, 0))}
+\biggr) \\
+& = & 
+\sum_{\ell = 1}^L\log\biggl(  
+ \frac{P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa = (0, 1, 0))}
+{P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa = (1, 0, 0))}
+\biggr)
+\end{aligned}
+$$
+
+
+
+
+
+## Wait! What about Genotyping error? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Good point.  
+
+* In our survey of genotyping technologies, we noted that
+they all can produce errors to some extent.
+* Errors are most problematic in assessing likelihoods for the PO relationship.
+* These probabilities can be computed in a way
+that accounts for genotyping error:
+$$
+\Lambda_{PO/U} = \log\biggl(\frac{P(\bG_1, \bG_2~|~\bmu, \bkappa = (0, 1,0))}
+{P(\bG_1, \bG_2~|~\bmu, \bkappa = (1, 0,0))} \biggr)
+$$
+
+* Error model can be simple (or complex)
+* R package 'CKMRsim' (we will use it this afternoon) can accommodate
+all possible single-locus genotyping models.
+
+## How do we use these $\Lambda$'s? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Truly PO pairs tend to have higher values of $\Lambda_{PO/U}$ than
+do unrelated pairs.
+* The distribution of $\Lambda$ is not analytically tractable 
+* So, investigate it through Monte Carlo simulation.
+```{r, echo=FALSE, message=FALSE, cache=cache_chunks}
+ck <- create_ckmr(linked_mhaps, kappa_matrix = kappas[c("PO", "FS", "HS", "U"),], ge_mod_assumed_pars_list = list(epsilon = 0.005), ge_mod_true_pars_list = list(epsilon = 0.05))
+Q <- simulate_Qij(ck, sim_relats = c("PO", "U"), calc_relats = c("PO", "U"), reps = 1e05)
+L <- extract_logls(Q, numer = c(PO = 1), denom = c(U = 1))
+g_po_u_1 <- ggplot(L, aes(x = logl_ratio, fill = true_relat)) +
+  geom_density(alpha = 0.3)
+g_po_u_1
+```
+
+## So, Set a threshold $\Lambda_c$. For example: {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+```{r, echo=FALSE, message=FALSE}
+g_po_u_1 +
+  geom_vline(xintercept = -12.5, colour = "blue")
+```
+
+#### FALSE NEGATIVE RATE:
+probability that a true kin pair (PO in this case)
+has $\Lambda \leq \Lambda_c$.
+
+#### FALSE POSITIVE RATE:
+probability that a non kin pair (U in this case)
+has $\Lambda > \Lambda_c$.
+
+## Hopes and Desires {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+
+* Obviously you want FNR as low as possible, but FPR must be low as well.
+* How low must FPR be? That depends on the number of pairwise comparisons.
+* 10,000 candidate parents and 10,000 candidate offspring = $10^{8}$ 
+pairwise comparisons.
+* I think you should aim for FPR at least 100 times smaller than the 
+reciprocal of the number of pairwise comparisons; preferably smaller.
+* How do you estimate such small probabilities?
+
+
+## Calculating the FPR {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+### "Vanilla" Monte Carlo Formulation, with MC sample size $M$:
+$$
+\mathrm{FPR}_{\Lambda_c} = 
+\sum_{\Lambda_{PO/U}}\mathcal{I}\{ \Lambda_{PO/U} > \Lambda_c\} 
+P(\Lambda_{PO/U}~|~i,j~\mathrm{Unrelated})
+\approx
+\frac{1}{M}\sum_{m=1}^M
+\mathcal{I}\{ \Lambda_{PO/U}^{(m)} > \Lambda_c\} 
+$$
+with each $\Lambda^{(m)}_{PO/U}$ simulated from its distribution assuming the pair is unrelated.
+
+### Importance sampling formulation rewrites the original expectation:
+
+$$
+\begin{aligned}
+\mathrm{FPR}_{\Lambda_c} &= 
+\sum_{\Lambda_{PO/U}}\mathcal{I}\{ \Lambda_{PO/U} > \Lambda_c\} 
+\frac{P(\Lambda_{PO/U}~|~i,j~\mathrm{Unrelated})}
+{P(\Lambda_{PO/U}~|~i,j~\mathrm{PO})}
+P(\Lambda_{PO/U}~|~i,j~\mathrm{PO}) \\
+& \approx \frac{1}{M}\sum_{m=1}^M
+\biggl[\mathcal{I}\{ \Lambda_{PO/U}^{(m)} > \Lambda_c\} 
+\frac{P(\Lambda^{(m)}_{PO/U}~|~i,j~\mathrm{Unrelated})}
+{P(\Lambda^{(m)}_{PO/U}~|~i,j~\mathrm{PO})}\biggr]
+\end{aligned}
+$$
+with each $\Lambda^{(m)}_{PO/U}$ simulated from the importance sampling distribution,
+$P(\Lambda^{(m)}_{PO/U}~|~i,j~\mathrm{PO})$.  
+
+- Useful for calculating FPR for comparison of _any_ relationship to Unrelated,  
+regardless of physical linkage.
+
+## Decreasing the FPR---Three main ways {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+1. Increase $\Lambda_c$, thus increasing the FNR, too.
+
+```{r, echo=FALSE, message=FALSE}
+g_po_u_1 +
+  geom_vline(xintercept = -12.5, colour = "blue") +
+  geom_vline(xintercept = 0, colour = "blue") +
+  geom_vline(xintercept = 12.5, colour = "blue")
+```
+
+Easy to accommodate this in CKMR models if you can estimate the FNR.
+
+## Decreasing the FPR---Three main ways {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+2. Increasing the number of loci. Example HS vs Unrelated:
+
+![](figures/baetscher-hs-fprs.png)
+
+
+## Decreasing the FPR---Three main ways {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+ 3. Increasing the heterozygosity of each locus
+    - Using markers with more alleles:
+
+![](figures/baetscher-fprs.png)
+
+
+## Decreasing the FPR---Three main ways {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+ 3. Increasing the heterozygosity of each locus
+    - Or, just by having allele frequencies that are closer to even.
+    - Example: 100 SNPs at minor allele frequency of 0.05, 0.1, 0.2, 0.3, 0.5:
+```{r minor-allele-freqs, echo=FALSE, message=FALSE, cache=cache_chunks}
+NL <- 100
+base <- tibble(
+  Chrom = "Unk",
+  Locus = str_c("Loc_", rep(1:NL, each = 2)),
+  Pos = rep(1:NL, each = 2),
+  Allele = rep(c("A", "B"), NL),
+  LocIdx = rep(1:NL, each = 2),
+  AlleIdx = rep(c(1, 2), NL)
+)
+freqs <- c(0.05, 0.2, 0.3, 0.5)
+names(freqs) <- freqs
+blist <- lapply(freqs, function(x) base %>% mutate(Freq = rep(c(1-x, x), NL)))
+all_logls <- lapply(blist, function(x) {
+  ck <- create_ckmr(x, kappas[c("PO", "U"),], ge_mod_assumed_pars_list = list(epsilon = 0.005), ge_mod_true_pars_list = list(epsilon = 0.005))
+  Q <- simulate_Qij(ck, sim_relats = c("PO", "U"), calc_relats = c("PO", "U"), reps = 1e04)
+  L <- extract_logls(Q, numer = c(PO = 1), denom = c(U = 1))
+  L
+}) %>%
+  bind_rows(.id = "maf")
+
+g_facets <- ggplot(all_logls, aes(x = logl_ratio, fill = true_relat)) +
+  geom_density(alpha = 0.3) + 
+  facet_wrap(~maf, ncol = 1)
+g_facets
+```
+
+
+## Physical Linkage reduces power {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* But how does it do that?
+* First, a digression into HS, A-N, and GP-GC, pairs.
+
+* Note that even if you don't have a map, you can still compute $\Lambda$.  It is
+a valuable statistic even if it is not the correct probability.
+
+## But how does physical linkage affect the distribution of $\Lambda$? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Up till now, all simulations have assumed no linkage.
+* This means that each locus, _independently_, is simulated to have 0, 1, or 2 gene copies IBD,
+according to $\bkappa$.
+* In reality, the IBD status of nearby sites in the genome will be correlated, _and so_ their
+contributions to the sum:
+$$
+\sum_{\ell = 1}^L\log\biggl( \frac{P(x_{1,\ell}, x_{2,\ell}~|~\bkappa_\mathrm{numer}}{P(x_{1,\ell}, x_{2,\ell}~|~\bkappa_\mathrm{denom}}\biggr)
+$$
+will also be positively correlated.
+* So the variance of that sum is increased. Think $\mathrm{Var}(X + Y)$. So there will be more spread in $\Lambda$.
+
+## EXCEPT FOR SOME INTERESTING CASES {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* The effect of linkage occurs due to variance in the total fraction of
+genome IBD at 0, 1, or 2 gene copies.
+* Three special cases have no variance in that fraction:
+    - U: $\bkappa = (1, 0, 0)$
+    - PO: $\bkappa = (0, 1, 0)$
+    - MZ: $\bkappa = (0, 0, 1)$ (monozygotic twin, or "self")
+And so, they are completely _unaffected_ by physical linkage.
+* So, $\Lambda_{PO/U}$ is not affected by physical linkage.
+
+## However, distributions of $\Lambda_{FS/U}$ or $\Lambda_{HS/U}$ are affected by linkage {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* But only their distributions when the truth is not U, PO, or MZ.
+* Witness $\Lambda_{FS/U}$ at 165 microhaps:
+```{r, echo=FALSE, message=FALSE, out.width = "200px", cache=cache_chunks}
+fsk <- create_ckmr(linked_mhaps, kappas[c("FS", "HS", "U"), ], ge_mod_assumed_pars_list = list(epsilon = 0.000001), ge_mod_true_pars_list = list(epsilon = 0.000001))
+Qu <- simulate_Qij(fsk, sim_relats = c("FS", "HS", "U"), calc_relats = c("FS", "HS", "U"), reps = 1e04)
+Ql <- simulate_Qij(fsk, sim_relats = c("FS", "HS", "U"), calc_relats = c("FS", "HS", "U"), reps = 1e04, unlinked = FALSE, pedigree_list = pedigrees)
+
+Qul <- bind_rows(
+  extract_logls(Qu, numer = c(FS = 1), denom = c(U = 1)),
+  extract_logls(Ql, numer = c(FS = 1), denom = c(U = 1)),
+  extract_logls(Qu, numer = c(HS = 1), denom = c(U = 1)),
+  extract_logls(Ql, numer = c(HS = 1), denom = c(U = 1)),
+) %>%
+  mutate(simmed_from = str_c(true_relat, "-", simtype)) %>%
+  filter((numer_wts == "FS=1" & true_relat != "HS") | (numer_wts == "HS=1" & true_relat != "FS"))
+
+link_compare <- ggplot(Qul, aes(x = logl_ratio, fill = simmed_from)) + 
+  geom_density(alpha = 0.4) +
+  facet_wrap(~numer_wts, ncol = 1)
+link_compare
+```
+
+
+Let's compute the 
+mean and variance of those:
+```{r, echo=FALSE}
+Qul %>%
+  group_by(simmed_from, numer_wts, denom_wts) %>%
+  summarise(mean_lograt = mean(logl_ratio),
+            var_lograt = var(logl_ratio)
+  )
+```
+
+And that extra variance is causes the power to go down:
+
+For unlinked:
+```{r}
+mc_sample_simple(Qu, nu = "FS")
+```
+
+For linked:
+```{r}
+mc_sample_simple(Qu, nu = "FS", Q_for_fnrs = Ql)
+```
+
+
+
+
