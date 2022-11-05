@@ -357,7 +357,7 @@ according to $\bkappa$.
 * In reality, the IBD status of nearby sites in the genome will be correlated, _and so_ their
 contributions to the sum:
 $$
-\Lambda = \sum_{\ell = 1}^L\log\biggl( \frac{P(x_{1,\ell}, x_{2,\ell}~|~\bkappa_\mathrm{numer}}{P(x_{1,\ell}, x_{2,\ell}~|~\bkappa_\mathrm{denom}}\biggr)
+\Lambda = \sum_{\ell = 1}^L\log\biggl( \frac{P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa_\mathrm{numer}}{P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa_\mathrm{denom}}\biggr)
 $$
 will also be positively correlated.
 * So the variance of that sum is increased. 
