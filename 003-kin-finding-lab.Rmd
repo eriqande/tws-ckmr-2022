@@ -256,7 +256,7 @@ within 1 megabase during any meiosis).
 
 # make fake chromosome lengths
 fake_chromo_lengths <- geometric_chromo_lengths(
-  n = 15,
+  n = 16,
   L = 2.4,
   sl = 0.25
 )
@@ -327,7 +327,7 @@ PO_U_gg
 
 Aha!  When we simulate those likelihood ratios whilst taking account of
 physical linkage, we see that there is a lot more spread in the distributions,
-(except for the PO relationship, as we mentioned before)
+(except for the PO or U relationships, as we mentioned before)
 and, consequently, a whole lot more overlap.
 
 Now, let us look at things when we use other likelihood ratios.
@@ -673,6 +673,67 @@ Once we have done this initial round of kin-finding, we would typically go back 
 the meta data.  Keeping in mind that individuals in the HS categories could be
 grandparent-grandchild, or, much less likely, full-aunt-niece.
 
+## Check the distribution of all pairs against the simulated unrelated pairs
+
+Because an overwhelming majority of the pairs should be (largely) unrelated,
+the observed distribution of logls from all pairs should be close to what
+is simulated for unrelated individuals.
+
+We can plot the densities and compare
+
+
+Here we do it for the $\Lambda_{PO/U}$.  The red-filled density is the
+simulated (theoretical) curve, and the unfilled black line is what
+was observed.
+```{r}
+simU_POU <- Qs %>%
+  extract_logls(numer = c(PO = 1), denom = c(U = 1)) %>% 
+  filter(true_relat == "U")
+
+ggplot() +
+  geom_density(
+    data = simU_POU,
+    mapping = aes(x = logl_ratio),
+    fill = "red",
+    alpha = 0.3
+  ) +
+  geom_density(
+    data = pw_4_LRTs, 
+    mapping = aes(x = POU)
+  )
+```
+
+Whoa! That is somewhat unexpected.  We expect to have a little bump in the observed
+curve on the right hand side, because there should be some pairs that are not
+completely unrelated.  But the long tail to the left is a hard one to explain.
+
+That fat tail on the left in the observed distribution remains, even for a likelihood
+ratio that should not be too affected by the genotyping error model ($\Lambda_{HS/HAN}$):
+
+
+
+```{r}
+simU_HSHAN <- Qs %>%
+  extract_logls(numer = c(HS = 1), denom = c(HAN = 1)) %>% 
+  filter(true_relat == "U")
+
+ggplot() +
+  geom_density(
+    data = simU_HSHAN,
+    mapping = aes(x = logl_ratio),
+    fill = "red",
+    alpha = 0.3
+  ) +
+  geom_density(
+    data = pw_4_LRTs, 
+    mapping = aes(x = HSHAN)
+  )
+```
+
+This is interesting.  As a population geneticist I would want to follow up on this
+to figure out what feature of our genetic data or of the population under study is leading
+to this distortion from what we expect.  There might be an interesting story there!
+
 ## Conclusion
 
 One big take-home message here is that it takes a lot of good genetic
@@ -682,7 +743,5 @@ set, and the distinction between those groups seems reasonably clear,
 but with fewer markers it would be a lot harder.
 
 Don't sell yourself short on the genetic markers!!
-
-
 
 

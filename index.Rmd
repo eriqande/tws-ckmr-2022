@@ -42,7 +42,7 @@ a session has slides for a lecture, they are linked below.
 8:45--9:30    | An introduction to genetic data and inheritance ([slides](https://eriqande.github.io/tws-ckmr-2022/slides/eric-talk-1.html#/section))  | _E. Anderson_ |
 9:30--9:45    | Break |   |
 9:45--10:30   | Statistical inference for CKMR estimation ([slides](https://eriqande.github.io/tws-ckmr-2022/slides/paul-talk-2.Rmd.html#/section)) | _P. Conn_ |  
-10:30--11:15  | Kin finding  |  _E. Anderson_   |  
+10:30--11:15  | Kin finding ([slides](https://eriqande.github.io/tws-ckmr-2022/slides/eric-talk-2.html#/section)) |  _E. Anderson_   |  
 11:15--12:00  | Designing a CKMR experiment ([slides](https://eriqande.github.io/tws-ckmr-2022/slides/paul-talk-3.Rmd.html#/section)) | _P. Conn_  |
 12:00--1:00   | Lunch   |
 1:00--5:00    | R/TMB labs (full day participants only)   | _P. Conn/E. Anderson_|   

@@ -93,15 +93,15 @@ highest power (lowest false negative rate) will be based on
 the likelihood ratio.
 $$
 \frac{P(G_i, G_j~|~i~\mbox{and}~j~\mbox{are}~\mathrm{PO})}
-{P(G_1, G_2~|~i~\mbox{and}~j~\mbox{are}~\mathrm{Unrelated})}
+{P(G_i, G_j~|~i~\mbox{and}~j~\mbox{are}~\mathrm{Unrelated})}
 $$
-Where $G_1$ and $G_2$ denote the observed genotypes in the two
+Where $G_i$ and $G_j$ denote the observed genotypes in the two
 individuals of the pair.
 
 This holds for any two relationships:
 $$
 \frac{P(G_i, G_j~|~i~\mbox{and}~j~\mbox{are}~R_1)}
-{P(G_1, G_2~|~i~\mbox{and}~j~\mbox{are}~R_2)}
+{P(G_i, G_j~|~i~\mbox{and}~j~\mbox{are}~R_2)}
 $$
 is a most powerful test (Neyman-Pearson Lemma).
 
@@ -110,7 +110,7 @@ is a most powerful test (Neyman-Pearson Lemma).
 ## Review {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 We previously showed we can use $\bkappa(R)$ (the $\kappa$ coefficients for
-relationship $R$) to calculate the joint probability $P(G_1, G_2~|~i~\mbox{and}~j~\mbox{are}~R)$:
+relationship $R$) to calculate the joint probability $P(G_i, G_j~|~i~\mbox{and}~j~\mbox{are}~R)$:
 
 $$
 \begin{aligned}
@@ -127,7 +127,7 @@ is inside it is true, and 0 otherwise.
 
 With $L$ different loci, writing the genotype at the $\ell\thh$ locus as $G^{(\ell)}$ we can use:
 $$
-P(\bG_1, \bG_2~|~\bkappa(R)) = \prod_{\ell = 1}^L P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa(R))
+P(\bG_i, \bG_j~|~\bkappa(R)) = \prod_{\ell = 1}^L P(G_i^{(\ell)}, G_j^{(\ell)}~|~\bkappa(R))
 $$
 This is actually the correct probability so long as:
 
@@ -154,21 +154,21 @@ $$
 
 ### Let's give the log of that a name: $\Lambda$:
 $$
-\Lambda_{PO/U} = \log\biggl(\frac{P(\bG_1, \bG_2~|~\bkappa = (0, 1,0))}
-{P(\bG_1, \bG_2~|~\bkappa = (1, 0,0))} \biggr)
+\Lambda_{PO/U} = \log\biggl(\frac{P(\bG_i, \bG_j~|~\bkappa = (0, 1,0))}
+{P(\bG_i, \bG_j~|~\bkappa = (1, 0,0))} \biggr)
 $$
 
 ### It will be convenient later to recognize this as a sum:
 $$
 \begin{aligned}
 \Lambda_{PO/U} &  =  & \log\biggl(  
-\prod_{\ell = 1}^L \frac{P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa = (0, 1, 0))}
-{P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa = (1, 0, 0))}
+\prod_{\ell = 1}^L \frac{P(G_i^{(\ell)}, G_j^{(\ell)}~|~\bkappa = (0, 1, 0))}
+{P(G_i^{(\ell)}, G_j^{(\ell)}~|~\bkappa = (1, 0, 0))}
 \biggr) \\
 & = & 
 \sum_{\ell = 1}^L\log\biggl(  
- \frac{P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa = (0, 1, 0))}
-{P(G_{1}^{(\ell)}, G_{2}^{(\ell)}~|~\bkappa = (1, 0, 0))}
+ \frac{P(G_i^{(\ell)}, G_j^{(\ell)}~|~\bkappa = (0, 1, 0))}
+{P(G_i^{(\ell)}, G_j^{(\ell)}~|~\bkappa = (1, 0, 0))}
 \biggr)
 \end{aligned}
 $$
@@ -187,8 +187,8 @@ they all can produce errors to some extent.
 * These probabilities can be computed in a way
 that accounts for genotyping error:
 $$
-\Lambda_{PO/U} = \log\biggl(\frac{P(\bG_1, \bG_2~|~\bmu, \bkappa = (0, 1,0))}
-{P(\bG_1, \bG_2~|~\bmu, \bkappa = (1, 0,0))} \biggr)
+\Lambda_{PO/U} = \log\biggl(\frac{P(\bG_i, \bG_j~|~\bmu, \bkappa = (0, 1,0))}
+{P(\bG_i, \bG_j~|~\bmu, \bkappa = (1, 0,0))} \biggr)
 $$
 
 * Error model can be simple (or complex)
@@ -331,15 +331,25 @@ g_facets
 ```
 
 
-## Physical Linkage reduces power {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+## How does physical linkage affect all this? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
-* But how does it do that?
-* First, a digression into HS, A-N, and GP-GC, pairs.
+### The good:
 
-* Note that even if you don't have a map, you can still compute $\Lambda$.  It is
+- If you have dense genomic data and a recombination map, you can distinguish between
+HS pairs and Aunt-niece pairs
+    - Different expected distribution of the lengths of IBD segments.
+    - Much more complex calculations and no one has done this in the context of CKMR AFAIK.
+- If you don't know where the markers reside in the genome, or you have no good linkage map
+you can still compute $\Lambda$.  It is
 a valuable statistic even if it is not the correct probability.
 
-## But how does physical linkage affect the distribution of $\Lambda$? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+### The bad and the ugly:
+
+- Physical linkage increases the true variance in $\Lambda$ in all but three relationship
+categories.
+- More overlap between the $\Lambda$ values from different categories.
+
+## How does physical linkage affect the distribution of $\Lambda$? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
 * Up till now, all simulations have assumed no linkage.
 * This means that each locus, _independently_, is simulated to have 0, 1, or 2 gene copies IBD,
@@ -347,69 +357,68 @@ according to $\bkappa$.
 * In reality, the IBD status of nearby sites in the genome will be correlated, _and so_ their
 contributions to the sum:
 $$
-\sum_{\ell = 1}^L\log\biggl( \frac{P(x_{1,\ell}, x_{2,\ell}~|~\bkappa_\mathrm{numer}}{P(x_{1,\ell}, x_{2,\ell}~|~\bkappa_\mathrm{denom}}\biggr)
+\Lambda = \sum_{\ell = 1}^L\log\biggl( \frac{P(x_{1,\ell}, x_{2,\ell}~|~\bkappa_\mathrm{numer}}{P(x_{1,\ell}, x_{2,\ell}~|~\bkappa_\mathrm{denom}}\biggr)
 $$
 will also be positively correlated.
-* So the variance of that sum is increased. Think $\mathrm{Var}(X + Y)$. So there will be more spread in $\Lambda$.
+* So the variance of that sum is increased. 
+    - Think $\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y) + 2\mathrm{Cov}(X, Y)$. 
 
-## EXCEPT FOR SOME INTERESTING CASES {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
-* The effect of linkage occurs due to variance in the total fraction of
+
+## The Effect of Physical Linkage (An example) {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- With many markers, the effect of linkage can be profound.  
+- 2,569 genetic markers spread across 16 Chromosomes
+
+![](eric-images/link-vs-unlink.png)
+
+## Why Are Unrelated and Parent-Offspring Pairs Unaffected by Physical Linkage? {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+* Linkage affects the distribution of $\Lambda$  by increasing the variance in the total fraction of
 genome IBD at 0, 1, or 2 gene copies.
-* Three special cases have no variance in that fraction:
+* Three special cases have _no_ variance in that fraction, to start with, and linkage cannot
+increase it:
     - U: $\bkappa = (1, 0, 0)$
     - PO: $\bkappa = (0, 1, 0)$
     - MZ: $\bkappa = (0, 0, 1)$ (monozygotic twin, or "self")
-And so, they are completely _unaffected_ by physical linkage.
+
+* And so, they are completely _unaffected_ by physical linkage.
 * So, $\Lambda_{PO/U}$ is not affected by physical linkage.
 
-## However, distributions of $\Lambda_{FS/U}$ or $\Lambda_{HS/U}$ are affected by linkage {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
-
-* But only their distributions when the truth is not U, PO, or MZ.
-* Witness $\Lambda_{FS/U}$ at 165 microhaps:
-```{r, echo=FALSE, message=FALSE, out.width = "200px", cache=cache_chunks}
-fsk <- create_ckmr(linked_mhaps, kappas[c("FS", "HS", "U"), ], ge_mod_assumed_pars_list = list(epsilon = 0.000001), ge_mod_true_pars_list = list(epsilon = 0.000001))
-Qu <- simulate_Qij(fsk, sim_relats = c("FS", "HS", "U"), calc_relats = c("FS", "HS", "U"), reps = 1e04)
-Ql <- simulate_Qij(fsk, sim_relats = c("FS", "HS", "U"), calc_relats = c("FS", "HS", "U"), reps = 1e04, unlinked = FALSE, pedigree_list = pedigrees)
-
-Qul <- bind_rows(
-  extract_logls(Qu, numer = c(FS = 1), denom = c(U = 1)),
-  extract_logls(Ql, numer = c(FS = 1), denom = c(U = 1)),
-  extract_logls(Qu, numer = c(HS = 1), denom = c(U = 1)),
-  extract_logls(Ql, numer = c(HS = 1), denom = c(U = 1)),
-) %>%
-  mutate(simmed_from = str_c(true_relat, "-", simtype)) %>%
-  filter((numer_wts == "FS=1" & true_relat != "HS") | (numer_wts == "HS=1" & true_relat != "FS"))
-
-link_compare <- ggplot(Qul, aes(x = logl_ratio, fill = simmed_from)) + 
-  geom_density(alpha = 0.4) +
-  facet_wrap(~numer_wts, ncol = 1)
-link_compare
-```
 
 
-Let's compute the 
-mean and variance of those:
-```{r, echo=FALSE}
-Qul %>%
-  group_by(simmed_from, numer_wts, denom_wts) %>%
-  summarise(mean_lograt = mean(logl_ratio),
-            var_lograt = var(logl_ratio)
-  )
-```
+## A Quick Sketch of Kin-finding Operationally {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
 
-And that extra variance is causes the power to go down:
-
-For unlinked:
-```{r}
-mc_sample_simple(Qu, nu = "FS")
-```
-
-For linked:
-```{r}
-mc_sample_simple(Qu, nu = "FS", Q_for_fnrs = Ql)
-```
+- Compare each sample to every other.
+- For each calculate a variety of $\Lambda$'s. Each one appropriate for distinguishing
+between a particular pair of relationships.
+    - $\Lambda_{PO/U}$
+    - $\Lambda_{FS/U}$
+    - $\Lambda_{PO/FS}$
+    - $\Lambda_{FS/HS}$
+    - $\Lambda_{HS/HAN}$
+    - etc.
+- Identify the most related pairs first (PO, FS)---they are the easiest.
+- Continue down through half-siblings, while paying particular care to distinguish them
+from half-aunt-niece.
+- Compare empirical to theoretical distributions of pairwise likelihoods to get a sense
+for how your genetic model fits.
 
 
+
+## Wrap-Up {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- We've had a fairly high-level overview of how kin-finding proceeds.
+- In the afternoon session we will get in and do it with the bearded seal genetic data set.
+
+
+
+## Parting thought {background-image="quarto-static/slideswoosh-white.png" background-size="contain"}
+
+- Our capacity to assemble high quality genomes is rapidly expanding.
+- Mapping our data to a good genome will tell us where those markers reside in the genome.
+- We don't typically have linkage maps.
+- But the genome coordinates are probably enough
+- It's time to start computing likelihoods whilst accounting for physical linkage.
 
 
