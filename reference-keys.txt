@@ -17,6 +17,7 @@ doing-pairwise-comparisons-somewhat-systematically
 finding-the-po-pairs
 finding-full-sibling-pairs
 looking-for-half-siblings
+check-the-distribution-of-all-pairs-against-the-simulated-unrelated-pairs
 conclusion
 simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example
 simulating-from-the-inferential-model

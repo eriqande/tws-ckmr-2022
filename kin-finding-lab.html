@@ -200,7 +200,8 @@ div.csl-indent {
 <li class="chapter" data-level="2.4.5" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#finding-full-sibling-pairs"><i class="fa fa-check"></i><b>2.4.5</b> Finding full sibling pairs</a></li>
 <li class="chapter" data-level="2.4.6" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#looking-for-half-siblings"><i class="fa fa-check"></i><b>2.4.6</b> Looking for half-siblings</a></li>
 </ul></li>
-<li class="chapter" data-level="2.5" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#conclusion"><i class="fa fa-check"></i><b>2.5</b> Conclusion</a></li>
+<li class="chapter" data-level="2.5" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#check-the-distribution-of-all-pairs-against-the-simulated-unrelated-pairs"><i class="fa fa-check"></i><b>2.5</b> Check the distribution of all pairs against the simulated unrelated pairs</a></li>
+<li class="chapter" data-level="2.6" data-path="kin-finding-lab.html"><a href="kin-finding-lab.html#conclusion"><i class="fa fa-check"></i><b>2.6</b> Conclusion</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><a href="simulation-and-inference-play-with-hillary-et-al.s-white-shark-ckmr-example.html"><i class="fa fa-check"></i><b>3</b> Simulation and Inference Play with Hillary et al.’s White Shark CKMR example</a>
 <ul>
@@ -532,7 +533,7 @@ within 1 megabase during any meiosis).</p>
 <span id="cb23-2"><a href="kin-finding-lab.html#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="kin-finding-lab.html#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># make fake chromosome lengths</span></span>
 <span id="cb23-4"><a href="kin-finding-lab.html#cb23-4" aria-hidden="true" tabindex="-1"></a>fake_chromo_lengths <span class="ot">&lt;-</span> <span class="fu">geometric_chromo_lengths</span>(</span>
-<span id="cb23-5"><a href="kin-finding-lab.html#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">15</span>,</span>
+<span id="cb23-5"><a href="kin-finding-lab.html#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">16</span>,</span>
 <span id="cb23-6"><a href="kin-finding-lab.html#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">L =</span> <span class="fl">2.4</span>,</span>
 <span id="cb23-7"><a href="kin-finding-lab.html#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">sl =</span> <span class="fl">0.25</span></span>
 <span id="cb23-8"><a href="kin-finding-lab.html#cb23-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
@@ -583,7 +584,7 @@ different true relationships:</p>
 <p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>Aha! When we simulate those likelihood ratios whilst taking account of
 physical linkage, we see that there is a lot more spread in the distributions,
-(except for the PO relationship, as we mentioned before)
+(except for the PO or U relationships, as we mentioned before)
 and, consequently, a whole lot more overlap.</p>
 <p>Now, let us look at things when we use other likelihood ratios.
 For example to distinguish between Full Sibs and
@@ -943,8 +944,58 @@ the meta data. Keeping in mind that individuals in the HS categories could be
 grandparent-grandchild, or, much less likely, full-aunt-niece.</p>
 </div>
 </div>
-<div id="conclusion" class="section level2 hasAnchor" number="2.5">
-<h2><span class="header-section-number">2.5</span> Conclusion<a href="kin-finding-lab.html#conclusion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="check-the-distribution-of-all-pairs-against-the-simulated-unrelated-pairs" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Check the distribution of all pairs against the simulated unrelated pairs<a href="kin-finding-lab.html#check-the-distribution-of-all-pairs-against-the-simulated-unrelated-pairs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Because an overwhelming majority of the pairs should be (largely) unrelated,
+the observed distribution of logls from all pairs should be close to what
+is simulated for unrelated individuals.</p>
+<p>We can plot the densities and compare</p>
+<p>Here we do it for the <span class="math inline">\(\Lambda_{PO/U}\)</span>. The red-filled density is the
+simulated (theoretical) curve, and the unfilled black line is what
+was observed.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="kin-finding-lab.html#cb57-1" aria-hidden="true" tabindex="-1"></a>simU_POU <span class="ot">&lt;-</span> Qs <span class="sc">%&gt;%</span></span>
+<span id="cb57-2"><a href="kin-finding-lab.html#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_logls</span>(<span class="at">numer =</span> <span class="fu">c</span>(<span class="at">PO =</span> <span class="dv">1</span>), <span class="at">denom =</span> <span class="fu">c</span>(<span class="at">U =</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb57-3"><a href="kin-finding-lab.html#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(true_relat <span class="sc">==</span> <span class="st">&quot;U&quot;</span>)</span>
+<span id="cb57-4"><a href="kin-finding-lab.html#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="kin-finding-lab.html#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb57-6"><a href="kin-finding-lab.html#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(</span>
+<span id="cb57-7"><a href="kin-finding-lab.html#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> simU_POU,</span>
+<span id="cb57-8"><a href="kin-finding-lab.html#cb57-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> logl_ratio),</span>
+<span id="cb57-9"><a href="kin-finding-lab.html#cb57-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb57-10"><a href="kin-finding-lab.html#cb57-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.3</span></span>
+<span id="cb57-11"><a href="kin-finding-lab.html#cb57-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb57-12"><a href="kin-finding-lab.html#cb57-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(</span>
+<span id="cb57-13"><a href="kin-finding-lab.html#cb57-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> pw_4_LRTs, </span>
+<span id="cb57-14"><a href="kin-finding-lab.html#cb57-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> POU)</span>
+<span id="cb57-15"><a href="kin-finding-lab.html#cb57-15" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p>Whoa! That is somewhat unexpected. We expect to have a little bump in the observed
+curve on the right hand side, because there should be some pairs that are not
+completely unrelated. But the long tail to the left is a hard one to explain.</p>
+<p>That fat tail on the left in the observed distribution remains, even for a likelihood
+ratio that should not be too affected by the genotyping error model (<span class="math inline">\(\Lambda_{HS/HAN}\)</span>):</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="kin-finding-lab.html#cb58-1" aria-hidden="true" tabindex="-1"></a>simU_HSHAN <span class="ot">&lt;-</span> Qs <span class="sc">%&gt;%</span></span>
+<span id="cb58-2"><a href="kin-finding-lab.html#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_logls</span>(<span class="at">numer =</span> <span class="fu">c</span>(<span class="at">HS =</span> <span class="dv">1</span>), <span class="at">denom =</span> <span class="fu">c</span>(<span class="at">HAN =</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb58-3"><a href="kin-finding-lab.html#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(true_relat <span class="sc">==</span> <span class="st">&quot;U&quot;</span>)</span>
+<span id="cb58-4"><a href="kin-finding-lab.html#cb58-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-5"><a href="kin-finding-lab.html#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb58-6"><a href="kin-finding-lab.html#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(</span>
+<span id="cb58-7"><a href="kin-finding-lab.html#cb58-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> simU_HSHAN,</span>
+<span id="cb58-8"><a href="kin-finding-lab.html#cb58-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> logl_ratio),</span>
+<span id="cb58-9"><a href="kin-finding-lab.html#cb58-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb58-10"><a href="kin-finding-lab.html#cb58-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.3</span></span>
+<span id="cb58-11"><a href="kin-finding-lab.html#cb58-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb58-12"><a href="kin-finding-lab.html#cb58-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(</span>
+<span id="cb58-13"><a href="kin-finding-lab.html#cb58-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> pw_4_LRTs, </span>
+<span id="cb58-14"><a href="kin-finding-lab.html#cb58-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> HSHAN)</span>
+<span id="cb58-15"><a href="kin-finding-lab.html#cb58-15" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="tws-ckmr-2022_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p>This is interesting. As a population geneticist I would want to follow up on this
+to figure out what feature of our genetic data or of the population under study is leading
+to this distortion from what we expect. There might be an interesting story there!</p>
+</div>
+<div id="conclusion" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Conclusion<a href="kin-finding-lab.html#conclusion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>One big take-home message here is that it takes a lot of good genetic
 markers to be able to reliably distinguish half-siblings from
 half-aunt niece relationships. This is a tremendously robust data
