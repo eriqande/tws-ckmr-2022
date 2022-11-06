@@ -158,7 +158,7 @@ use it to download the workshop materials from GitHub.  Follow these
 steps:
 
 1. Open RStudio
-2. From the dropdown menus, choose File -> RStudio
+2. From the dropdown menus, choose File -> New Project...
 3. In the resulting pop-up window choose and click "Version Control":
     ![](images/version-control.png)
 4. In the next screen of the "wizard" choose "Git":
