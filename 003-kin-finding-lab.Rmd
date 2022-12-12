@@ -745,3 +745,506 @@ but with fewer markers it would be a lot harder.
 Don't sell yourself short on the genetic markers!!
 
 
+## Postscript: Following up on that distorted distribution
+
+_(This was added on Dec 12, 2022, after the workshop)_
+
+The long left tail on the empirical distribution of likelihood ratios
+got me thinking that genotyping error rates might be a little higher
+than expected in some of the markers.  In particular, I wanted to
+follow up on the null alleles (the `O` alleles) that were called in
+the data set.  There is a chance that the those genotypes are not called
+as accurately as they are believed to be.
+
+One way to explore this is to look at the observed frequencies of the
+genotypes compared to what is expected under Hardy-Weinberg equilibrium.
+Eric has a little R package called 
+'[whoa](https://github.com/eriqande/whoa)'
+that is useful for this purpose.  It has some functions that will let
+us plot the observed vs expected frequencies easily.
+
+'whoa' is built to investigate biallelic markers.  Any markers that
+have called null alleles are triallelic, so we have to collapse
+two alleles down into one, to investigate this.  So, here we go with that.
+
+First we will re-check to see what the the different alleles are in this
+data set:
+```{r}
+long_genos %>%
+  count(Allele)
+```
+
+Because whoa operates on biallelic markers, we are going to have to lump the `O` allele
+into either the `A` category, or the `B` category, or we will lump the
+`A` and `B` alleles together and have the null allele be its own category.
+
+The next few sections do those three different ways of lumping using the
+following temporary object:
+```{r}
+lumpies <- long_genos %>% 
+  mutate(
+    lumpA = ifelse(Allele == "O", "A", Allele),
+    lumpB = ifelse(Allele == "O", "B", Allele)
+  )
+```
+
+
+### Lump the `A` and `O` alleles together
+
+
+From `lumpies` this, we can make some 012 matrices:
+```{r alump, cache=cache_chunks}
+A012 <- lumpies %>%
+  mutate(ints = ifelse(lumpA == "A", 0, 1)) %>%
+  group_by(Locus, Indiv) %>%
+  summarise(geno = sum(ints)) %>%
+  pivot_wider(names_from = Indiv, values_from = geno) %>%
+  ungroup()
+
+A012_mat <- as.matrix(A012 %>% select(-Locus))
+rownames(A012_mat) <- paste("Unk", str_replace(A012$Locus, "^L", ""), sep = "-")
+storage.mode(A012_mat) <- "integer"
+```
+
+And with that we can stick it into whoa:
+```{r}
+eobsA <- whoa::exp_and_obs_geno_freqs(d012 = A012_mat)
+
+whoa::geno_freqs_scatter(eobsA, max_plot_loci = 4000)
+```
+When we lump the nulls in with the `A` allele, it is hard to
+see any indication of distortions from the expected genotype
+frequencies (`p_exp` on the $x$-axis), and the observed
+frequencies (`p_obs` on the $y$ axis).
+
+Note: `geno` in this plot refers to the genotype which is the sum
+of the allele integers.  The way the alleles have been lumped here, 
+bot `A` and `O` are considered the `0` allele, and `B` is considered
+the `1` allele.  So the `0` genotype is the `00` homozygote, the `1` 
+genotype is the `01` or `10` heterozygote, and the `2`
+genotype is the `11` homozygote.
+
+### Try the same thing, lumping the nulls into the B alleles
+
+```{r blump, cache=cache_chunks}
+B012 <- lumpies %>%
+  mutate(ints = ifelse(lumpB == "A", 0, 1)) %>%
+  group_by(Locus, Indiv) %>%
+  summarise(geno = sum(ints)) %>%
+  pivot_wider(names_from = Indiv, values_from = geno) %>%
+  ungroup()
+
+B012_mat <- as.matrix(B012 %>% select(-Locus))
+rownames(B012_mat) <- paste("Unk", str_replace(B012$Locus, "^L", ""), sep = "-")
+storage.mode(B012_mat) <- "integer"
+```
+
+And with that we can stick it into whoa:
+```{r}
+eobsB <- whoa::exp_and_obs_geno_freqs(d012 = B012_mat)
+
+whoa::geno_freqs_scatter(eobsB, max_plot_loci = 4000)
+```
+
+OK, that is a little more revealing.  We see a little smooshie spot where
+we don't have quite as many heterozygotes as we would expect, and there
+are a few homozygotes that are at higher observed frequency than we
+would expect.
+
+### Now, lump the A and B alleles together
+
+The way the data were processed and presented, the null alleles are being
+used as just another allele.  So, we could actually just whittle this down
+to the loci that have null alleles in them, and then lump alleles A and B
+together into the reference (`0`) allele and let the alternate (`1`)
+allele be the null allele.  That should give us a nice picture of any
+distortions.
+
+```{r ablump, cache=cache_chunks}
+nulls_as_alts <- long_genos %>%
+  group_by(Locus) %>%
+  filter(any(Allele == "O")) %>%   # keep only loci with null alleles, and that is most of them
+  ungroup() %>%
+  mutate(ints = ifelse(Allele == "O", 1, 0))
+
+N012 <- nulls_as_alts %>%
+  group_by(Locus, Indiv) %>%
+  summarise(geno = sum(ints)) %>%
+  pivot_wider(names_from = Indiv, values_from = geno) %>%
+  ungroup()
+
+N012_mat <- as.matrix(N012 %>% select(-Locus))
+rownames(N012_mat) <- paste("Unk", str_replace(N012$Locus, "^L", ""), sep = "-")
+storage.mode(N012_mat) <- "integer"
+```
+
+And with that we can stick it into whoa:
+```{r}
+eobsN <- whoa::exp_and_obs_geno_freqs(d012 = N012_mat)
+
+whoa::geno_freqs_scatter(eobsN, max_plot_loci = 4000)
+```
+
+And that shows, fairly clearly, a mild degree of:
+
+- Excess of non-null (0) homozygotes at low frequencies (i.e. when there are lots of nulls)
+- Excess of null (2) homozygotes at high frequencies (i.e. when there are lots of nulls)
+- A deficit of heterozygotes when there are lots of them.
+
+So, this also indicates that there are some markers at which nearly half of the alleles
+are null alleles, and things aren't doing so well at those.
+
+### Drop those loci that show these distortions
+
+We could certainly keep track of which of those loci are the worst offenders: they
+are clearly the ones with the highest frequency of null alleles.   Let us actually
+plot the distribution of those null allele frequencies:
+```{r}
+null_freqs <- long_genos %>%
+  count(Locus, Allele) %>%
+  group_by(Locus) %>%
+  mutate(rel_freq = n / sum(n)) %>%
+  filter(Allele == "O") %>%
+  arrange(desc(rel_freq))
+
+ggplot(null_freqs, aes(x = rel_freq)) +
+  geom_histogram(binwidth = 0.05, fill = "white", colour = "black")
+```
+
+Yep, there is a small handful of loci with very high frequencies of null alleles.
+
+If we look at the last "p_exp vs p_obs" plot above, the cluster of points that
+is most notably outside of the expected range are those with:
+
+- `0` genotype p_exp < 0.5 (which means null allele freq > 0.3)
+- `1` genotype p_exp < 0.1 (which is near null allele freq > 0.3)
+
+What are we left with if we remove the loci with null allele frequency greater
+than 20%?
+```{r}
+loci_with_nulls_gt20 <- null_freqs %>%
+  filter(rel_freq > 0.20)
+nrow(loci_with_nulls_gt20)
+```
+So, that would discard only 173 loci.  Let's do that and see
+if the observed and simulated log-likelihood curves are any closer
+together.
+
+
+```{r}
+long_genos_dropped <- long_genos %>%
+  anti_join(loci_with_nulls_gt20, by = "Locus")
+```
+
+Now we can work through the steps we did in the beginning of this:
+
+```{r}
+locus_names_lgd <- unique(long_genos_dropped$Locus)
+afreqs_ready_lgd <- long_genos_dropped %>%
+  count(Locus, Allele) %>%  
+  group_by(Locus) %>%
+  mutate(
+    Freq = n / sum(n),
+    Chrom = "Unk",
+    Pos = as.integer(factor(Locus, levels = locus_names))
+  ) %>%
+  ungroup() %>%
+  select(Chrom, Pos, Locus, Allele, Freq) %>%
+  arrange(Pos, desc(Freq)) %>%
+  mutate(AlleIdx = NA,
+         LocIdx = NA) %>%
+  filter(!is.na(Allele)) %>%
+  reindex_markers()
+```
+
+Make the CKMR object
+```{r create_ckmr_lgd, cache=cache_chunks}
+# for this, we will only do PO, HS and U
+ckmr_lgd <- create_ckmr(
+  D = afreqs_ready_lgd,
+  kappa_matrix = kappas[c("PO", "HS", "U"), ],
+  ge_mod_assumed = ge_model_TGIE,
+  ge_mod_true = ge_model_TGIE,
+  ge_mod_assumed_pars_list = list(epsilon = 0.005),
+  ge_mod_true_pars_list = list(epsilon = 0.005)
+)
+```
+
+And simulate some genotypes:
+```{r simQs_lgd, cache=cache_chunks, message=FALSE}
+# This simulates a large number of pairwise genotype probabilites
+# at each locus
+Qs_lgd <- simulate_Qij(
+  ckmr_lgd, 
+  calc_relats = c("PO", "HS", "U"),
+  sim_relats = c("PO", "HS", "U") 
+)
+```
+
+Now, compute pairwise log-likelihoods.  We will just look at comparing
+PO/U and HS/U:
+```{r pairwise-comps-4way_lgd, cache=cache_chunks, message=FALSE}
+pw_2_LRTs_lgd <- lapply(
+  X = list(
+    POU = c("PO", "U"),
+    HSU = c("HS", "U")
+  ),
+  FUN = function(x) {
+    pairwise_kin_logl_ratios(
+      D1 = long_genos_dropped, 
+      D2 = long_genos_dropped, 
+      CK = ckmr_lgd,
+      numer = x[1],
+      denom = x[2],
+      num_cores = 8
+    )
+  }
+) %>%
+  bind_rows(
+  .id = "lr_type"
+) %>%
+  pivot_wider(names_from = lr_type, values_from = logl_ratio)
+
+```
+
+
+Now we can compare those things.
+
+#### PO/U logl ratios
+
+```{r}
+simU_POU_lgd <- Qs_lgd %>%
+  extract_logls(numer = c(PO = 1), denom = c(U = 1)) %>% 
+  filter(true_relat == "U")
+
+ggplot() +
+  geom_density(
+    data = simU_POU_lgd,
+    mapping = aes(x = logl_ratio),
+    fill = "red",
+    alpha = 0.3
+  ) +
+  geom_density(
+    data = pw_2_LRTs_lgd, 
+    mapping = aes(x = POU)
+  )
+```
+
+There, we see a minor improvement in the left tail.  
+
+
+#### HS/U logl ratios
+
+```{r}
+simU_HSU_lgd <- Qs_lgd %>%
+  extract_logls(numer = c(HS = 1), denom = c(U = 1)) %>% 
+  filter(true_relat == "U")
+
+ggplot() +
+  geom_density(
+    data = simU_HSU_lgd,
+    mapping = aes(x = logl_ratio),
+    fill = "red",
+    alpha = 0.3
+  ) +
+  geom_density(
+    data = pw_2_LRTs_lgd, 
+    mapping = aes(x = HSU)
+  )
+```
+
+### What happens if we drop loci with null allele freq > 0.2?
+
+How about if we go more extreme?  We might end up losing more than
+half of the loci this way, but it could be instructive to see if these
+loci are the ones that are primarily responsible for that left tail.
+
+We will focus on PO/U here.
+```{r}
+loci_with_nulls_gt2 <- null_freqs %>%
+  filter(rel_freq > 0.02)
+nrow(loci_with_nulls_gt2)
+```
+So, that would discard 1285 loci.  That is not viable, but
+we will do it here in the name of exploration.
+```{r}
+long_genos_d2 <- long_genos %>%
+  anti_join(loci_with_nulls_gt2, by = "Locus")
+```
+
+```{r}
+locus_names_lgd2 <- unique(long_genos_d2$Locus)
+afreqs_ready_lgd2 <- long_genos_d2 %>%
+  count(Locus, Allele) %>%  
+  group_by(Locus) %>%
+  mutate(
+    Freq = n / sum(n),
+    Chrom = "Unk",
+    Pos = as.integer(factor(Locus, levels = locus_names))
+  ) %>%
+  ungroup() %>%
+  select(Chrom, Pos, Locus, Allele, Freq) %>%
+  arrange(Pos, desc(Freq)) %>%
+  mutate(AlleIdx = NA,
+         LocIdx = NA) %>%
+  filter(!is.na(Allele)) %>%
+  reindex_markers()
+```
+
+Make the CKMR object
+```{r create_ckmr_lgd2, cache=cache_chunks}
+# for this, we will only do PO, HS and U
+ckmr_lgd2 <- create_ckmr(
+  D = afreqs_ready_lgd2,
+  kappa_matrix = kappas[c("PO", "HS", "U"), ],
+  ge_mod_assumed = ge_model_TGIE,
+  ge_mod_true = ge_model_TGIE,
+  ge_mod_assumed_pars_list = list(epsilon = 0.005),
+  ge_mod_true_pars_list = list(epsilon = 0.005)
+)
+```
+
+And simulate some genotypes:
+```{r simQs_lgd2, cache=cache_chunks, message=FALSE}
+# This simulates a large number of pairwise genotype probabilites
+# at each locus
+Qs_lgd2 <- simulate_Qij(
+  ckmr_lgd2, 
+  calc_relats = c("PO", "U"),
+  sim_relats = c("PO", "U") 
+)
+```
+
+Now, compute pairwise log-likelihoods.  We will just look at comparing
+PO/U and HS/U:
+```{r pairwise-comps-2way_lgd2, cache=cache_chunks, message=FALSE}
+pw_1_LRTs_lgd2 <- lapply(
+  X = list(
+    POU = c("PO", "U")
+  ),
+  FUN = function(x) {
+    pairwise_kin_logl_ratios(
+      D1 = long_genos_d2, 
+      D2 = long_genos_d2, 
+      CK = ckmr_lgd2,
+      numer = x[1],
+      denom = x[2],
+      num_cores = 8
+    )
+  }
+) %>%
+  bind_rows(
+  .id = "lr_type"
+) %>%
+  pivot_wider(names_from = lr_type, values_from = logl_ratio)
+
+```
+
+#### PO/U logl ratios with nulls > 0.02 tossed
+
+```{r}
+simU_POU_lgd2 <- Qs_lgd2 %>%
+  extract_logls(numer = c(PO = 1), denom = c(U = 1)) %>% 
+  filter(true_relat == "U")
+
+ggplot() +
+  geom_density(
+    data = simU_POU_lgd2,
+    mapping = aes(x = logl_ratio),
+    fill = "red",
+    alpha = 0.3
+  ) +
+  geom_density(
+    data = pw_1_LRTs_lgd2, 
+    mapping = aes(x = POU)
+  )
+```
+That is a lot closer, of course it is using fewer loci.
+
+### What happens if we increase the assumed and simulated genotyping error rates
+
+It could be that genotyping error rates are greater, in actuality, than
+what we are assuming in these simulations and calculations.  Let's see
+what happens if we crank them up by a factor of 3, from 0.005 to 0.015.
+
+We will use the data set with the null allele freqs < 0.02, since it
+is a little smaller and doesn't take quite as long to do this...
+
+```{r create_ckmr_lgd2_015, cache=cache_chunks}
+# for this, we will only do PO, HS and U
+ckmr_lgd2_015 <- create_ckmr(
+  D = afreqs_ready_lgd2,
+  kappa_matrix = kappas[c("PO", "HS", "U"), ],
+  ge_mod_assumed = ge_model_TGIE,
+  ge_mod_true = ge_model_TGIE,
+  ge_mod_assumed_pars_list = list(epsilon = 0.015),
+  ge_mod_true_pars_list = list(epsilon = 0.015)
+)
+```
+
+And simulate some genotypes:
+```{r simQs_lgd2_015, cache=cache_chunks, message=FALSE}
+# This simulates a large number of pairwise genotype probabilites
+# at each locus
+Qs_lgd2_015 <- simulate_Qij(
+  ckmr_lgd2_015, 
+  calc_relats = c("PO", "U"),
+  sim_relats = c("PO", "U") 
+)
+```
+
+Now, compute pairwise log-likelihoods.  We will just look at comparing
+PO/U and HS/U:
+```{r pairwise-comps-2way_lgd2_015, cache=cache_chunks, message=FALSE}
+pw_1_LRTs_lgd2_015 <- lapply(
+  X = list(
+    POU = c("PO", "U")
+  ),
+  FUN = function(x) {
+    pairwise_kin_logl_ratios(
+      D1 = long_genos_d2, 
+      D2 = long_genos_d2, 
+      CK = ckmr_lgd2_015,
+      numer = x[1],
+      denom = x[2],
+      num_cores = 8
+    )
+  }
+) %>%
+  bind_rows(
+  .id = "lr_type"
+) %>%
+  pivot_wider(names_from = lr_type, values_from = logl_ratio)
+
+```
+
+#### PO/U logl ratios with nulls > 0.02 tossed and genotyping rate of 0.015
+
+```{r}
+simU_POU_lgd2_015 <- Qs_lgd2_015 %>%
+  extract_logls(numer = c(PO = 1), denom = c(U = 1)) %>% 
+  filter(true_relat == "U")
+
+ggplot() +
+  geom_density(
+    data = simU_POU_lgd2_015,
+    mapping = aes(x = logl_ratio),
+    fill = "red",
+    alpha = 0.3
+  ) +
+  geom_density(
+    data = pw_1_LRTs_lgd2_015, 
+    mapping = aes(x = POU)
+  )
+```
+
+That is a little closer.  
+
+## Wrap Up
+
+Well, that has been a somewhat _ad hoc_ analysis of genotyping error rates
+and simulated vs observed distributions.  There would be more formal ways
+of doing this (and surely, even the _ad hoc_ explorations here should be wrapped
+up into a function), but this gives a flavor for some explorations that could
+be done.
+
